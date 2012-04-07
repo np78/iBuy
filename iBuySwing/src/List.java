@@ -23,55 +23,30 @@ public class List extends JFrame implements ActionListener{
 	private static JButton back = new JButton("Back");
 	private static String user, filename;
 	
-	public List(String user, String filename)
+	public List(String user, String filename, DropboxAPI<WebAuthSession> mDBApi) 
 	{
 		super(filename);
 		this.user = user;
 		this.filename = filename;
+		this.mDBApi = mDBApi;
+		
+		//Sets layout and session
 		setLayout(new GridLayout(2,1));
 		setSize(500,300);
-		createSession();
 		
 		//Reads the list filename's contents
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-			DropboxFileInfo info = mDBApi.getFile("/" + user + "/" + toFileName(filename), null, outputStream, null);
-		} catch (DropboxException e) {}
-		String st = new String(outputStream.toByteArray());
+		String st = Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename));
 		display.setText(st);
 		add(display);
 		back.addActionListener(this);
 		add(back);
 		setVisible(true);
 	}
-	
-	//Replaces spaces of filename with underscores
-	public String toFileName(String st)
-	{
-		String re = "";
-		for(int i = 0; i < st.length(); i++)
-		{
-			if(st.charAt(i) == ' ')
-				re += "_";
-			else
-				re += st.charAt(i);
-		}
-		return re+".txt";
-	}
-	
-	public static void createSession()
-	{
-		//Create Session
-		AppKeyPair appKeyPair = new AppKeyPair(Home.APIKey, Home.APISecret);
-        WebAuthSession session = new WebAuthSession(appKeyPair, Home.ACCESS_TYPE);
-        mDBApi = new DropboxAPI<WebAuthSession>(session);
-        mDBApi.getSession().setAccessTokenPair(new AccessTokenPair(Home.sessionKey, Home.sessionSecret));
-	}
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == back)
   		{
-  			ListMenu listMenu = new ListMenu(user);
+  			new MainMenu(user, mDBApi);
   			setVisible(false);
   			dispose();
   		}

@@ -1,0 +1,83 @@
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.StringTokenizer;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.session.WebAuthSession;
+
+
+public class AddMenu extends JFrame implements ActionListener{
+	private static DropboxAPI<WebAuthSession> mDBApi;
+	private static JButton cancel = new JButton("Cancel");
+	private static JButton add = new JButton("Add");
+	private static JTextField name = new JTextField("Name");
+	private static String user;
+	
+	public AddMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
+	{
+		super("iBuy - Add Menu");
+		this.user = user;
+		this.mDBApi = mDBApi;
+		setSize(500,300);
+        
+        add.addActionListener(this);
+        cancel.addActionListener(this);
+        
+        setLayout(new GridLayout(3,1));
+	    add(name);
+	    add(add);
+	    add(cancel);
+		
+        setVisible(true);
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == cancel)
+  		{
+			new MainMenu(user, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == add)
+  		{
+			String listName = name.getText();
+  			if(listName.equals(""))
+  				System.out.println("Please Give List a Name");
+  			else
+  			{
+  				String listFile = Global.getFile(mDBApi, "/" + user + "/lists.txt");
+  				StringTokenizer st = new StringTokenizer(listFile);
+	            boolean isTaken = false;
+	            while(st.hasMoreTokens())
+	            {
+	            	if(st.nextToken().equals(name))
+	            		isTaken = true;
+	            }
+	            if(isTaken)
+	            {
+	            	System.out.println("Name is taken");
+	            }
+	            else
+	            {
+	            	//Adds list to users list collection
+	            	listName = Global.toFileName(listName);
+	            	listFile += listName + "\n";
+	            	Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", listFile);
+		        	
+		        	//Creates new list
+		        	Global.putFile(mDBApi, "/" + user + "/" + listName + ".txt", "");
+
+		        	//Redirects to Main Menu
+		        	new MainMenu(user, mDBApi);
+					setVisible(false);
+		        	dispose();
+	            }
+  			}
+  		}
+	}
+}

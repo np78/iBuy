@@ -34,18 +34,13 @@ public class SignUp extends JFrame implements ActionListener{
 	private static SignUp signUpWindow;
 	private static DropboxAPI<WebAuthSession> mDBApi;
 	
-	public SignUp()
+	public SignUp(DropboxAPI<WebAuthSession> mDBApi)
 	{
 		super("iBuy - SignUp");
+		this.mDBApi = mDBApi;
 		//Layout is here
   	    setLayout(new GridLayout(4,1));
 	    setSize(500, 250);
-	    
-	    //Create session
-	    AppKeyPair appKeyPair = new AppKeyPair(Home.APIKey, Home.APISecret);
-        WebAuthSession session = new WebAuthSession(appKeyPair, Home.ACCESS_TYPE);
-        mDBApi = new DropboxAPI<WebAuthSession>(session);
-        mDBApi.getSession().setAccessTokenPair(new AccessTokenPair(Home.sessionKey, Home.sessionSecret));
 	    
         //Buttons are predefined in class but are changed here
 	    username.addActionListener(this);
@@ -65,7 +60,7 @@ public class SignUp extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == close)
 		{
-			Home h = new Home();
+			new Home();
 			setVisible(false);
 			dispose();
 		}
@@ -73,62 +68,63 @@ public class SignUp extends JFrame implements ActionListener{
   		{
   			String user = username.getText();
   			String pass = password.getText();
-  			boolean usernameIsTaken = false;
   			if(user.equals("") || pass.equals(""))
   				System.out.println("Please Complete Fields");
+  			else if (user.contains(" ") || pass.contains(" "))
+  			{
+  				System.out.println("No spaces, please.");
+  				String trimUser = "";
+  				String trimPass = "";
+  				for(int i = 0; i < user.length(); i++)
+  				{
+  					if(user.charAt(i) != ' ')
+  						trimUser += user.charAt(i);
+  				}
+  				for(int j = 0; j < user.length(); j++)
+  				{
+  					if(pass.charAt(j) != ' ')
+  						trimPass += pass.charAt(j);
+  				}
+  				username.setText(trimUser);
+  				password.setText(trimPass);
+  			}
   			else
   			{
-	  			try
+  				String usersFile = Global.getFile(mDBApi, "/users.txt");
+  				StringTokenizer scanner = new StringTokenizer(usersFile);
+  				boolean usernameIsTaken = false;
+  				while(scanner.hasMoreTokens())
 	  			{
-	  				//Reads users.txt to String to StringTokenizer
-	  				ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		            DropboxFileInfo info = mDBApi.getFile("/users.txt", null, outputStream, null);
-		            //newUserFile is used later
-		            String newUserFile = new String(outputStream.toByteArray());
-		            StringTokenizer scanner = new StringTokenizer(new String(outputStream.toByteArray()));
-		  			//Checks if username is already taken
-		            while(scanner.hasMoreTokens())
-		  			{
-		  				String username = scanner.nextToken();
-		  				String password = scanner.nextToken();
-		  				if(username.equals(user))
-		  				{
-		  					usernameIsTaken = true;
-		  				}
-		  			}
-					if(usernameIsTaken)
-					{
-						System.out.println("Username is taken.");
-					}
-					else
-					{
-						if(pass.contains(" "))
-							System.out.println("No spaces in password.");
-						else
-						{
-							//Adds username and password to end of string and rewrites users.txt
-							newUserFile += user + "\t" + pass + "\n";
-				        	ByteArrayInputStream inputStream = new ByteArrayInputStream(newUserFile.getBytes());
-				        	mDBApi.putFileOverwrite("/users.txt", inputStream, newUserFile.length(), null);
-				        	
-				        	//Create folder for user
-				        	mDBApi.createFolder("/" + user);
-				        	String lists = "first_list\n";
-				        	inputStream = new ByteArrayInputStream(lists.getBytes());
-				        	mDBApi.putFile("/" + user + "/lists.txt", inputStream, lists.length(), null, null);
-				        	
-				        	//Creates first list
-				        	String firstList = "Apple\tFood\tGrocery\t1\t0\n" +
-				        					   "Toilet_Paper\tPaper_Good\tGrocery\t3\t1\n";
-				        	inputStream = new ByteArrayInputStream(firstList.getBytes());
-				        	mDBApi.putFile("/" + user + "/first_list.txt", inputStream, firstList.length(), null, null);
-							new ListMenu(user);
-							setVisible(false);
-				        	dispose();
-						}
-					}
+	  				String username = scanner.nextToken();
+	  				String password = scanner.nextToken();
+	  				if(username.equals(user))
+	  				{
+	  					usernameIsTaken = true;
+	  				}
 	  			}
-	  			catch (DropboxException db) {}
+				if(usernameIsTaken)
+				{
+					System.out.println("Username is taken.");
+				}
+				else
+				{
+					//Adds user
+					usersFile += user + "\t" + pass + "\n";
+					Global.putFileOverwrite(mDBApi, "/users.txt", usersFile);
+		        	
+		        	//Create folder for user and first list
+					Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\n");
+		        	
+		        	//Creates first list contents
+		        	String firstList = "Apple\tFood\tGrocery\t1\t0\n" +
+		        					   "Toilet_Paper\tPaper_Good\tGrocery\t3\t1\n";
+		        	Global.putFile(mDBApi, "/" + user + "/first_list.txt", firstList);
+		        	
+		        	//Redirect User to Menu
+					new MainMenu(user, mDBApi);
+					setVisible(false);
+		        	dispose();
+				}
   			}
   		}
 	}

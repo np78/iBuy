@@ -13,6 +13,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
@@ -30,26 +31,21 @@ import com.dropbox.client2.session.WebAuthSession.WebAuthInfo;
 public class Home extends JFrame implements ActionListener {
 	
 	private static DropboxAPI<WebAuthSession> mDBApi;
-	public static String APIKey = "nn7lnxubh1knv63";
-	public static String APISecret = "l02f3ekx7lc7wx2";
-	final static public AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
-	public static String sessionKey = "wiaqh0zpg745z2v";
-	public static String sessionSecret = "5elro586b19u7n2";
 	
 	private static JButton login = new JButton("Login");
 	private static JButton signUp = new JButton("New? Sign Up!");
 	private static JTextField username = new JTextField("Enter username here");
 	private static JPasswordField password = new JPasswordField();
 
-	public static void main(String[] args) {	
-        new Home();
+	public static void main(String[] args) {
+		new Home();
 	}
 	
 	public Home()
 	{
 		super("iBuy - Login");
 		setSize(500,300);
-		createSession();
+		mDBApi = Global.createSession();
   	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	    
   	    //Buttons are predefined in class but are changed here
@@ -68,19 +64,10 @@ public class Home extends JFrame implements ActionListener {
         setVisible(true);
 	}
 	
-	public static void createSession()
-	{
-		//Create Session
-		AppKeyPair appKeyPair = new AppKeyPair(APIKey, APISecret);
-        WebAuthSession session = new WebAuthSession(appKeyPair, ACCESS_TYPE);
-        mDBApi = new DropboxAPI<WebAuthSession>(session);
-        mDBApi.getSession().setAccessTokenPair(new AccessTokenPair(sessionKey, sessionSecret));
-	}
-	
 	public void actionPerformed(ActionEvent e) {
   		if(e.getSource() == signUp)
   		{
-  			new SignUp();
+  			new SignUp(mDBApi);
   			setVisible(false);
   			dispose();
   		}
@@ -92,28 +79,20 @@ public class Home extends JFrame implements ActionListener {
   				System.out.println("Please Complete Fields");
   			else
   			{
-	  			try
+  				//Reads users.txt to String to StringTokenizer
+	  			StringTokenizer scanner = new StringTokenizer(Global.getFile(mDBApi, "/users.txt"));
+	  			//Checks if "user" is in list and if password matches
+	  			while(scanner.hasMoreTokens())
 	  			{
-	  				//Reads users.txt to String to StringTokenizer
-		  			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		            DropboxFileInfo info = mDBApi.getFile("/users.txt", null, outputStream, null);
-		  			StringTokenizer scanner = new StringTokenizer(new String(outputStream.toByteArray()));
-		  			//Checks if "user" is in list and if password matchs
-		  			while(scanner.hasMoreTokens())
-		  			{
-		  				String username = scanner.nextToken();
-		  				String password = scanner.nextToken();
-		  				if(username.equals(user) && password.equals(pass))
-		  				{
-		  					System.out.println("Login Complete");
-		  					new ListMenu(user);
-		  					setVisible(false);
-		  					dispose();
-		  				}
-		  			}
-	  			}
-	  			catch (DropboxException de) {
-	  				System.out.println("Connnection down. Unable to Login.");
+	  				String username = scanner.nextToken();
+	  				String password = scanner.nextToken();
+	  				if(username.equals(user) && password.equals(pass))
+	  				{
+	  					System.out.println("Login Complete");
+	  					new MainMenu(user, mDBApi);
+	  					setVisible(false);
+	  					dispose();
+	  				}
 	  			}
   			}
   		}
