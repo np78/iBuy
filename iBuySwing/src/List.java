@@ -19,6 +19,7 @@ import com.dropbox.client2.session.WebAuthSession;
 public class List extends JFrame implements ActionListener{
 
 	private static DropboxAPI<WebAuthSession> mDBApi;
+	private static JButton change = new JButton("Change List Name");
 	private static JTextField display = new JTextField();
 	private static JButton back = new JButton("Back");
 	private static String user, filename;
@@ -31,11 +32,13 @@ public class List extends JFrame implements ActionListener{
 		this.mDBApi = mDBApi;
 		
 		//Sets layout and session
-		setLayout(new GridLayout(2,1));
+		setLayout(new GridLayout(3,1));
 		setSize(500,300);
+		change.addActionListener(this);
+		add(change);
 		
 		//Reads the list filename's contents
-		String st = Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename));
+		String st = Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt");
 		display.setText(st);
 		add(display);
 		back.addActionListener(this);
@@ -47,6 +50,12 @@ public class List extends JFrame implements ActionListener{
 		if(e.getSource() == back)
   		{
   			new MainMenu(user, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == change)
+  		{
+  			new ChangeMenu(user, filename, mDBApi);
   			setVisible(false);
   			dispose();
   		}
