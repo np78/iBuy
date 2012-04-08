@@ -3,6 +3,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.StringTokenizer;
@@ -25,7 +27,7 @@ import com.dropbox.client2.session.Session;
 import com.dropbox.client2.session.WebAuthSession;
 
 
-public class SignUp extends JFrame implements ActionListener{
+public class SignUp extends JFrame implements ActionListener, KeyListener{
 
 	private JButton signUp = new JButton("Sign Up");
 	private JButton close = new JButton("Close");
@@ -43,8 +45,8 @@ public class SignUp extends JFrame implements ActionListener{
 	    setSize(500, 250);
 	    
         //Buttons are predefined in class but are changed here
-	    username.addActionListener(this);
-  	    password.addActionListener(this);
+	    username.addKeyListener(this);
+  	    password.addKeyListener(this);
   	    signUp.addActionListener(this);
   	    close.addActionListener(this);
 	    
@@ -66,66 +68,88 @@ public class SignUp extends JFrame implements ActionListener{
 		}
   		if(e.getSource() == signUp)
   		{
-  			String user = username.getText();
-  			String pass = password.getText();
-  			if(user.equals("") || pass.equals(""))
-  				System.out.println("Please Complete Fields");
-  			else if (user.contains(" ") || pass.contains(" "))
-  			{
-  				System.out.println("No spaces, please.");
-  				String trimUser = "";
-  				String trimPass = "";
-  				for(int i = 0; i < user.length(); i++)
-  				{
-  					if(user.charAt(i) != ' ')
-  						trimUser += user.charAt(i);
-  				}
-  				for(int j = 0; j < user.length(); j++)
-  				{
-  					if(pass.charAt(j) != ' ')
-  						trimPass += pass.charAt(j);
-  				}
-  				username.setText(trimUser);
-  				password.setText(trimPass);
-  			}
-  			else
-  			{
-  				String usersFile = Global.getFile(mDBApi, "/users.txt");
-  				StringTokenizer scanner = new StringTokenizer(usersFile);
-  				boolean usernameIsTaken = false;
-  				while(scanner.hasMoreTokens())
-	  			{
-	  				String username = scanner.nextToken();
-	  				String password = scanner.nextToken();
-	  				if(username.equals(user))
-	  				{
-	  					usernameIsTaken = true;
-	  				}
-	  			}
-				if(usernameIsTaken)
-				{
-					System.out.println("Username is taken.");
-				}
-				else
-				{
-					//Adds user
-					usersFile += user + "\t" + pass + "\n";
-					Global.putFileOverwrite(mDBApi, "/users.txt", usersFile);
-		        	
-		        	//Create folder for user and first list
-					Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\n");
-		        	
-		        	//Creates first list contents
-		        	String firstList = "Apple\tFood\tGrocery\t1\t0\n" +
-		        					   "Toilet_Paper\tPaper_Good\tGrocery\t3\t1\n";
-		        	Global.putFile(mDBApi, "/" + user + "/first_list.txt", firstList);
-		        	
-		        	//Redirect User to Menu
-					new MainMenu(user, mDBApi);
-					setVisible(false);
-		        	dispose();
-				}
-  			}
+  			signUp();
   		}
+	}
+	
+	public void signUp()
+	{
+		String user = username.getText();
+		String pass = password.getText();
+		if(user.equals("") || pass.equals(""))
+			System.out.println("Please Complete Fields");
+		else if (user.contains(" ") || pass.contains(" "))
+		{
+			System.out.println("No spaces, please.");
+			String trimUser = "";
+			String trimPass = "";
+			for(int i = 0; i < user.length(); i++)
+			{
+				if(user.charAt(i) != ' ')
+					trimUser += user.charAt(i);
+			}
+			for(int j = 0; j < user.length(); j++)
+			{
+				if(pass.charAt(j) != ' ')
+					trimPass += pass.charAt(j);
+			}
+			username.setText(trimUser);
+			password.setText(trimPass);
+		}
+		else
+		{
+			String usersFile = Global.getFile(mDBApi, "/users.txt");
+			StringTokenizer scanner = new StringTokenizer(usersFile);
+			boolean usernameIsTaken = false;
+			while(scanner.hasMoreTokens())
+			{
+				String username = scanner.nextToken();
+				String password = scanner.nextToken();
+				if(username.equals(user))
+				{
+					usernameIsTaken = true;
+				}
+			}
+			if(usernameIsTaken)
+			{
+				System.out.println("Username is taken.");
+			}
+			else
+			{
+				//Adds user
+				usersFile += user + "\t" + pass + "\n";
+				Global.putFileOverwrite(mDBApi, "/users.txt", usersFile);
+	        	
+	        	//Create folder for user and first list
+				Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\n");
+	        	
+	        	//Creates first list contents
+	        	String firstList = "Apple\tFood\tGrocery\t1\t0\n" +
+	        					   "Toilet_Paper\tPaper_Good\tGrocery\t3\t1\n";
+	        	Global.putFile(mDBApi, "/" + user + "/first_list.txt", firstList);
+	        	
+	        	//Redirect User to Menu
+				new MainMenu(user, mDBApi);
+				setVisible(false);
+	        	dispose();
+			}
+		}
+	}
+	
+	public void keyPressed(KeyEvent e) {
+		if((password.isCursorSet() || username.isCursorSet()) && e.getKeyCode() == KeyEvent.VK_ENTER)
+		{
+			System.out.println("Enter Sign");
+			signUp();
+		}
+	}
+
+	
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		
 	}
 }

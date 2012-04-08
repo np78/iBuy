@@ -1,6 +1,8 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
@@ -45,39 +47,44 @@ public class AddMenu extends JFrame implements ActionListener{
   		}
 		if(e.getSource() == add)
   		{
-			String listName = name.getText();
-  			if(listName.equals(""))
-  				System.out.println("Please Give List a Name");
-  			else
-  			{
-  				String listFile = Global.getFile(mDBApi, "/" + user + "/lists.txt");
-  				StringTokenizer st = new StringTokenizer(listFile);
-	            boolean isTaken = false;
-	            while(st.hasMoreTokens())
-	            {
-	            	if(st.nextToken().equals(name))
-	            		isTaken = true;
-	            }
-	            if(isTaken)
-	            {
-	            	System.out.println("Name is taken");
-	            }
-	            else
-	            {
-	            	//Adds list to users list collection
-	            	listName = Global.toFileName(listName);
-	            	listFile += listName + "\n";
-	            	Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", listFile);
-		        	
-		        	//Creates new list
-		        	Global.putFile(mDBApi, "/" + user + "/" + listName + ".txt", "");
-
-		        	//Redirects to Main Menu
-		        	new MainMenu(user, mDBApi);
-					setVisible(false);
-		        	dispose();
-	            }
-  			}
+			addList();
   		}
+	}
+	
+	public void addList()
+	{
+		String listName = name.getText();
+		if(listName.equals(""))
+			System.out.println("Please Give List a Name");
+		else
+		{
+			String listFile = Global.getFile(mDBApi, "/" + user + "/lists.txt");
+			StringTokenizer st = new StringTokenizer(listFile);
+            boolean isTaken = false;
+            while(st.hasMoreTokens())
+            {
+            	if(st.nextToken().equals(name))
+            		isTaken = true;
+            }
+            if(isTaken)
+            {
+            	System.out.println("Name is taken");
+            }
+            else
+            {
+            	//Adds list to users list collection
+            	listName = Global.toFileName(listName);
+            	listFile += listName + "\n";
+            	Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", listFile);
+	        	
+	        	//Creates new list
+	        	Global.putFile(mDBApi, "/" + user + "/" + listName + ".txt", "");
+
+	        	//Redirects to Main Menu
+	        	new MainMenu(user, mDBApi);
+				setVisible(false);
+	        	dispose();
+            }
+		}
 	}
 }

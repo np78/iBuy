@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -28,7 +29,7 @@ import com.dropbox.client2.session.Session.AccessType;
 import com.dropbox.client2.session.WebAuthSession.WebAuthInfo;
 
 
-public class Home extends JFrame implements ActionListener {
+public class Home extends JFrame implements ActionListener, KeyListener {
 	
 	private DropboxAPI<WebAuthSession> mDBApi;
 	
@@ -49,8 +50,8 @@ public class Home extends JFrame implements ActionListener {
   	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   	    
   	    //Buttons are predefined in class but are changed here
-  	    username.addActionListener(this);
-  	    password.addActionListener(this);
+  	    username.addKeyListener(this);
+  	    password.addKeyListener(this);
   	    signUp.addActionListener(this);
   	    login.addActionListener(this);
   	    
@@ -73,27 +74,46 @@ public class Home extends JFrame implements ActionListener {
   		}
   		if(e.getSource() == login)
   		{
-  			String user = username.getText();
-  			String pass = password.getText();
-  			if(user.equals("") || pass.equals(""))
-  				System.out.println("Please Complete Fields");
-  			else
-  			{
-  				//Reads users.txt to String to StringTokenizer
-	  			StringTokenizer scanner = new StringTokenizer(Global.getFile(mDBApi, "/users.txt"));
-	  			//Checks if "user" is in list and if password matches
-	  			while(scanner.hasMoreTokens())
-	  			{
-	  				String username = scanner.nextToken();
-	  				String password = scanner.nextToken();
-	  				if(username.equals(user) && password.equals(pass))
-	  				{
-	  					new MainMenu(user, mDBApi);
-	  					setVisible(false);
-	  					dispose();
-	  				}
-	  			}
-  			}
+  			login();
   		}
+	}
+	
+	public void login()
+	{
+		String user = username.getText();
+		String pass = password.getText();
+		if(user.equals("") || pass.equals(""))
+			System.out.println("Please Complete Fields");
+		else
+		{
+			//Reads users.txt to String to StringTokenizer
+  			StringTokenizer scanner = new StringTokenizer(Global.getFile(mDBApi, "/users.txt"));
+  			//Checks if "user" is in list and if password matches
+  			while(scanner.hasMoreTokens())
+  			{
+  				String username = scanner.nextToken();
+  				String password = scanner.nextToken();
+  				if(username.equals(user) && password.equals(pass))
+  				{
+  					new MainMenu(user, mDBApi);
+  					setVisible(false);
+  					dispose();
+  				}
+  			}
+		}
+	}
+
+	public void keyPressed(KeyEvent e) {
+		if((password.isCursorSet() || username.isCursorSet()) && e.getKeyCode() == KeyEvent.VK_ENTER)
+			login();
+	}
+
+	
+	public void keyReleased(KeyEvent e) {
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		
 	}
 }
