@@ -30,12 +30,12 @@ import com.dropbox.client2.session.WebAuthSession.WebAuthInfo;
 
 public class Home extends JFrame implements ActionListener {
 	
-	private static DropboxAPI<WebAuthSession> mDBApi;
+	private DropboxAPI<WebAuthSession> mDBApi;
 	
-	private static JButton login = new JButton("Login");
-	private static JButton signUp = new JButton("New? Sign Up!");
-	private static JTextField username = new JTextField("Enter username here");
-	private static JPasswordField password = new JPasswordField();
+	private JButton login = new JButton("Login");
+	private JButton signUp = new JButton("New? Sign Up!");
+	private JTextField username = new JTextField("Enter username here");
+	private JPasswordField password = new JPasswordField();
 
 	public static void main(String[] args) {
 		new Home();

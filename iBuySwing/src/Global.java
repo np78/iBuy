@@ -13,7 +13,7 @@ import com.dropbox.client2.session.Session.AccessType;
 public class Global {
 	public static String APIKey = "nn7lnxubh1knv63";
 	public static String APISecret = "l02f3ekx7lc7wx2";
-	final static public AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
+	public static AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
 	public static String sessionKey = "wiaqh0zpg745z2v";
 	public static String sessionSecret = "5elro586b19u7n2";
 	

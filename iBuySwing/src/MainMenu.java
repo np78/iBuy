@@ -22,12 +22,13 @@ import com.dropbox.client2.session.WebAuthSession;
  * Dropbox files and 
  */
 public class MainMenu extends JFrame implements ActionListener{
-	private static DropboxAPI<WebAuthSession> mDBApi;
-	private static LinkedList<JButton> list = new LinkedList<JButton>();
-	private static JButton logout = new JButton("Log Out");
-	private static JButton delete = new JButton("Delete List");
-	private static JButton add = new JButton("Add List");
-	private static String user;
+	private DropboxAPI<WebAuthSession> mDBApi;
+	private LinkedList<JButton> list = new LinkedList<JButton>();
+	private JButton logout = new JButton("Log Out");
+	private JButton delete = new JButton("Delete List");
+	private JButton add = new JButton("Add List");
+	private JButton options = new JButton("Options");
+	private String user;
 	
 	public MainMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
 	{
@@ -46,7 +47,7 @@ public class MainMenu extends JFrame implements ActionListener{
 		}
 		
 		//Sets layout with list size in mind
-		setLayout(new GridLayout(list.size()+3,1));
+		setLayout(new GridLayout(list.size()+4,1));
 		setSize(500, Math.min((200 + 100*list.size()), 1000));
 		delete.addActionListener(this);
 	    add.addActionListener(this);
@@ -56,7 +57,8 @@ public class MainMenu extends JFrame implements ActionListener{
 		{
 		    add(list.get(i));
 		}
-	    
+		options.addActionListener(this);
+	    add(options);
 	    logout.addActionListener(this);
 	    add(logout);
 	    
@@ -79,6 +81,12 @@ public class MainMenu extends JFrame implements ActionListener{
 		if(e.getSource() == add)
 		{
 			new AddMenu(user, mDBApi);
+			setVisible(false);
+			dispose();
+		}
+		if(e.getSource() == options)
+		{
+			new OptionsMenu(user, mDBApi);
 			setVisible(false);
 			dispose();
 		}

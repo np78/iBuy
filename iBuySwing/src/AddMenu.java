@@ -12,11 +12,11 @@ import com.dropbox.client2.session.WebAuthSession;
 
 
 public class AddMenu extends JFrame implements ActionListener{
-	private static DropboxAPI<WebAuthSession> mDBApi;
-	private static JButton cancel = new JButton("Cancel");
-	private static JButton add = new JButton("Add");
-	private static JTextField name = new JTextField("Name");
-	private static String user;
+	private DropboxAPI<WebAuthSession> mDBApi;
+	private JButton cancel = new JButton("Cancel");
+	private JButton add = new JButton("Add");
+	private JTextField name = new JTextField("Name");
+	private String user;
 	
 	public AddMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
 	{

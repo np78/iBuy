@@ -16,10 +16,10 @@ import com.dropbox.client2.session.WebAuthSession;
 
 
 public class DeleteMenu extends JFrame implements ActionListener{
-	private static DropboxAPI<WebAuthSession> mDBApi;
-	private static LinkedList<JButton> list = new LinkedList<JButton>();
-	private static JButton cancel = new JButton("Back");
-	private static String user;
+	private DropboxAPI<WebAuthSession> mDBApi;
+	private LinkedList<JButton> list = new LinkedList<JButton>();
+	private JButton cancel = new JButton("Back");
+	private String user;
 	
 	public DeleteMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
 	{

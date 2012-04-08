@@ -27,12 +27,12 @@ import com.dropbox.client2.session.WebAuthSession;
 
 public class SignUp extends JFrame implements ActionListener{
 
-	private static JButton signUp = new JButton("Sign Up");
-	private static JButton close = new JButton("Close");
-	private static JTextField username = new JTextField("Enter username here");
-	private static JPasswordField password = new JPasswordField();
-	private static SignUp signUpWindow;
-	private static DropboxAPI<WebAuthSession> mDBApi;
+	private JButton signUp = new JButton("Sign Up");
+	private JButton close = new JButton("Close");
+	private JTextField username = new JTextField("Enter username here");
+	private JPasswordField password = new JPasswordField();
+	private SignUp signUpWindow;
+	private DropboxAPI<WebAuthSession> mDBApi;
 	
 	public SignUp(DropboxAPI<WebAuthSession> mDBApi)
 	{
