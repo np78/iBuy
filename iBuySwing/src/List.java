@@ -25,6 +25,8 @@ public class List extends JFrame implements ActionListener{
 	private JButton change = new JButton("Change List Name");
 	private LinkedList<Item> items = new LinkedList<Item>();
 	private LinkedList<JButton> settings = new LinkedList<JButton>();
+	private JButton add = new JButton("Add an Item");
+	private JButton remove = new JButton("Remove Items");
 	private JTextField display = new JTextField();
 	private JButton back = new JButton("Back");
 	private String user, filename;
@@ -37,10 +39,14 @@ public class List extends JFrame implements ActionListener{
 		this.mDBApi = mDBApi;
 		
 		//Sets layout and session
-		setLayout(new GridLayout(3,1));
+		setLayout(new GridLayout(5,1));
 		setSize(500,300);
 		change.addActionListener(this);
 		add(change);
+		add.addActionListener(this);
+		add(add);
+		remove.addActionListener(this);
+		add(remove);
 		
 		//Reads the list filename's contents
 		JPanel jpanel = new JPanel();
@@ -50,11 +56,11 @@ public class List extends JFrame implements ActionListener{
 		while(st.hasMoreTokens())
 		{
 			String str[] = new String[5];
-			str[0] = st.nextToken();
-			str[1] = st.nextToken();
-			str[2] = st.nextToken();
-			str[3] = st.nextToken();
-			str[4] = st.nextToken();
+			str[0] = Global.readFileName(st.nextToken());
+			str[1] = Global.readFileName(st.nextToken());
+			str[2] = Global.readFileName(st.nextToken());
+			str[3] = Global.readFileName(st.nextToken());
+			str[4] = Global.readFileName(st.nextToken());
 			int importance = str[3].charAt(0) - 48;
 			boolean isChecked = false;
 			if(str[4].equals("true"))
@@ -100,6 +106,18 @@ public class List extends JFrame implements ActionListener{
 		if(e.getSource() == change)
   		{
   			new ChangeMenu(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == add)
+  		{
+  			new AddItem(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == remove)
+  		{
+  			new RemoveItem(user, filename, mDBApi);
   			setVisible(false);
   			dispose();
   		}

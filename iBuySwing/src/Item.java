@@ -39,7 +39,7 @@ public class Item {
 	public void setStore(String store)
 	{
 		this.store = store;
-		storeField.setText(category);
+		storeField.setText(store);
 	}
 	
 	public void setImportance(int importance)

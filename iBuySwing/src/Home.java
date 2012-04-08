@@ -88,7 +88,6 @@ public class Home extends JFrame implements ActionListener {
 	  				String password = scanner.nextToken();
 	  				if(username.equals(user) && password.equals(pass))
 	  				{
-	  					System.out.println("Login Complete");
 	  					new MainMenu(user, mDBApi);
 	  					setVisible(false);
 	  					dispose();
