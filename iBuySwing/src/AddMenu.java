@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
@@ -74,7 +75,8 @@ public class AddMenu extends JFrame implements ActionListener{
             {
             	//Adds list to users list collection
             	listName = Global.toFileName(listName);
-            	listFile += listName + "\n";
+            	Date d = new Date(System.currentTimeMillis());
+            	listFile += listName + "\t0.00\t" + Global.toFileName(d.toString()) + "\n";
             	Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", listFile);
 	        	
 	        	//Creates new list

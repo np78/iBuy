@@ -57,6 +57,7 @@ public class ChangeMenu extends JFrame implements ActionListener{
 			while(scanner.hasMoreTokens())
   			{
   				String listname = scanner.nextToken();
+  				scanner.nextToken();
   				if(listname.equals(Global.toFileName(newName)))
   				{
   					isTaken = true;
@@ -81,6 +82,8 @@ public class ChangeMenu extends JFrame implements ActionListener{
 				while(st.hasMoreTokens())
 				{
 					String token = st.nextToken();
+					st.nextToken();
+					st.nextToken();
 					if(token.equals(Global.toFileName(filename)))
 						newList += Global.toFileName(newName) + "\n";
 					else

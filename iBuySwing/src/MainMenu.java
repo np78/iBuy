@@ -42,6 +42,8 @@ public class MainMenu extends JFrame implements ActionListener{
 		while(st.hasMoreTokens())
 		{
 			JButton j = new JButton(Global.readFileName(st.nextToken()));
+			st.nextToken();
+			st.nextToken();
 			j.addActionListener(this);
 			list.add(j);
 		}

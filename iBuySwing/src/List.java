@@ -30,11 +30,13 @@ public class List extends JFrame implements ActionListener{
 	private JTextField search = new JTextField("Apple");
 	private JButton searchStart = new JButton("Search By Name");
 	private JButton back = new JButton("Back");
-	JButton nameSort = new JButton("Name");
-	JButton categorySort = new JButton("Category");
-	JButton storeSort = new JButton("Store");
-	JButton importanceSort = new JButton("Importance");
-	JButton crossOffSort = new JButton("Cross Off");
+	private JButton nameSort = new JButton("Name");
+	private JButton categorySort = new JButton("Category");
+	private JButton storeSort = new JButton("Store");
+	private JButton importanceSort = new JButton("Importance");
+	private JButton crossOffSort = new JButton("Cross Off");
+	private JTextField total = new JTextField("Enter Total (no $ signs)");
+	private JButton setTotal = new JButton("Set Total");
 	private String user, filename;
 	
 	public List(String user, String filename, DropboxAPI<WebAuthSession> mDBApi) 
@@ -54,6 +56,7 @@ public class List extends JFrame implements ActionListener{
 		crossOffSort.addActionListener(this);
 		searchStart.addActionListener(this);
 		back.addActionListener(this);
+		setTotal.addActionListener(this);
 		
 		StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt"));
 		items.clear();
@@ -157,6 +160,24 @@ public class List extends JFrame implements ActionListener{
   			setVisible(false);
   			dispose();
   		}
+		if(e.getSource() == setTotal)
+		{
+			if(!total.getText().equals(""))
+			{
+				String amount = total.getText();
+				if(amount.contains("."))
+				{
+					if(amount.charAt(amount.length()-1) == 46)
+						amount += "00";
+					else if(amount.charAt(amount.length()-2) == 46)
+						amount += "0";
+					else if(amount.charAt(amount.length()-3) != 46)
+						amount = amount.substring(0, amount.indexOf('.') + 2);
+				}
+				else
+					amount += ".00";
+			}
+		}
 		if(e.getSource() == crossOffSort)
 		{
 			nameSort();

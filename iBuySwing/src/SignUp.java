@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
@@ -121,12 +122,17 @@ public class SignUp extends JFrame implements ActionListener, KeyListener{
 				Global.putFileOverwrite(mDBApi, "/users.txt", usersFile);
 	        	
 	        	//Create folder for user and first list
-				Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\n");
+				Date d = new Date(System.currentTimeMillis());
+				Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\t 0.00\t" + Global.toFileName(d.toString()) + "\n");
 	        	
 	        	//Creates first list contents
 	        	String firstList = "Apple\tFood\tGrocery\t1\t0\n" +
 	        					   "Toilet_Paper\tPaper_Good\tGrocery\t3\t1\n";
 	        	Global.putFile(mDBApi, "/" + user + "/first_list.txt", firstList);
+	        	
+	        	//Creates report options
+	        	String report = "false\tfalse\tfalse\tfalse";
+	        	Global.putFile(mDBApi, "/" + user + "/report.txt", report);
 	        	
 	        	//Redirect User to Menu
 				new MainMenu(user, mDBApi);

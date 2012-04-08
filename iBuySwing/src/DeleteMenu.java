@@ -33,6 +33,8 @@ public class DeleteMenu extends JFrame implements ActionListener{
 		while(st.hasMoreTokens())
 		{
 			JButton j = new JButton(Global.readFileName(st.nextToken()));
+			st.nextToken();
+			st.nextToken();
 			j.addActionListener(this);
 			list.add(j);
 		}
@@ -69,7 +71,12 @@ public class DeleteMenu extends JFrame implements ActionListener{
 				{
 					String token = st.nextToken();
 					if(!token.equals(Global.toFileName(list.get(i).getText())))
-						newList += token + "\n";
+						newList += token + "\t" + st.nextToken() + "\t" + st.nextToken() + "\n";
+					else
+					{
+						st.nextToken();
+						st.nextToken();
+					}
 				}
 				Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList);
 				
