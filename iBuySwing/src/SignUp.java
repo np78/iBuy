@@ -139,7 +139,6 @@ public class SignUp extends JFrame implements ActionListener, KeyListener{
 	public void keyPressed(KeyEvent e) {
 		if((password.isCursorSet() || username.isCursorSet()) && e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
-			System.out.println("Enter Sign");
 			signUp();
 		}
 	}

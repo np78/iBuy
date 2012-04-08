@@ -37,7 +37,7 @@ public class AddItem extends JFrame implements ActionListener{
 	    add(item.categoryField);
 	    add(new JTextField("Store"));
 	    add(item.storeField);
-	    add(new JTextField("Importance (low number = low importance)"));
+	    add(new JTextField("Importance (1=low and 9=high)"));
 	    add(item.importanceField);
 	    add(cancel);
 	    add(add);

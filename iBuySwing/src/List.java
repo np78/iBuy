@@ -27,8 +27,14 @@ public class List extends JFrame implements ActionListener{
 	private LinkedList<JButton> settings = new LinkedList<JButton>();
 	private JButton add = new JButton("Add an Item");
 	private JButton remove = new JButton("Remove Items");
-	private JTextField display = new JTextField();
+	private JTextField search = new JTextField("Apple");
+	private JButton searchStart = new JButton("Search By Name");
 	private JButton back = new JButton("Back");
+	JButton nameSort = new JButton("Name");
+	JButton categorySort = new JButton("Category");
+	JButton storeSort = new JButton("Store");
+	JButton importanceSort = new JButton("Importance");
+	JButton crossOffSort = new JButton("Cross Off");
 	private String user, filename;
 	
 	public List(String user, String filename, DropboxAPI<WebAuthSession> mDBApi) 
@@ -38,18 +44,17 @@ public class List extends JFrame implements ActionListener{
 		this.filename = filename;
 		this.mDBApi = mDBApi;
 		
-		//Sets layout and session
-		setLayout(new GridLayout(5,1));
-		setSize(500,300);
 		change.addActionListener(this);
-		add(change);
 		add.addActionListener(this);
-		add(add);
 		remove.addActionListener(this);
-		add(remove);
+		nameSort.addActionListener(this);
+		categorySort.addActionListener(this);
+		storeSort.addActionListener(this);
+		importanceSort.addActionListener(this);
+		crossOffSort.addActionListener(this);
+		searchStart.addActionListener(this);
+		back.addActionListener(this);
 		
-		//Reads the list filename's contents
-		JPanel jpanel = new JPanel();
 		StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt"));
 		items.clear();
 		settings.clear();
@@ -71,12 +76,27 @@ public class List extends JFrame implements ActionListener{
 			set.addActionListener(this);
 			settings.add(set);
 		}
+		
+		//Sets layout
+		setLayout(new GridLayout(6,1));
+		setSize(1000, Math.min((200 + 100*items.size()), 1000));
+		add(change);
+		JPanel searchPanel = new JPanel();
+		searchPanel.setLayout(new GridLayout(1, 2));
+		searchPanel.add(search);
+		searchPanel.add(searchStart);
+		add(searchPanel);
+		add(add);
+		add(remove);
+		
+		//Reads the list filename's contents
+		JPanel jpanel = new JPanel();
 		jpanel.setLayout(new GridLayout(items.size() + 1, 6));
-		jpanel.add(new JTextField("Cross Off"));
-		jpanel.add(new JTextField("Name"));
-		jpanel.add(new JTextField("Category"));
-		jpanel.add(new JTextField("Store"));
-		jpanel.add(new JTextField("Importance"));
+		jpanel.add(crossOffSort);
+		jpanel.add(nameSort);
+		jpanel.add(categorySort);
+		jpanel.add(storeSort);
+		jpanel.add(importanceSort);
 		jpanel.add(new JTextField());
 		for(int i = 0; i < items.size(); i++)
 		{
@@ -89,17 +109,158 @@ public class List extends JFrame implements ActionListener{
 			jpanel.add(settings.get(i));
 		}
 		add(jpanel);
-		//display.setText(st);
-		//add(display);
-		back.addActionListener(this);
 		add(back);
+		
 		setVisible(true);
+	}
+	
+	public void nameSort()
+	{
+		Item temp;
+		JButton temp2;
+		for(int i = 0; i < items.size(); i++)
+		{
+			for(int j = 1; j < items.size()-i; j++)
+			{
+				if(items.get(j-1).name.compareTo(items.get(j).name) > 0)
+				{
+					temp = items.get(j-1);
+					items.set(j-1, items.get(j));
+					items.set(j, temp);
+					
+					temp2 = settings.get(j-1);
+					settings.set(j-1, settings.get(j));
+					settings.set(j, temp2);
+				}
+			}
+		}
+	}
+	
+	public void writeListToDropbox()
+	{
+		String newList = "";
+		for(int i = 0; i < items.size(); i++)
+		{
+			newList += Global.toFileName(items.get(i).name) + "\t";
+			newList += Global.toFileName(items.get(i).category) + "\t";
+			newList += Global.toFileName(items.get(i).store) + "\t";
+			newList += items.get(i).importance + "\t";
+			newList += items.get(i).isChecked + "\n";
+		}
+		Global.putFileOverwrite(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt", newList);
 	}
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == back)
   		{
   			new MainMenu(user, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == crossOffSort)
+		{
+			nameSort();
+			LinkedList<Item> temp = new LinkedList<Item>();
+  			for(int i = 0; i < items.size(); i++)
+  			{
+  				if(!items.get(i).isChecked)
+				{
+  					temp.add(items.get(i));
+				}
+  			}
+  			for(int j = 0; j < items.size(); j++)
+			{
+  				if(items.get(j).isChecked)
+				{
+  					temp.add(items.get(j));
+				}
+			}
+  			items = temp;
+  			writeListToDropbox();
+			new List(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+		}
+		if(e.getSource() == importanceSort)
+  		{
+			Item temp;
+			JButton temp2;
+  			for(int i = 0; i < items.size(); i++)
+  			{
+  				for(int j = 1; j < items.size()-i; j++)
+  				{
+  					if(items.get(j-1).importance > items.get(j).importance)
+  					{
+  						temp = items.get(j-1);
+  						items.set(j-1, items.get(j));
+  						items.set(j, temp);
+  						
+  						temp2 = settings.get(j-1);
+  						settings.set(j-1, settings.get(j));
+  						settings.set(j, temp2);
+  					}
+  				}
+  			}
+  			writeListToDropbox();
+			new List(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == nameSort)
+  		{
+			nameSort();
+			writeListToDropbox();
+			new List(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == storeSort)
+  		{
+			Item temp;
+			JButton temp2;
+  			for(int i = 0; i < items.size(); i++)
+  			{
+  				for(int j = 1; j < items.size()-i; j++)
+  				{
+  					if(items.get(j-1).store.compareTo(items.get(j).store) > 0)
+  					{
+  						temp = items.get(j-1);
+  						items.set(j-1, items.get(j));
+  						items.set(j, temp);
+  						
+  						temp2 = settings.get(j-1);
+  						settings.set(j-1, settings.get(j));
+  						settings.set(j, temp2);
+  					}
+  				}
+  			}
+  			writeListToDropbox();
+			new List(user, filename, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == categorySort)
+  		{
+			Item temp;
+			JButton temp2;
+  			for(int i = 0; i < items.size(); i++)
+  			{
+  				for(int j = 1; j < items.size()-i; j++)
+  				{
+  					if(items.get(j-1).category.compareTo(items.get(j).category) > 0)
+  					{
+  						temp = items.get(j-1);
+  						items.set(j-1, items.get(j));
+  						items.set(j, temp);
+  						
+  						temp2 = settings.get(j-1);
+  						settings.set(j-1, settings.get(j));
+  						settings.set(j, temp2);
+  					}
+  				}
+  			}
+  			writeListToDropbox();
+			new List(user, filename, mDBApi);
   			setVisible(false);
   			dispose();
   		}
@@ -120,6 +281,29 @@ public class List extends JFrame implements ActionListener{
   			new RemoveItem(user, filename, mDBApi);
   			setVisible(false);
   			dispose();
+  		}
+		if(e.getSource() == searchStart && (!search.getText().equals("")))
+  		{
+			boolean isFound = false;
+			for(int i = 0; i < items.size(); i++)
+			{
+				if(items.get(i).name.compareTo(search.getText()) == 0)
+				{
+					items.addFirst(items.remove(i));
+					isFound = true;
+					break;
+				}
+			}
+			if(isFound)
+			{
+				System.out.println("Item Found");
+				writeListToDropbox();
+				new List(user, filename, mDBApi);
+	  			setVisible(false);
+	  			dispose();
+			}
+			else
+				System.out.println("Item NOT Found");
   		}
 		for(int i = 0; i < settings.size(); i++)
 		{
