@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.dropbox.client2.DropboxAPI;
@@ -56,6 +57,7 @@ public class RemoveItem extends JFrame implements ActionListener{
 	    add(cancel);
 	    add(update);
 		
+	    setContentPane(new JScrollPane(getContentPane()));
         setVisible(true);
 	}
 	

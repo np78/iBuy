@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.dropbox.client2.DropboxAPI;
@@ -48,6 +49,7 @@ public class DeleteMenu extends JFrame implements ActionListener{
         cancel.addActionListener(this);
 	    add(cancel);
 		
+	    setContentPane(new JScrollPane(getContentPane()));
         setVisible(true);
 	}
 	

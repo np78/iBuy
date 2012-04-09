@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.dropbox.client2.DropboxAPI;
@@ -31,6 +32,7 @@ public class List extends JFrame implements ActionListener{
 	private JButton searchStart = new JButton("Search By Name");
 	private JButton back = new JButton("Back");
 	private JButton nameSort = new JButton("Name");
+	private JButton refresh = new JButton("Refresh");
 	private JButton categorySort = new JButton("Category");
 	private JButton storeSort = new JButton("Store");
 	private JButton importanceSort = new JButton("Importance");
@@ -57,6 +59,7 @@ public class List extends JFrame implements ActionListener{
 		searchStart.addActionListener(this);
 		back.addActionListener(this);
 		setTotal.addActionListener(this);
+		refresh.addActionListener(this);
 		
 		StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt"));
 		items.clear();
@@ -81,8 +84,9 @@ public class List extends JFrame implements ActionListener{
 		}
 		
 		//Sets layout
-		setLayout(new GridLayout(6,1));
-		setSize(1000, Math.min((200 + 100*items.size()), 1000));
+		setLayout(new GridLayout(7,1));
+		setSize(1000, Math.min((200 + 150*items.size()), 1000));
+		add(refresh);
 		add(change);
 		JPanel searchPanel = new JPanel();
 		searchPanel.setLayout(new GridLayout(1, 2));
@@ -114,6 +118,7 @@ public class List extends JFrame implements ActionListener{
 		add(jpanel);
 		add(back);
 		
+		setContentPane(new JScrollPane(getContentPane()));
 		setVisible(true);
 	}
 	
@@ -157,6 +162,12 @@ public class List extends JFrame implements ActionListener{
 		if(e.getSource() == back)
   		{
   			new MainMenu(user, mDBApi);
+  			setVisible(false);
+  			dispose();
+  		}
+		if(e.getSource() == refresh)
+  		{
+  			new List(user, filename, mDBApi);
   			setVisible(false);
   			dispose();
   		}

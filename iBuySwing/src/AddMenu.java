@@ -64,8 +64,13 @@ public class AddMenu extends JFrame implements ActionListener{
             boolean isTaken = false;
             while(st.hasMoreTokens())
             {
-            	if(st.nextToken().equals(name))
+            	if(st.nextToken().equals(Global.toFileName(listName)))
+            	{
             		isTaken = true;
+            		break;
+            	}
+            	st.nextToken();
+            	st.nextToken();
             }
             if(isTaken)
             {

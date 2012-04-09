@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.dropbox.client2.DropboxAPI;
@@ -28,6 +29,7 @@ public class MainMenu extends JFrame implements ActionListener{
 	private JButton delete = new JButton("Delete List");
 	private JButton add = new JButton("Add List");
 	private JButton options = new JButton("Options");
+	private JButton refresh = new JButton("Refresh");
 	private String user;
 	
 	public MainMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
@@ -49,10 +51,12 @@ public class MainMenu extends JFrame implements ActionListener{
 		}
 		
 		//Sets layout with list size in mind
-		setLayout(new GridLayout(list.size()+4,1));
+		setLayout(new GridLayout(list.size()+5,1));
 		setSize(500, Math.min((200 + 100*list.size()), 1000));
 		delete.addActionListener(this);
 	    add.addActionListener(this);
+	    refresh.addActionListener(this);
+	    add(refresh);
 	    add(add);
 	    add(delete);
 		for(int i = 0; i < list.size(); i++)
@@ -64,6 +68,7 @@ public class MainMenu extends JFrame implements ActionListener{
 	    logout.addActionListener(this);
 	    add(logout);
 	    
+	    setContentPane(new JScrollPane(getContentPane()));
 	    setVisible(true);
 	}
 
@@ -77,6 +82,12 @@ public class MainMenu extends JFrame implements ActionListener{
 		if(e.getSource() == delete)
 		{
 			new DeleteMenu(user, mDBApi);
+			setVisible(false);
+			dispose();
+		}
+		if(e.getSource() == refresh)
+		{
+			new MainMenu(user, mDBApi);
 			setVisible(false);
 			dispose();
 		}
