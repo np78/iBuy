@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.StringTokenizer;
 
 import javax.swing.JButton;
@@ -66,6 +67,24 @@ public class AddItem extends JFrame implements ActionListener{
   				String list = Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt");
   				list += name + "\t" + category + "\t" + store + "\t" + importance + "\tfalse\n";
   				Global.putFileOverwrite(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt", list);
+  				
+  				//Update list date
+  				StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/lists.txt"));
+				String newList = "";
+				while(st.hasMoreTokens())
+				{
+					String token = st.nextToken();
+					String token2 = st.nextToken();
+					String token3 = st.nextToken();
+					if(token.equals(Global.toFileName(filename)))
+					{
+						Date d = new Date(System.currentTimeMillis());
+						newList += token + "\t" + token2 + "\t" + Global.toFileName(d.toString())  + "\n";
+					}
+					else
+						newList += token + "\t" + token2 + "\t" + token3 + "\n";
+				}
+  				Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList);
   				
   				new List(user, filename, mDBApi);
   	  			setVisible(false);

@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -85,6 +86,24 @@ public class RemoveItem extends JFrame implements ActionListener{
 				}
 			}
 			Global.putFileOverwrite(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt", newList);
+			
+			//Update list date
+			StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/lists.txt"));
+			String newList2 = "";
+			while(st.hasMoreTokens())
+			{
+				String token = st.nextToken();
+				String token2 = st.nextToken();
+				String token3 = st.nextToken();
+				if(token.equals(Global.toFileName(filename)))
+				{
+					Date d = new Date(System.currentTimeMillis());
+					newList2 += token + "\t" + token2 + "\t" + Global.toFileName(d.toString())  + "\n";
+				}
+				else
+					newList2 += token + "\t" + token2 + "\t" + token3 + "\n";
+			}
+			Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList2);
 			
 			new List(user, filename, mDBApi);
   			setVisible(false);

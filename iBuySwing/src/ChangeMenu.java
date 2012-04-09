@@ -1,6 +1,7 @@
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -58,6 +59,7 @@ public class ChangeMenu extends JFrame implements ActionListener{
   			{
   				String listname = scanner.nextToken();
   				scanner.nextToken();
+  				scanner.nextToken();
   				if(listname.equals(Global.toFileName(newName)))
   				{
   					isTaken = true;
@@ -65,7 +67,7 @@ public class ChangeMenu extends JFrame implements ActionListener{
   			}
 			if(isTaken)
 			{
-				System.out.println("Username is taken.");
+				System.out.println("List name is taken.");
 			}
 			else
 			{
@@ -82,12 +84,15 @@ public class ChangeMenu extends JFrame implements ActionListener{
 				while(st.hasMoreTokens())
 				{
 					String token = st.nextToken();
-					st.nextToken();
-					st.nextToken();
+					String token2 = st.nextToken();
+					String token3 = st.nextToken();
 					if(token.equals(Global.toFileName(filename)))
-						newList += Global.toFileName(newName) + "\n";
+					{
+						Date d = new Date(System.currentTimeMillis());
+						newList += Global.toFileName(newName) + "\t" + token2 + "\t" + Global.toFileName(d.toString())  + "\n";
+					}
 					else
-						newList += token + "\n";
+						newList += token + "\t" + token2 + "\t" + token3 + "\n";
 				}
 				Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList);
 				
