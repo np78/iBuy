@@ -1,28 +1,40 @@
 package com.cs477.linn;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import com.dropbox.client2.*;
+import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.exception.DropboxUnlinkedException;
+import com.dropbox.client2.session.*;
+import com.dropbox.client2.session.Session.AccessType;
+
 import android.R.layout;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-//import com.dropbox.client2.DropboxAPI;
-//import com.dropbox.client2.android.AndroidAuthSession;
-//import com.dropbox.client2.session.AccessTokenPair;
-//import com.dropbox.client2.session.AppKeyPair;
-//import com.dropbox.client2.session.Session.AccessType;
+import android.widget.Toast;
+
 
 public class MainActivity extends Activity
 {
     //DROPBOX INSTANCE VARIABLES
-    /*
+    
     final static private String APP_KEY = "nn7lnxubh1knv63";
     final static private String APP_SECRET = "l02f3ekx7lc7wx2";
     final static private AccessType ACCESS_TYPE = AccessType.APP_FOLDER;
     public static String sessionKey = "wiaqh0zpg745z2v";
     public static String sessionSecret = "5elro586b19u7n2"; 
-    private DropboxAPI<AndroidAuthSession> mDBApi;*/
+    private DropboxAPI<AndroidAuthSession> mDBApi;
     
     
     
@@ -33,14 +45,14 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         
-        //createDropboxSession();
+        createDropboxSession();
     }
     
     /**
      * createDropboxSession()
      * Creates a dropbox session with the APP_KEY and APP_SECRET for dropbox.
      */
-    /*
+    
     private void createDropboxSession(){
         // And later in some initialization function:
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
@@ -50,14 +62,14 @@ public class MainActivity extends Activity
         // MyActivity below should be your activity class name
         mDBApi.getSession().setAccessTokenPair(new AccessTokenPair(sessionKey, sessionSecret));
         //Toast.makeText(this, "created dropbox session", RESULT_OK);
-    }*/
+    }
     
     /*
      * onResume()
      * 
      * Used for DropBox session.
      */
-    /*
+    
     @Override
     protected void onResume() {
         super.onResume();
@@ -73,13 +85,13 @@ public class MainActivity extends Activity
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
         }
-    }*/
+    }
     /**
      * uploadFile
      * Upload a file to Dropbox.
      * @param v 
      */ 
-    /*
+ 
     public void uploadFile(View v){
         
         List curList = new List("Nicole", "ShoppingList1");
@@ -98,14 +110,14 @@ public class MainActivity extends Activity
         } catch (DropboxException e) {
            Log.e("DbExampleLog", "Something went wrong while uploading.");
         }
-    } */
+    } 
     /**
      * downloadFile
      * Download a file from Dropbox.
      * @param v 
      */
-    /*
-    public void downloadFile(View v){
+    
+    /*public void downloadFile(View v){
         final TextView file_view = (TextView) findViewById(R.id.text_download);
         //Get file
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -124,7 +136,7 @@ public class MainActivity extends Activity
      * Adds a new user.  Adds the user name and password to the user file &
      * adds a new folder for the user's files.
      */
-    /*
+    
     public void addNewUser(String username, String password) throws DropboxException{
         String folderpath = "/"+username;
         mDBApi.createFolder(folderpath);
@@ -133,25 +145,25 @@ public class MainActivity extends Activity
         //add username and password to users.txt
         
     }
-    */
+    
     /**
      * Adds an item to the list in the current users folder.
      */
-    /*
+    
     public void addItemToList(String cur_user, String list_name, Item item){
         String filename = "/"+cur_user+"/"+list_name+".txt";
         String item_name = item.getName();
         String item_category = item.getCategory();
         //Add item and category to list
     }
-    */
+    
     /**
      * Deletes an item from a list in the user's folder.
      * @param cur_user
      * @param list_name
      * @param item 
      */
-    /*
+    
     public void deleteItem(String cur_user, String list_name, Item item){
         String item_name = item.getName();
         String item_category = item.getCategory();
@@ -159,7 +171,7 @@ public class MainActivity extends Activity
         String filename = "/"+cur_user+"/"+list_name+".txt";
         //delete specific item from list
     }
-    */
+    
     /**
      * logIn
      * Takes the contents of the username and password fields and attempts
@@ -190,7 +202,7 @@ public class MainActivity extends Activity
             //go to ListsActivity and lists screen
             startActivity(new Intent("edu.nau.cs477.CLEARSCREEN"));
         }       
-    }   */ 
+    }  */ 
     /**
      * checkUserFile
      * Downloads users.txt from Dropbox and checks to see if the username and
@@ -200,7 +212,7 @@ public class MainActivity extends Activity
      * @param password 
      * @return boolean
      */
-    /*
+    
     public boolean checkUserFile(String username, String password) throws IOException{
         //TextView file_view = (TextView) v.findViewById(R.id.text_download);
         //Get file
@@ -225,13 +237,13 @@ public class MainActivity extends Activity
         }
         //Toast.makeText(this,"NOT loggedIn",Toast.LENGTH_LONG).show();
         return false; //username and password don't match file contents
-    } */  
+    }   
     /*
      * LoginActivity usage
      */
-    public void logIn(View v){
+    /*public void logIn(View v){
         setContentView(R.layout.lists);
-    }
+    }*/
     /*
      * ListsActivity usage
      */

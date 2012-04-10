@@ -3,12 +3,15 @@
       package="com.cs477.linn"
       android:versionCode="1"
       android:versionName="1.0">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application android:label="@string/app_name" >
         <activity android:name="MainActivity"
                   android:label="@string/app_name">
             <intent-filter>
+            	<data android:scheme="db-nn7lnxubh1knv63" />
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>    
     </application>
