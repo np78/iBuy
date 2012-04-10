@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/enter"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+		android:text="Enter an item name:"
+	/>
+	<EditText android:id="@+id/enteritem"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/enter"
+		/>
+        <TextView android:id="@+id/enter_cat"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="18sp"
+		android:text="Enter item category:"
+                android:layout_below="@id/enteritem"
+	/>
+	<EditText android:id="@+id/entercategory"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/enter_cat"
+		/>
+        <TextView
+                android:id="@+id/enter_quan"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+                android:layout_below="@id/entercategory"
+                android:layout_alignParentLeft="true"
+		android:textSize="18sp"
+		android:text="Enter item quantity"
+                
+            />
+        <EditText android:id="@+id/enterquantity"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+                android:layout_below="@id/enter_quan"
+            />
+	<TextView android:id="@+id/OR"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/enterquantity"
+		android:gravity="center"
+		android:textSize="25sp"
+		android:text="OR"
+	/>
+	<TextView android:id="@+id/select"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/OR"
+		android:textSize="18sp"
+		android:text="Select from a list of previous items:"
+	/>
+	<Spinner 
+                android:id="@+id/spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/select"
+                android:prompt="@string/itemprompt"
+        />
+        <Button
+            android:id="@+id/save_item"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="20sp"
+            android:text="Save Item"
+            
+            />
+</RelativeLayout>

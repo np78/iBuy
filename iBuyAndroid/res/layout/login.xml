@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+	<TextView android:id="@+id/display"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textSize="60sp"
+                android:layout_marginBottom="10sp"
+		android:gravity="center"
+		android:text="iBuy"
+		/>
+	<TextView android:id="@+id/username"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/display"
+		android:textSize="28sp"
+		android:gravity="left"
+		android:text="Username:"
+		/>
+	<EditText android:id="@+id/useredit"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/display"
+		android:layout_toRightOf="@id/username"
+		android:text=""
+		/>
+	<TextView android:id="@+id/password"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/useredit"
+		android:textSize="28sp"
+		android:gravity="left"
+		android:text="Password:"
+		/>
+	<EditText android:id="@+id/pwedit"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/useredit"
+		android:layout_toRightOf="@id/password"
+		android:text=""
+		/>
+	<Button android:id="@+id/login"
+		android:textSize="28sp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/pwedit"
+		android:layout_alignParentRight="true"
+		android:text="Login!"
+                android:onClick="logIn"
+		/>
+                
+	<!--CheckBox android:id="@+id/checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login"
+		/>
+	<TextView android:id="@+id/staylogged"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login"
+		android:layout_toRightOf="@id/checkbox"
+		android:textSize="28sp"
+		android:text="Stay logged in?"
+		>
+	<TextView android:id="@+id/needacct"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+		android:gravity="right"
+		android:text="Need an account?"
+		/>
+
+	<Button android:id="@+id/signup"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+		android:gravity="center"
+		android:text="Sign up now!"
+		/-->
+</RelativeLayout>
