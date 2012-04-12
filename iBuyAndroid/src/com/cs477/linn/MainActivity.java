@@ -4,24 +4,40 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.dropbox.client2.session.*;
 import com.dropbox.client2.*;
 import com.dropbox.client2.DropboxAPI.DropboxFileInfo;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.exception.DropboxUnlinkedException;
-import com.dropbox.client2.session.*;
+
 import com.dropbox.client2.session.Session.AccessType;
 
+
+
+import android.R.layout;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-
+/**
+ * MainActivity
+ * 
+ * @author N. Williams
+ * @version 4.11.2012
+ *
+ */
 public class MainActivity extends Activity
 {
     //DROPBOX INSTANCE VARIABLES
@@ -33,6 +49,10 @@ public class MainActivity extends Activity
     public static String sessionSecret = "5elro586b19u7n2"; 
     private DropboxAPI<AndroidAuthSession> mDBApi;
     
+    private boolean isLoggedIn;
+    private String currentUser;
+    private String currentList;
+    
     
     
     /** Called when the activity is first created. */
@@ -41,7 +61,7 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        
+        isLoggedIn=false;
         createDropboxSession();
     }
     
@@ -51,6 +71,7 @@ public class MainActivity extends Activity
      */
     
     private void createDropboxSession(){
+    	try{
         // And later in some initialization function:
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys, ACCESS_TYPE);
@@ -59,6 +80,9 @@ public class MainActivity extends Activity
         // MyActivity below should be your activity class name
         mDBApi.getSession().setAccessTokenPair(new AccessTokenPair(sessionKey, sessionSecret));
         //Toast.makeText(this, "created dropbox session", RESULT_OK);
+    	}catch(Exception e){
+    		Log.v("ERROR DROPBOX",e.getMessage());
+    	}
     }
     
     /*
@@ -77,7 +101,7 @@ public class MainActivity extends Activity
                 // Sets the access token on the session
                 mDBApi.getSession().finishAuthentication();
 
-                //AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
+                AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
@@ -88,7 +112,7 @@ public class MainActivity extends Activity
      * Upload a file to Dropbox.
      * @param v 
      */ 
- 
+    /*
     public void uploadFile(View v){
         
         List curList = new List("Nicole", "ShoppingList1");
@@ -98,7 +122,7 @@ public class MainActivity extends Activity
         // Uploading content.
         ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContents.getBytes());
         try {
-            DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+curList.list_name+".txt", inputStream,
+            DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+curList.getName()+".txt", inputStream,
                    fileContents.length(), null);
            Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
         } catch (DropboxUnlinkedException e) {
@@ -107,7 +131,7 @@ public class MainActivity extends Activity
         } catch (DropboxException e) {
            Log.e("DbExampleLog", "Something went wrong while uploading.");
         }
-    } 
+    } */
     /**
      * downloadFile
      * Download a file from Dropbox.
@@ -130,47 +154,16 @@ public class MainActivity extends Activity
         }
     }*/
     
-    
-    /**
-     * Adds an item to the list in the current users folder.
-     */
-    
-    public void addItemToList(String cur_user, String list_name, Item item){
-        String filename = "/"+cur_user+"/"+list_name+".txt";
-        String item_name = item.getName();
-        String item_category = item.getCategory();
-        String item_store = item.getStore();
-        int item_priority = item.getPriority();
-        boolean item_isChecked = item.isCheckedOff();
-        //Add item and category to list
-        
-        
-        String content = item_name.replaceAll(" ", "_") + " " + item_category.replaceAll(" ", "_") + " " + item_store.replaceAll(" ", "_") + " " + item_priority + " " + item_isChecked;
-
-    }
-    
-    /**
-     * Deletes an item from a list in the user's folder.
-     * @param cur_user
-     * @param list_name
-     * @param item 
-     */
-    
-    public void deleteItem(String cur_user, String list_name, Item item){
-        String item_name = item.getName();
-        String item_category = item.getCategory();
-        
-        String filename = "/"+cur_user+"/"+list_name+".txt";
-        //delete specific item from list
-    }
+    //---------------------------------------------------------------------------------------
+    //LOGIN ACTIVITY STUFF
+    //---------------------------------------------------------------------------------------
     
     /**
      * logIn
      * Takes the contents of the username and password fields and attempts
      * to login to the application. Does nothing if unable to login.
      * @param v 
-     */
-    /*
+     */ 
     public void logIn(View v){
         //username
         EditText user_text = (EditText) findViewById(R.id.useredit);
@@ -180,21 +173,28 @@ public class MainActivity extends Activity
         EditText pass_text = (EditText) findViewById(R.id.pwedit);
         Editable pass_edit = pass_text.getText();
         String password = pass_edit.toString();
-        Toast.makeText(this,username+"/"+password,Toast.LENGTH_LONG).show();
         //if both fields are not empty, then attempt login
         if(!username.equals("") && !password.equals("")){
             try {
                 isLoggedIn = checkUserFile(username, password);
             } catch (IOException ex) {
-                Logger.getLogger(iBuyActivity.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
+        }        
         if(isLoggedIn){
+        	TextView error = (TextView) findViewById(R.id.login_error);
+        	error.setVisibility(4); //set invisible
             //go to ListsActivity and lists screen
-            startActivity(new Intent("edu.nau.cs477.CLEARSCREEN"));
-        }       
-    }  */ 
+            //startActivity(new Intent("edu.nau.cs477.CLEARSCREEN"));
+        	currentUser = username;
+        	setContentView(R.layout.lists);
+        }
+        else{
+        	//error
+        	TextView error = (TextView) findViewById(R.id.login_error);
+        	error.setVisibility(0); //set visible
+        }
+    }   
     /**
      * checkUserFile
      * Downloads users.txt from Dropbox and checks to see if the username and
@@ -203,39 +203,140 @@ public class MainActivity extends Activity
      * @param username
      * @param password 
      * @return boolean
-     */
-    
+     */ 
     public boolean checkUserFile(String username, String password) throws IOException{
-        //TextView file_view = (TextView) v.findViewById(R.id.text_download);
         //Get file
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try{
             DropboxFileInfo info = mDBApi.getFile("/users.txt", null, outputStream, null);
-            //DropboxInputStream dis = mDBApi.getFileStream("/users.txt", null);
-            //dis.copyStreamToOutput(outputStream, null);
             String content = new String(outputStream.toByteArray());
             StringTokenizer st = new StringTokenizer(content);
             outputStream.close();
             while(st.hasMoreTokens()){
                 //if username and password match in user contents file
                 if(st.nextToken().equals(username) && st.nextToken().equals(password)){
-                    //Toast.makeText(this,"loggedIn",Toast.LENGTH_LONG).show();
-                    return true;
-                    
+                    return true;           
                 }
             }         
         }catch(DropboxException e){
             Log.e("DbExampleLog", "Something went wrong while downloading.");
         }
-        //Toast.makeText(this,"NOT loggedIn",Toast.LENGTH_LONG).show();
         return false; //username and password don't match file contents
     }   
+   
+    
+    //---------------------------------------------------------------------------------------
+    // USER'S LISTS 
+    //---------------------------------------------------------------------------------------
+    
+    public void createNewList(View v){
+    	currentList="";
+    	setContentView(R.layout.listedit);
+    	
+    }
+    
+    //CRASHES
+    public void saveListName(View v){
+    	
+    	EditText name = (EditText) findViewById(R.id.listname_edit);
+    	String st = name.getText().toString();
+    	
+    	if(currentList.equals("")){ //new list
+    		//add new list to lists.txt
+    		 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    	        try{
+    	        	//download lists.txt info
+    	            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/lists.txt", null, outputStream, null);
+    	            
+    	            String content = new String(outputStream.toByteArray());
+    	            content += "\n"+ (new List(currentUser,st)).newListData();
+    	            
+    	            ByteArrayInputStream inputStream = new ByteArrayInputStream(content.getBytes());
+    	            try {
+    	            	//update lists.txt
+    	                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/lists.txt", inputStream, content.length(), null);
+    	                content = "";
+    	                //create <listname>.txt
+    	                inputStream = new ByteArrayInputStream(content.getBytes());
+    	                newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+st+".txt", inputStream, content.length(), null);
+    	               
+    	            } catch (DropboxUnlinkedException e) {
+    	               // User has unlinked, ask them to link again here.
+    	               Log.e("DbExampleLog", "User has unlinked.");
+    	            } catch (DropboxException e) {
+    	               Log.e("DbExampleLog", "Something went wrong while uploading.");
+    	            }
+    	            
+    	        }catch(Exception e){
+    	            Log.e("downloadFile", e.getMessage());
+    	        }
+    		
+    	}
+    	else{ //not a new list
+    		/*
+    		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    		try{
+    			//get lists.txt content
+    			DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+currentList+".txt", null, outputStream, null);
+    			String content = new String(outputStream.toByteArray());
+    			//find <listname> in lists.txt content
+    			
+    			
+    			//download <listname>.txt content
+    			DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+currentList+".txt", null, outputStream, null);
+    			String content = new String(outputStream.toByteArray());
+    			
+    			//upload <newlistname>.txt
+    			ByteArrayInputStream inputStream = new ByteArrayInputStream(content.getBytes());
+	            try {
+	            	//update lists.txt
+	                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/lists.txt", inputStream, content.length(), null);
+	                content = "";
+	                //create <listname>.txt
+	                inputStream = new ByteArrayInputStream(content.getBytes());
+	                newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+st+".txt", inputStream, content.length(), null);
+	               
+	            } catch (DropboxUnlinkedException e) {
+	               // User has unlinked, ask them to link again here.
+	               Log.e("DbExampleLog", "User has unlinked.");
+	            } catch (DropboxException e) {
+	               Log.e("DbExampleLog", "Something went wrong while uploading.");
+	            }
+    			
+    			//upload empty <listname>.txt
+    			
+    			
+    		} catch(Exception e){
+	            Log.e("downloadFile", e.getMessage());
+	        }*/
+    	}
+    	currentList = st; //change to new current list
+    	//createListsLayout();
+    	setContentView(R.layout.listview);
+    	
+    }
     /*
-     * LoginActivity usage
+     * creates the layout for lists.xml
      */
-    /*public void logIn(View v){
-        setContentView(R.layout.lists);
-    }*/
+    public void createListsLayout(){
+    	RelativeLayout rl = new RelativeLayout(this);
+    }
+    /*
+     * creates the layout for the current list (lists the items)
+     */
+    public void createListViewLayout(){
+    	
+    }
+    
+    /*
+     * saves the options from the options screen and then goes to the 
+     * home screen
+     */
+    public void saveOptions(View v){
+    	Toast.makeText(this,"Save Successful.",Toast.LENGTH_LONG).show();
+    	goHomeScreen(v);
+    }
+    
     /*
      * ListsActivity usage
      */
@@ -252,7 +353,8 @@ public class MainActivity extends Activity
      * OptionsActivity usage
      */
     public void goToOptions(View v){
-        setContentView(R.layout.options);
+    	Toast.makeText(this,"Function not available.",Toast.LENGTH_LONG).show();
+        //setContentView(R.layout.options);
     }
     
     /*
@@ -267,34 +369,32 @@ public class MainActivity extends Activity
      * -crashes app
      */
     public void addNewItem(View v){
-        RelativeLayout listviewlayout = (RelativeLayout) findViewById(R.layout.listview);
-        //item name
-        //EditText name = (EditText) findViewById(R.id.enter);
-        //item category
-        //EditText category = (EditText) findViewById(R.id.enter_cat);
-        //item quantity
-        //EditText quantity = (EditText) findViewById(R.id.enter_quan);
-        
-        //Editable content_edit = name.getText();
-        //String content = content_edit.toString();
-        
-        TextView newItem = new TextView(this);
-        newItem.setId(1);
-        newItem.setText("apple");
-        RelativeLayout.LayoutParams relativeParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
-        relativeParams.addRule(RelativeLayout.BELOW, R.id.item1);
-        /*
-        newItem.setClickable(true);
-        newItem.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View arg0) {
-                goToAddItem(arg0);
-            }
-        });*/
-        
-        listviewlayout.addView(newItem, relativeParams);
         
         setContentView(R.layout.listview);
         
+    }
+    /**
+     * Adds an item to the list in the current users folder.
+     */
+    
+    public void addItemToList(String cur_user, String list_name, Item item){
+        String filename = "/"+cur_user+"/"+list_name+".txt";
+        
+        //Add item and category to list
+    }
+    
+    /**
+     * Deletes an item from a list in the user's folder.
+     * @param cur_user
+     * @param list_name
+     * @param item 
+     */
+    
+    public void deleteItem(String cur_user, String list_name, Item item){
+        String item_name = item.getName();
+        String item_category = item.getCategory();
+        
+        String filename = "/"+cur_user+"/"+list_name+".txt";
+        //delete specific item from list
     }
 }

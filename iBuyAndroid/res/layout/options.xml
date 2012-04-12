@@ -1,77 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_alignParentTop="true" android:layout_width="fill_parent"
     android:layout_height="fill_parent">
-
-	<TextView android:id="@+id/display"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:textSize="30sp"
-		android:text="iBuy Options"
-	/>
-	<TextView android:id="@+id/notifications"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/display"
-		android:textSize="20sp"
-		android:text="Notifications"
-	/>
-	<TextView android:id="@+id/notificationstext"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/notifications"
-		android:textSize="15sp"
-		android:text="Select the type of notifications you wish to receive:"
-	/>
-	<CheckBox android:id="@+id/vibrate"
-	    android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@id/notificationstext"
-	/>
-	<TextView android:id="@+id/vibratetext"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:layout_below="@id/notificationstext"
-		android:layout_toLeftOf="@id/vibrate"
-		android:textSize="28sp"
-		android:text="Vibrate"
-	/>
-	<CheckBox android:id="@+id/icon"
-	    android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@id/vibrate"
-	/>
-	<TextView android:id="@+id/icontext"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:layout_below="@id/vibrate"
-		android:layout_toLeftOf="@id/icon"
-		android:textSize="28sp"
-		android:text="Icon"
-	/>
-	<CheckBox android:id="@+id/ring"
-	    android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@id/icon"
-	/>
-	<TextView android:id="@+id/ringtext"
-		android:layout_height="wrap_content"
-		android:layout_width="fill_parent"
-		android:layout_below="@id/icon"
-		android:layout_toLeftOf="@id/ring"
-		android:textSize="28sp"
-		android:text="Ringtone"
-	/>
-        <Button android:id="@+id/save"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-		android:textSize="28sp"
-		android:text="Save Options"
-                android:onClick="goHomeScreen"
-            />
-</RelativeLayout>
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+		<TextView android:id="@+id/display"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textSize="30sp"
+			android:text="iBuy Options"
+		/>
+		<!-- We may not want to keep anything that's in here right now, unless we can figure out a way to do notifications. -->
+		<TextView android:id="@+id/notifications"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/display"
+			android:textSize="20sp"
+			android:text="Notifications"
+		/>
+		
+		<TextView android:id="@+id/notificationstext"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/notifications"
+			android:textSize="15sp"
+			android:text="Select the type of notifications you wish to receive:"
+		/>
+		
+		<CheckBox android:id="@+id/vibrate"
+		    android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/notificationstext"
+		/>
+		
+		<TextView android:id="@+id/vibratetext"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/notificationstext"
+			android:layout_toLeftOf="@id/vibrate"
+			android:textSize="28sp"
+			android:text="Vibrate"
+		/>
+		
+		<CheckBox android:id="@+id/icon"
+		    android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/vibrate"
+		/>
+		
+		<TextView android:id="@+id/icontext"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/vibrate"
+			android:layout_toLeftOf="@id/icon"
+			android:textSize="28sp"
+			android:text="Icon"
+		/>
+		
+		<CheckBox android:id="@+id/ring"
+		    android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/icon"
+		/>
+		
+		<TextView android:id="@+id/ringtext"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/icon"
+			android:layout_toLeftOf="@id/ring"
+			android:textSize="28sp"
+			android:text="Ringtone"
+		/>
+		<!-- ToDo: Report generation options -->
+		<!-- Save function should be accompanied by a Toast confirming that settings were saved. -->
+		<Button android:id="@+id/save"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentBottom="true"
+			android:layout_below="@id/ring"
+			android:textSize="28sp"
+			android:text="Save Options"
+			android:onClick="saveOptions"
+		/>
+	</RelativeLayout>
+</ScrollView>

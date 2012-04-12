@@ -1,60 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-	<Button android:id="@+id/options"
-		android:layout_width="50sp"
-		android:layout_height="50sp"
-		android:layout_alignParentRight="true"
-                android:background="@drawable/options_icon"
-                android:onClick="goToOptions"
-	/>
-	<TextView android:id="@+id/display"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toLeftOf="@id/options"
-		android:textSize="15sp"
-                android:layout_marginBottom="10sp"
-		android:text="Tap a list to modify it, or tap 'Create new list' to start a new list"
-	/>
-	<Button android:id="@+id/create"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/display"
-		android:textSize="20sp"
-		android:text="Create new list"
-                android:onClick="addNewList"
-	/>
-        <TextView
-                android:id="@+id/samplelist1"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/create"
-		android:textSize="20sp"
-                android:background="#CCFFFF"
-                android:textColor="#000000"
-		android:visibility="invisible"
-            />
-        <TextView
-                android:id="@+id/samplelist2"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/samplelist1"
-		android:textSize="20sp"
-                android:background="#CCFFFF"
-                android:textColor="#000000"
-		android:visibility="invisible"
-            />
-        <TextView
-                android:id="@+id/samplelist3"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/samplelist2"
-		android:textSize="20sp"
-                android:background="#CCFFFF"
-                android:textColor="#000000"
-		android:visibility="invisible"
-            />
-
-</RelativeLayout>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_alignParentTop="true" 
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+	<RelativeLayout
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+		<Button android:id="@+id/options"
+			android:layout_width="50sp"
+			android:layout_height="50sp"
+			android:layout_alignParentRight="true"
+			android:background="@drawable/options_icon"
+			android:onClick="goToOptions"
+		/>
+		
+		<TextView android:id="@+id/display"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_toLeftOf="@id/options"
+			android:textSize="15sp"
+			android:layout_marginBottom="10sp"
+			android:text="Tap a list to modify it, or tap 'Create new list' to start a new list"
+		/>
+		
+		<Button android:id="@+id/create"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/options"
+			android:textSize="20sp"
+			android:text="Create new list"
+			android:drawableLeft="@drawable/add_button"
+			android:onClick="goToList"
+		/>
+		<!-- Lists are now clickable - Need to be assigned an onClick to direct to listview for the list they represent.
+				Sample list currently assigned to 'goToList' as a test, works fine. -->
+		<TextView
+			android:id="@+id/samplelist1"
+			android:layout_width="fill_parent"
+			android:layout_height="50sp"
+			android:layout_below="@id/create"
+			android:drawableBottom="@drawable/black_line"
+			android:clickable="true"
+			android:textSize="20sp"
+			android:background="#CCFFFF"
+			android:textColor="#000000"
+			android:text="Sample list 1"
+			android:onClick="goToList"
+		/>
+	</RelativeLayout>
+</ScrollView>

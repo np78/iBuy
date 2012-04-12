@@ -6,8 +6,8 @@ package com.cs477.linn;
 
 /**
  * Item - acts as an Item object
- * @author Nicole Williams
- * @version 4/3/12
+ * @author N. Williams (Team LINN)
+ * @version 4/11/12
  */
 public class Item {
     private String item_name;
@@ -31,14 +31,27 @@ public class Item {
     public String getCategory(){
         return item_category;
     }
+    
     public String getStore(){
     	return item_store;
     }
+    
     public int getPriority(){
     	return item_priority;
     }
-    
+   
     public boolean isCheckedOff(){
         return checked_off;
+    }
+    
+    /*
+     * getItemData
+     * 
+     * Returns a String of the data to add to a (.txt) list file.
+     * NAME CATEGORY STORE PRIORITY CHECKED-OFF
+     */
+    public String getItemData(){
+    	String data = item_name.replaceAll(" ", "_") + " " + item_category.replaceAll(" ", "_") + " " + item_store.replaceAll(" ", "_") + " " + item_priority + " " + checked_off;
+    	return data;
     }
 }
