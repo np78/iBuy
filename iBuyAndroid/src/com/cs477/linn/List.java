@@ -4,9 +4,7 @@
  */
 package com.cs477.linn;
 
-import android.view.View;
-import android.widget.TextView;
-import java.util.ArrayList;
+
 
 /**
  * List - acts as a list object
@@ -16,12 +14,12 @@ import java.util.ArrayList;
 public class List {
     public String user; //name of user that list belongs
     public String list_name;
-    public ArrayList items; //list of items in the list
+    //public LinkedList<Item> items; //list of items in the list
     
     public List(String u, String name){
         user = u;
         list_name = name;
-        items = new ArrayList(); //empty list
+        //items = new LinkedList<Item>(); //empty list
     }
     
     public String getUser(){
@@ -33,11 +31,11 @@ public class List {
     }
     
     public void addItem(Item i){
-        items.add(i);
+        //items.add(i);
     }
     
     public void removeItem(Item i){
-        items.remove(i);
+        //items.remove(i);
     }
     /*
     public void displayItems(View v){
@@ -50,6 +48,7 @@ public class List {
         display.setText(display_text);
     }*/
     
+    /*
     @Override
     public String toString(){
         String display_text = "";
@@ -58,6 +57,6 @@ public class List {
             display_text += cur.getName() + "\n";
         }
         return display_text;
-    }
+    }*/
     
 }

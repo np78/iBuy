@@ -13,16 +13,13 @@ import com.dropbox.client2.exception.DropboxUnlinkedException;
 import com.dropbox.client2.session.*;
 import com.dropbox.client2.session.Session.AccessType;
 
-import android.R.layout;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class MainActivity extends Activity
@@ -80,7 +77,7 @@ public class MainActivity extends Activity
                 // Sets the access token on the session
                 mDBApi.getSession().finishAuthentication();
 
-                AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
+                //AccessTokenPair tokens = mDBApi.getSession().getAccessTokenPair();
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
@@ -132,19 +129,7 @@ public class MainActivity extends Activity
             Log.e("downloadFile", e.getMessage());
         }
     }*/
-    /**
-     * Adds a new user.  Adds the user name and password to the user file &
-     * adds a new folder for the user's files.
-     */
     
-    public void addNewUser(String username, String password) throws DropboxException{
-        String folderpath = "/"+username;
-        mDBApi.createFolder(folderpath);
-        
-        String userspath = "/users.txt";
-        //add username and password to users.txt
-        
-    }
     
     /**
      * Adds an item to the list in the current users folder.
@@ -154,7 +139,14 @@ public class MainActivity extends Activity
         String filename = "/"+cur_user+"/"+list_name+".txt";
         String item_name = item.getName();
         String item_category = item.getCategory();
+        String item_store = item.getStore();
+        int item_priority = item.getPriority();
+        boolean item_isChecked = item.isCheckedOff();
         //Add item and category to list
+        
+        
+        String content = item_name.replaceAll(" ", "_") + " " + item_category.replaceAll(" ", "_") + " " + item_store.replaceAll(" ", "_") + " " + item_priority + " " + item_isChecked;
+
     }
     
     /**

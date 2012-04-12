@@ -29,25 +29,41 @@
 		android:layout_below="@id/enter_cat"
 		/>
         <TextView
-                android:id="@+id/enter_quan"
+                android:id="@+id/enter_store"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
                 android:layout_below="@id/entercategory"
                 android:layout_alignParentLeft="true"
 		android:textSize="18sp"
-		android:text="Enter item quantity"
+		android:text="Enter item store:"
                 
             />
-        <EditText android:id="@+id/enterquantity"
+        <EditText android:id="@+id/enterstore"
 		android:textSize="20sp"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-                android:layout_below="@id/enter_quan"
+                android:layout_below="@id/enter_store"
+            />
+          <TextView
+                android:id="@+id/enter_priority"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+                android:layout_below="@id/enterstore"
+                android:layout_alignParentLeft="true"
+		android:textSize="18sp"
+		android:text="Enter item priority (1-5):"
+                
+            />
+        <EditText android:id="@+id/enterpriority"
+		android:textSize="20sp"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+                android:layout_below="@id/enter_priority"
             />
 	<TextView android:id="@+id/OR"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/enterquantity"
+		android:layout_below="@id/enterpriority"
 		android:gravity="center"
 		android:textSize="25sp"
 		android:text="OR"
@@ -74,6 +90,7 @@
             android:layout_alignParentBottom="true"
             android:textSize="20sp"
             android:text="Save Item"
+            android:onClick="addNewItem"
             
             />
 </RelativeLayout>

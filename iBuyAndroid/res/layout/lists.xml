@@ -24,7 +24,7 @@
 		android:layout_below="@id/display"
 		android:textSize="20sp"
 		android:text="Create new list"
-                android:onClick="goToList"
+                android:onClick="addNewList"
 	/>
         <TextView
                 android:id="@+id/samplelist1"
@@ -34,23 +34,27 @@
 		android:textSize="20sp"
                 android:background="#CCFFFF"
                 android:textColor="#000000"
-		android:text="Sample list 1"
+		android:visibility="invisible"
             />
-            
-            
-        
-	<!--CheckBox android:id="@+id/checkbox"
-	    android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_alignParentRight="true"
-		android:layout_below="@id/create"
-	/>
-	<Button android:id="@+id/list1"
-		android:layout_height="wrap_content"
+        <TextView
+                android:id="@+id/samplelist2"
 		android:layout_width="fill_parent"
-		android:layout_below="@id/create"
-		android:layout_toLeftOf="@id/checkbox"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/samplelist1"
 		android:textSize="20sp"
-		android:text="Latest list"
-	/-->
+                android:background="#CCFFFF"
+                android:textColor="#000000"
+		android:visibility="invisible"
+            />
+        <TextView
+                android:id="@+id/samplelist3"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/samplelist2"
+		android:textSize="20sp"
+                android:background="#CCFFFF"
+                android:textColor="#000000"
+		android:visibility="invisible"
+            />
+
 </RelativeLayout>
