@@ -39,6 +39,15 @@ public class Item {
     public int getPriority(){
     	return item_priority;
     }
+    
+    public void setCheckedOff(String b){
+    	if(b.equals("true")){
+    		checked_off = true;
+    	}
+    	else{
+    		checked_off = false;
+    	}
+    }
    
     public boolean isCheckedOff(){
         return checked_off;
