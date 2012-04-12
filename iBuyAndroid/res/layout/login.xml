@@ -40,6 +40,7 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/useredit"
 		android:layout_toRightOf="@id/password"
+		android:password="true"
 		android:text=""
 		/>
 	<Button android:id="@+id/login"
@@ -55,10 +56,40 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/pwedit"
-		android:textSize="28sp"
+		android:layout_toLeftOf="@id/login"
+		android:textSize="15sp"
 		android:gravity="left"
 		android:text="Login failed."
 		android:visibility="invisible"
+	    
+	    />
+                
+	<!--CheckBox android:id="@+id/checkbox"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login"
+		/>
+	<TextView android:id="@+id/staylogged"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login"
+		android:layout_toRightOf="@id/checkbox"
+		android:textSize="28sp"
+		android:text="Stay logged in?"
+		>
+	<TextView android:id="@+id/needacct"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+		android:gravity="right"
+		android:text="Need an account?"
 		/>
 
+	<Button android:id="@+id/signup"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:textSize="20sp"
+		android:gravity="center"
+		android:text="Sign up now!"
+		/-->
 </RelativeLayout>

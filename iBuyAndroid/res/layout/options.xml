@@ -8,39 +8,43 @@
 		<TextView android:id="@+id/display"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:textSize="30sp"
+			android:gravity="center"
+			android:textStyle="bold"
+			android:textSize="32sp"
 			android:text="iBuy Options"
 		/>
-		<!-- We may not want to keep anything that's in here right now, unless we can figure out a way to do notifications. -->
+		<!-- All notifications options commented out, waiting on potential implementation -->
+		<!--
 		<TextView android:id="@+id/notifications"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/display"
-			android:textSize="20sp"
+			android:textStyle="bold"
+			android:textSize="28sp"
 			android:text="Notifications"
 		/>
 		
-		<TextView android:id="@+id/notificationstext"
+		<TextView android:id="@+id/notificationsText"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/notifications"
 			android:textSize="15sp"
-			android:text="Select the type of notifications you wish to receive:"
+			android:text="Select the type of notification(s) you wish to receive:"
 		/>
 		
 		<CheckBox android:id="@+id/vibrate"
 		    android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_alignParentRight="true"
-			android:layout_below="@id/notificationstext"
+			android:layout_below="@id/notificationsText"
 		/>
 		
-		<TextView android:id="@+id/vibratetext"
+		<TextView android:id="@+id/vibrateText"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
-			android:layout_below="@id/notificationstext"
+			android:layout_below="@id/notificationsText"
 			android:layout_toLeftOf="@id/vibrate"
-			android:textSize="28sp"
+			android:textSize="24sp"
 			android:text="Vibrate"
 		/>
 		
@@ -51,12 +55,12 @@
 			android:layout_below="@id/vibrate"
 		/>
 		
-		<TextView android:id="@+id/icontext"
-			android:layout_height="wrap_content"
+		<TextView android:id="@+id/iconText"
+		    android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:layout_below="@id/vibrate"
 			android:layout_toLeftOf="@id/icon"
-			android:textSize="28sp"
+			android:textSize="24sp"
 			android:text="Icon"
 		/>
 		
@@ -67,25 +71,89 @@
 			android:layout_below="@id/icon"
 		/>
 		
-		<TextView android:id="@+id/ringtext"
-			android:layout_height="wrap_content"
+		<TextView android:id="@+id/ringText"
+		    android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
 			android:layout_below="@id/icon"
 			android:layout_toLeftOf="@id/ring"
-			android:textSize="28sp"
+			android:textSize="24sp"
 			android:text="Ringtone"
 		/>
-		<!-- ToDo: Report generation options -->
-		<!-- Save function should be accompanied by a Toast confirming that settings were saved. -->
+		-->
+		<TextView android:id="@+id/reports"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/display"
+			android:textStyle="bold"
+			android:textSize="28sp"
+			android:text="Reports"
+		/>
+
+		<TextView android:id="@+id/reportsText"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/reports"
+			android:textSize="15sp"
+			android:text="Select the type of report(s) you wish to receive:"
+		/>
+
+		<TextView android:id="@+id/commonText"
+		    android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/reportsText"
+			android:textSize="24sp"
+			android:text="Commonly bought items"
+		/>
+		<CheckBox android:id="@+id/common"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/reportsText"
+			android:layout_alignParentRight="true"
+		/>
+
+		<TextView android:id="@+id/expensesText"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/common"
+			android:textStyle="bold|italic"
+			android:textSize="22sp"
+			android:text="Expense reports:"
+		/>
+		<TextView android:id="@+id/lastTripText"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/expensesText"
+			android:textSize="24sp"
+			android:text="By last shopping trip"
+		/>
+		<CheckBox android:id="@+id/lastTrip"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/expensesText"
+			android:layout_alignParentRight="true"
+		/>
+		<TextView android:id="@+id/lastWeekText"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/lastTrip"
+			android:textSize="24sp"
+			android:text="By last week"
+		/>
+		<CheckBox android:id="@+id/lastWeek"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/lastTrip"
+			android:layout_alignParentRight="true"
+		/>
 		<Button android:id="@+id/save"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_alignParentRight="true"
-			android:layout_alignParentBottom="true"
-			android:layout_below="@id/ring"
+			android:layout_below="@id/lastWeek"
+			android:layout_marginTop="30sp"
 			android:textSize="28sp"
 			android:text="Save Options"
-			android:onClick="saveOptions"
+			android:onClick="goHomeScreen"
 		/>
 	</RelativeLayout>
 </ScrollView>
