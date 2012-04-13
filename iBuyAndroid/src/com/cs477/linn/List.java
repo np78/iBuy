@@ -78,13 +78,4 @@ public class List {
     	list_date = date;
     }
     
-    /*
-     * isInList
-     * 
-     * Returns true if item is in the list, returns false if the item is not in the list.
-     */
-    public boolean isInList(Item i){
-    	//search for item in list
-    	return true;
-    }
 }

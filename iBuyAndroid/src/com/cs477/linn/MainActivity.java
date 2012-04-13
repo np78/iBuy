@@ -31,6 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -115,52 +116,6 @@ public class MainActivity extends Activity
             }
         }
     }
-    /**
-     * uploadFile
-     * Upload a file to Dropbox.
-     * @param v 
-     */ 
-    /*
-    public void uploadFile(View v){
-        
-        List curList = new List("Nicole", "ShoppingList1");
-        curList.addItem(new Item("Apples", "Fruit"));
-        curList.addItem(new Item("Oranges", "Fruit"));
-        String fileContents = curList.toString();
-        // Uploading content.
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(fileContents.getBytes());
-        try {
-            DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+curList.getName()+".txt", inputStream,
-                   fileContents.length(), null);
-           Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
-        } catch (DropboxUnlinkedException e) {
-           // User has unlinked, ask them to link again here.
-           Log.e("DbExampleLog", "User has unlinked.");
-        } catch (DropboxException e) {
-           Log.e("DbExampleLog", "Something went wrong while uploading.");
-        }
-    } */
-    /**
-     * downloadFile
-     * Download a file from Dropbox.
-     * @param v 
-     */
-    
-    /*public void downloadFile(View v){
-        final TextView file_view = (TextView) findViewById(R.id.text_download);
-        //Get file
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try{
-            DropboxFileInfo info = mDBApi.getFile("/ShoppingList1.txt", null, outputStream, null);
-            
-            String content = new String(outputStream.toByteArray());
-            Toast.makeText(this,content,Toast.LENGTH_LONG).show();
-            file_view.setText(content); //CRASHES AT THIS LINE
-            
-        }catch(Exception e){
-            Log.e("downloadFile", e.getMessage());
-        }
-    }*/
     
     //---------------------------------------------------------------------------------------
     //LOGIN ACTIVITY STUFF
@@ -612,8 +567,50 @@ public class MainActivity extends Activity
             	}
             	cb.setLayoutParams(cb_param);
             	cb.setId(num_checkbox);
-            		//onCheck stuff ...
-            		//...
+            	cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+					
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						// TODO Auto-generated method stub
+						String co = isChecked + "";
+						i.setCheckedOff(co); //change value in item
+						String newContents = "";
+						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+				        try{
+				            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+currentList+".txt", null, outputStream, null);
+
+				            String content = new String(outputStream.toByteArray());
+				            StringTokenizer tokenizer = new StringTokenizer(content);
+				            
+				            
+				            while(tokenizer.hasMoreTokens()){
+				            	String token = tokenizer.nextToken();
+				            	if(token.equals(i.getName().replaceAll(" ", "_"))){
+				            		newContents += token + " " +tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + i.isCheckedOff() + "\n";
+				            	}
+				            	else{
+				            		newContents += token + " " +tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + "\n";
+				            	}
+				            }
+	 
+				        } catch(Exception e){
+				        	//catch exception
+				        }
+						
+						
+						ByteArrayInputStream is = new ByteArrayInputStream(newContents.getBytes());
+				            try {
+				                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+currentList+".txt", is,
+				                       newContents.length(), null);
+				               //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+				            } catch (DropboxUnlinkedException e) {
+				               // User has unlinked, ask them to link again here.
+				               Log.e("DbExampleLog", "User has unlinked.");
+				            } catch (DropboxException e) {
+				               Log.e("DbExampleLog", "Something went wrong while updating lists.txt");
+				            }
+						
+					}
+				});
             	rl.addView(cb);
             	//item text view
             	TextView item = new TextView(this);
@@ -637,7 +634,6 @@ public class MainActivity extends Activity
             		Item iTemp = i;
             		public void onClick(View v){
             			//view selected item
-            			//goToAddItem(v);
             			viewItem(iTemp);
             		}
             	});
