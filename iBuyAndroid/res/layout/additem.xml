@@ -122,6 +122,7 @@
 			android:layout_below="@id/priority"
 			android:textSize="20sp"
 			android:text="Save Item"
+			android:onClick="addNewItem"
 		/>
 	</RelativeLayout>
 </ScrollView>
