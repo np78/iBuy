@@ -59,6 +59,7 @@ public class MainActivity extends Activity
     private boolean isLoggedIn;
     private String currentUser;
     private String currentList;
+    private String currentItem="";
     
     
     
@@ -375,19 +376,19 @@ public class MainActivity extends Activity
             
             String content = new String(outputStream.toByteArray());
             StringTokenizer tokenizer = new StringTokenizer(content);
-            //Toast.makeText(this,content,Toast.LENGTH_LONG).show();
             
-            //remove list from lists.txt
-            String token;
             String newContents = "";
             while(tokenizer.hasMoreTokens()){
-            	token = tokenizer.nextToken();
+            	String token = tokenizer.nextToken();
             	if(token.equals(listName)){
-            		tokenizer.nextToken();
-            		tokenizer.nextToken();
+            		Toast.makeText(this,"ListName = "+listName,Toast.LENGTH_LONG).show(); //test
+            		String extaTokens = tokenizer.nextToken() + tokenizer.nextToken();
             	}
-            	content += token + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + "\n";
+            	else{
+            		newContents += token + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + "\n";
+            	}
             }
+            
             
             
             //update lists.txt
@@ -408,7 +409,7 @@ public class MainActivity extends Activity
         }
         //delete list file
         mDBApi.delete("/"+currentUser+"/"+listName+".txt");
-        
+        goHomeScreen(v);
       Toast.makeText(this,listName+" was deleted.",Toast.LENGTH_LONG).show();
     }
     /*
@@ -637,7 +638,7 @@ public class MainActivity extends Activity
             		public void onClick(View v){
             			//view selected item
             			//goToAddItem(v);
-            			//viewItem(iTemp);
+            			viewItem(iTemp);
             		}
             	});
             	rl.addView(item);
@@ -657,11 +658,17 @@ public class MainActivity extends Activity
     }
     /*
      * view the information of a selected Item
+     * UNDER CONSTRUCTION
      */
     public void viewItem(Item i){
+    	currentItem = i.getName();
+    	setContentView(R.layout.additem);
+    	
     	EditText name = (EditText) findViewById(R.id.enterItem);
+    	name.setHint(i.getName());
     	//name.setText(i.getName(), TextView.BufferType.EDITABLE);
     	EditText category = (EditText) findViewById(R.id.enterCategory);
+    	category.setHint(i.getCategory());
     	//category.setText(i.getCategory(), TextView.BufferType.EDITABLE);
     	
     	int priority = i.getPriority();
@@ -733,61 +740,133 @@ public class MainActivity extends Activity
      * ListViewActivity usage
      */
     public void goToAddItem(View v){
+    	currentItem="";
         setContentView(R.layout.additem);
     }
     /*
      * addNewItem
      * 
-     * Adds a new item to the current list.
+     * Adds a new item to the current list. Or edits a current item.
      */
     public void addNewItem(View v){
-    	//get new item info
-        EditText et_name = (EditText) findViewById(R.id.enterItem);
-        String name = et_name.getText().toString();
-        EditText et_cat = (EditText) findViewById(R.id.enterCategory);
-        String cat = et_cat.getText().toString();
-        String store = "N/A";
-        RadioButton rb1 = (RadioButton) findViewById(R.id.RBOne);
-        RadioButton rb2 = (RadioButton) findViewById(R.id.RBTwo);
-        RadioButton rb3 = (RadioButton) findViewById(R.id.RBThree);
-        RadioButton rb4 = (RadioButton) findViewById(R.id.RBFour);
-        //RadioButton rb5 = (RadioButton) findViewById(R.id.RBFive);
-        int priority;
-        if(rb1.isChecked()){ priority = 1;}
-        else if(rb2.isChecked()){ priority = 2;}
-        else if(rb3.isChecked()){ priority = 3;}
-        else if(rb4.isChecked()){ priority = 4;}
-        else{ priority = 5;}
-        
-        Item newItem = new Item(name, cat, store, priority);
-        
-        //get list content and add item info to list content
-        String listName = currentList;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try{
-            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+listName+".txt", null, outputStream, null);
+    	EditText temp = (EditText) findViewById(R.id.enterItem);
+    	
+    	if(currentItem.equals("")){ //new item
+    		//get new item info
+            EditText et_name = (EditText) findViewById(R.id.enterItem);
+            String name = et_name.getText().toString().replaceAll(" ", "_");
+            EditText et_cat = (EditText) findViewById(R.id.enterCategory);
+            String cat = et_cat.getText().toString().replaceAll(" ", "_");
+            String store = "N/A";
+            RadioButton rb1 = (RadioButton) findViewById(R.id.RBOne);
+            RadioButton rb2 = (RadioButton) findViewById(R.id.RBTwo);
+            RadioButton rb3 = (RadioButton) findViewById(R.id.RBThree);
+            RadioButton rb4 = (RadioButton) findViewById(R.id.RBFour);
+            //RadioButton rb5 = (RadioButton) findViewById(R.id.RBFive);
+            int priority;
+            if(rb1.isChecked()){ priority = 1;}
+            else if(rb2.isChecked()){ priority = 2;}
+            else if(rb3.isChecked()){ priority = 3;}
+            else if(rb4.isChecked()){ priority = 4;}
+            else{ priority = 5;}
             
-            String content = new String(outputStream.toByteArray());
-            content += "\n" + newItem.getName() + " " + newItem.getCategory() + " " + newItem.getStore() + " " + newItem.getPriority() + " false";
+            Item newItem = new Item(name, cat, store, priority);
             
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(content.getBytes());
-            try {
-                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+listName+".txt", inputStream,
-                       content.length(), null);
-               //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
-            } catch (DropboxUnlinkedException e) {
-               // User has unlinked, ask them to link again here.
-               Log.e("DbExampleLog", "User has unlinked.");
-            } catch (DropboxException e) {
-               Log.e("DbExampleLog", "Something went wrong while adding new item to list.");
+            //get list content and add item info to list content
+            String listName = currentList;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try{
+                DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+listName+".txt", null, outputStream, null);
+                
+                String content = new String(outputStream.toByteArray());
+                content += "\n" + newItem.getName() + " " + newItem.getCategory() + " " + newItem.getStore() + " " + newItem.getPriority() + " false";
+                
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(content.getBytes());
+                try {
+                    DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+listName+".txt", inputStream,
+                           content.length(), null);
+                   //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+                } catch (DropboxUnlinkedException e) {
+                   // User has unlinked, ask them to link again here.
+                   Log.e("DbExampleLog", "User has unlinked.");
+                } catch (DropboxException e) {
+                   Log.e("DbExampleLog", "Something went wrong while adding new item to list.");
+                }
+                
+            }catch(Exception e){
+                Log.e("downloadFile", e.getMessage());
             }
             
-        }catch(Exception e){
-            Log.e("downloadFile", e.getMessage());
-        }
-        
-        goToList(listName); //go to view current list with added item
-        
+            goToList(listName); //go to view current list with added item
+            
+    	}
+    	else{
+    		//get new item info
+            EditText et_name = (EditText) findViewById(R.id.enterItem);
+            String name = et_name.getText().toString().replaceAll(" ", "_");
+            EditText et_cat = (EditText) findViewById(R.id.enterCategory);
+            String cat = et_cat.getText().toString().replaceAll(" ", "_");
+            String store = "N/A";
+            RadioButton rb1 = (RadioButton) findViewById(R.id.RBOne);
+            RadioButton rb2 = (RadioButton) findViewById(R.id.RBTwo);
+            RadioButton rb3 = (RadioButton) findViewById(R.id.RBThree);
+            RadioButton rb4 = (RadioButton) findViewById(R.id.RBFour);
+            
+            if(name.equals("")){ //empty
+            	name = et_name.getHint().toString().replaceAll(" ", "_");
+            }
+            if(cat.equals("")){ //empty
+            	cat = et_cat.getHint().toString().replaceAll(" ", "_");
+            }
+            int priority;
+            if(rb1.isChecked()){ priority = 1;}
+            else if(rb2.isChecked()){ priority = 2;}
+            else if(rb3.isChecked()){ priority = 3;}
+            else if(rb4.isChecked()){ priority = 4;}
+            else{ priority = 5;}
+            
+            String listName = currentList;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try{
+                DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+listName+".txt", null, outputStream, null);
+                
+                String content = new String(outputStream.toByteArray());
+                StringTokenizer tokenizer = new StringTokenizer(content);
+                
+                String newContents = "";
+                while(tokenizer.hasMoreTokens()){
+                	String token = tokenizer.nextToken();
+                	if(token.equals(et_name.getHint().toString().replaceAll(" ", "_"))){
+                		String extraStuff = tokenizer.nextToken() + tokenizer.nextToken() + tokenizer.nextToken(); //category, store, priority
+                		String isChecked = tokenizer.nextToken();
+                		newContents += name + " " + cat + " " + store + " " + priority + " " + isChecked + "\n";
+                		
+                	}
+                	else{
+                		newContents += token + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() +"\n";
+                	}
+                }
+                
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(newContents.getBytes());
+                try {
+                    DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+listName+".txt", inputStream,
+                           newContents.length(), null);
+                   //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+                } catch (DropboxUnlinkedException e) {
+                   // User has unlinked, ask them to link again here.
+                   Log.e("DbExampleLog", "User has unlinked.");
+                } catch (DropboxException e) {
+                   Log.e("DbExampleLog", "Something went wrong while adding new item to list.");
+                }
+                
+            }catch(Exception e){
+                Log.e("downloadFile", e.getMessage());
+            }
+            goToList(listName); //go to view current list with added item
+    	}
+    	
+    	currentItem = "";
+    	
     }
 
 }
