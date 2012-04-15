@@ -26,7 +26,15 @@ public class ExpenseTracker extends JFrame implements ActionListener{
 	
 	public ExpenseTracker(String user, DropboxAPI<WebAuthSession> mDBApi, boolean byWeek, boolean byLastTrip)
 	{
-		super("iBuy - Expense Tracker");
+		String title = "iBuy - Expense Tracker";
+		if(byWeek ^ byLastTrip)
+		{
+			if(byWeek)
+				title += " (By Week)";
+			if(byLastTrip)
+				title += " (By Last Access)";
+		}
+		this.setTitle(title);
 		
 		StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/"+user+"/lists.txt"));
 		while(st.hasMoreTokens())
@@ -65,7 +73,8 @@ public class ExpenseTracker extends JFrame implements ActionListener{
 		}
 		add(new JTextField("Total"));
 		String totalText = new String("" + total);
-		totalText = totalText.substring(0, totalText.indexOf('.') + 3);
+		if(totalText.length() > 3)
+			totalText = totalText.substring(0, totalText.indexOf('.') + 3);
 		add(new JTextField("$" + totalText));
 		
 		setContentPane(new JScrollPane(getContentPane()));
