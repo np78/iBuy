@@ -26,6 +26,7 @@ public class OptionsMenu extends JFrame implements ActionListener{
 	private JRadioButton byWeek = new JRadioButton("    By Week");
 	private JRadioButton byLastTrip = new JRadioButton("    All");
 	private JButton back = new JButton("Return");
+	private JButton generate = new JButton("Generate Reports Now!");
 	private String user;
 	
 	public OptionsMenu(String user, DropboxAPI<WebAuthSession> mDBApi) 
@@ -35,9 +36,14 @@ public class OptionsMenu extends JFrame implements ActionListener{
 		this.mDBApi = mDBApi;
 		
 		back.addActionListener(this);
+		generate.addActionListener(this);
 		setLayout(new GridLayout(3,1));
 		setSize(500, 300);
-		add(new JTextField("Report Generation"));
+		JPanel topRow = new JPanel();
+		topRow.setLayout(new GridLayout(1, 2));
+		topRow.add(new JTextField("Report Generation"));
+		topRow.add(generate);
+		add(topRow);
 		
 		StringTokenizer st = new StringTokenizer(new String(Global.getFile(mDBApi, "/" + user + "/report.txt")));
 		while(st.hasMoreTokens())
@@ -73,28 +79,57 @@ public class OptionsMenu extends JFrame implements ActionListener{
 		add(back);
 		setVisible(true);
 	}
+	
+	public void writeReportStats()
+	{
+		String newReport = "";
+		if(itemStatistics.isSelected())
+			newReport += "true\t";
+		else
+			newReport += "false\t";
+		if(expenseTracker.isSelected())
+			newReport += "true\t";
+		else
+			newReport += "false\t";
+		if(byWeek.isSelected())
+			newReport += "true\t";
+		else
+			newReport += "false\t";
+		if(byLastTrip.isSelected())
+			newReport += "true\t";
+		else
+			newReport += "false\t";
+		Global.putFileOverwrite(mDBApi, "/" + user + "/report.txt", newReport);
+	}
 
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == generate)
+		{
+			writeReportStats();
+			StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/"+user+"/report.txt"));
+			boolean[] bool = new boolean[4];
+			int i = 0;
+			while(st.hasMoreTokens())
+			{
+				String token = st.nextToken();
+				if(token.equals("false"))
+					bool[i] = false;
+				else
+					bool[i] = true;
+				i++;
+			}
+			if(bool[0])
+			{
+				new ItemStatistics(user, mDBApi);
+			}
+			if(bool[1])
+			{
+				new ExpenseTracker(user, mDBApi, bool[2], bool[3]);
+			}
+		}
 		if(e.getSource() == back)
 		{
-			String newReport = "";
-			if(itemStatistics.isSelected())
-				newReport += "true\t";
-			else
-				newReport += "false\t";
-			if(expenseTracker.isSelected())
-				newReport += "true\t";
-			else
-				newReport += "false\t";
-			if(byWeek.isSelected())
-				newReport += "true\t";
-			else
-				newReport += "false\t";
-			if(byLastTrip.isSelected())
-				newReport += "true\t";
-			else
-				newReport += "false\t";
-			Global.putFileOverwrite(mDBApi, "/" + user + "/report.txt", newReport);
+			writeReportStats();
 			new MainMenu(user, mDBApi);
 			setVisible(false);
 			dispose();
