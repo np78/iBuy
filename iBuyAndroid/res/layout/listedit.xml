@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView 
+        	android:id="@+id/listname_text"
+        	android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:textSize="20sp"
+    		android:text="Enter a name for the list:"
+        
+        	/>
+    <EditText 
+        	android:id="@+id/listname_edit"		
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/listname_text"
+			android:layout_marginBottom="20sp"
+			
+		/>
+    <Button 
+        	android:id="@+id/listname_save"
+        	android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_below="@id/listname_edit"
+    		android:layout_alignParentLeft="true"
+    		android:background="#33CC00"
+    		android:textSize="20sp"
+    		android:layout_marginLeft="10sp"
+    		android:text="Save List"
+    		android:onClick="saveListName"
+        
+        	/>
+    <Button 
+       	 	android:id="@+id/delete_list"
+        	android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:layout_below="@id/listname_edit"
+    		android:layout_alignParentRight="true"
+    		android:background="#CC0000"
+    		android:layout_marginRight="10sp"
+    		android:textSize="20sp"
+    		android:text="Delete List"
+    		android:onClick="deleteList"
+        />
+
+</RelativeLayout>

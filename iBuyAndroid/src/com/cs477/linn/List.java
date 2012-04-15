@@ -4,24 +4,30 @@
  */
 package com.cs477.linn;
 
-import android.view.View;
-import android.widget.TextView;
-import java.util.ArrayList;
+
+import java.util.Date;
+import java.util.LinkedList;
+
 
 /**
- * List - acts as a list object
- * @author Nicole Williams (Team LINN)
- * @version 4/3/12
+ * List - acts as a list object that contains Item objects
+ * @author N. Williams (Team LINN)
+ * @version 4/11/12
  */
 public class List {
-    public String user; //name of user that list belongs
-    public String list_name;
-    public ArrayList items; //list of items in the list
+    private String user; //name of user that list belongs
+    private String list_name;
+    private String list_total;
+    private String list_date;
+    private LinkedList<Item> items; //list of items in the list
     
     public List(String u, String name){
         user = u;
         list_name = name;
-        items = new ArrayList(); //empty list
+        list_total = "0.00";
+        Date d = new Date(System.currentTimeMillis());
+        list_date = d.toString().replaceAll(" ", "_");
+        items = new LinkedList<Item>(); //empty list
     }
     
     public String getUser(){
@@ -32,6 +38,14 @@ public class List {
         return list_name;
     }
     
+    public String getTotal(){
+    	return list_total;
+    }
+    
+    public String getDate(){
+    	return list_date;
+    }
+    
     public void addItem(Item i){
         items.add(i);
     }
@@ -39,25 +53,29 @@ public class List {
     public void removeItem(Item i){
         items.remove(i);
     }
-    /*
-    public void displayItems(View v){
-        TextView display = (TextView) v.findViewById(R.id.text_download);
-        String display_text = "";
-        for(int i=0; i<items.size(); i++){
-            Item cur = (Item) items.get(i);
-            display_text += cur.getName() + "\n";
-        }
-        display.setText(display_text);
-    }*/
     
-    @Override
-    public String toString(){
-        String display_text = "";
-        for(int i=0; i<items.size(); i++){
-            Item cur = (Item) items.get(i);
-            display_text += cur.getName() + "\n";
-        }
-        return display_text;
+    /*
+     * newListData
+     * 
+     * Returns a String of the data to add to lists.txt file.
+     */
+    public String newListData(){
+    	String data = list_name.replaceAll(" ", "_") + " " + list_total + " " + list_date;
+    	return data;
+    }
+    
+    public void setName(String name){
+    	list_name = name;
+    }
+    
+    public void setUser(String u){
+    	user = u;
+    }
+    public void setTotal(String total){
+    	list_total = total;
+    }
+    public void setDate(String date){
+    	list_date = date;
     }
     
 }
