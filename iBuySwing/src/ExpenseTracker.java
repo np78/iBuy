@@ -30,9 +30,9 @@ public class ExpenseTracker extends JFrame implements ActionListener{
 		if(byWeek ^ byLastTrip)
 		{
 			if(byWeek)
-				title += " (By Week)";
+				title += " (Week Old Lists)";
 			if(byLastTrip)
-				title += " (By Last Access)";
+				title += " (All)";
 		}
 		this.setTitle(title);
 		
@@ -44,7 +44,7 @@ public class ExpenseTracker extends JFrame implements ActionListener{
 			Date last = new Date(Date.parse(Global.readFileName(st.nextToken())));
 			Date current = new Date(System.currentTimeMillis());
 			boolean isBefore = compareDates(last, current);
-			if((isBefore && byWeek) || byLastTrip)
+			if((isBefore && byWeek) || byLastTrip || (!byLastTrip && !byWeek))
 			{
 				lists.add(new JTextField(Global.readFileName(name)));
 				amounts.add(new JTextField("$" + amount));
