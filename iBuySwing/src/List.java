@@ -2,6 +2,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -37,7 +38,7 @@ public class List extends JFrame implements ActionListener{
 	private JButton storeSort = new JButton("Store");
 	private JButton importanceSort = new JButton("Importance");
 	private JButton crossOffSort = new JButton("Cross Off");
-	private JTextField total = new JTextField("Enter Total (no $ signs)");
+	private JTextField total = new JTextField("Enter Total");
 	private JButton setTotal = new JButton("Set Total");
 	private String user, filename;
 	
@@ -84,7 +85,7 @@ public class List extends JFrame implements ActionListener{
 		}
 		
 		//Sets layout
-		setLayout(new GridLayout(7,1));
+		setLayout(new GridLayout(8,1));
 		setSize(1000, Math.min((200 + 150*items.size()), 1000));
 		add(refresh);
 		add(change);
@@ -116,6 +117,11 @@ public class List extends JFrame implements ActionListener{
 			jpanel.add(settings.get(i));
 		}
 		add(jpanel);
+		JPanel totalPanel = new JPanel();
+		totalPanel.setLayout(new GridLayout(1, 2));
+		totalPanel.add(total);
+		totalPanel.add(setTotal);
+		add(totalPanel);
 		add(back);
 		
 		setContentPane(new JScrollPane(getContentPane()));
@@ -187,6 +193,23 @@ public class List extends JFrame implements ActionListener{
 				}
 				else
 					amount += ".00";
+				if(amount.contains("$"))
+					amount = amount.substring(0, amount.indexOf('$')) + amount.substring(amount.indexOf('$')+1);
+				
+				StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/lists.txt"));
+				String newList = "";
+				while(st.hasMoreTokens())
+				{
+					String token = st.nextToken();
+					String token2 = st.nextToken();
+					String token3 = st.nextToken();
+					if(token.equals(Global.toFileName(filename)))
+						newList += token + "\t" + amount + "\t" + token3  + "\n";
+					else
+						newList += token + "\t" + token2 + "\t" + token3 + "\n";
+				}
+  				Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList);
+						
 			}
 		}
 		if(e.getSource() == crossOffSort)

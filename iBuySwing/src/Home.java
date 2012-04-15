@@ -78,6 +78,30 @@ public class Home extends JFrame implements ActionListener, KeyListener {
   		}
 	}
 	
+	public void getReports(String user)
+	{	
+		StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/"+user+"/report.txt"));
+		boolean[] bool = new boolean[4];
+		int i = 0;
+		while(st.hasMoreTokens())
+		{
+			String token = st.nextToken();
+			if(token.equals("false"))
+				bool[i] = false;
+			else
+				bool[i] = true;
+			i++;
+		}
+		if(bool[0])
+		{
+			new ItemStatistics(user, mDBApi);
+		}
+		if(bool[1])
+		{
+			new ExpenseTracker(user, mDBApi, bool[2], bool[3]);
+		}
+	}
+	
 	public void login()
 	{
 		String user = username.getText();
@@ -95,6 +119,7 @@ public class Home extends JFrame implements ActionListener, KeyListener {
   				String password = scanner.nextToken();
   				if(username.equals(user) && password.equals(pass))
   				{
+  					getReports(user);
   					new MainMenu(user, mDBApi);
   					setVisible(false);
   					dispose();
