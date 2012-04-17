@@ -122,7 +122,7 @@ public class SignUp extends JFrame implements ActionListener, KeyListener{
 				Global.putFileOverwrite(mDBApi, "/users.txt", usersFile);
 	        	
 	        	//Create folder for user and first list
-				Date d = new Date(System.currentTimeMillis());
+				Date d = new Date(System.currentTimeMillis() );
 				Global.makeFolder(mDBApi, "/" + user, "/" + user + "/lists.txt", "first_list\t 0.00\t" + Global.toFileName(d.toString()) + "\n");
 	        	
 	        	//Creates first list contents

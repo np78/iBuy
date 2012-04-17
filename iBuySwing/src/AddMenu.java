@@ -30,7 +30,7 @@ public class AddMenu extends JFrame implements ActionListener{
         
         add.addActionListener(this);
         cancel.addActionListener(this);
-        
+    
         setLayout(new GridLayout(3,1));
 	    add(name);
 	    add(add);

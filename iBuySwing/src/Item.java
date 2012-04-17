@@ -19,8 +19,8 @@ public class Item {
 	{
 		setName(name);
 		setCategory(category);
-		setStore(store);
 		setImportance(importance);
+		setStore(store);
 		setIsChecked(isChecked);
 	}
 	
@@ -52,5 +52,13 @@ public class Item {
 	{
 		this.isChecked = isChecked;
 		checkbox.setSelected(isChecked);
+	}
+
+	public void setItem(Item item) {
+		setName(item.name);
+		setCategory(item.category);
+		setImportance(item.importance);
+		setStore(item.store);
+		setIsChecked(item.isChecked);
 	}
 }
