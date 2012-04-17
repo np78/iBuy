@@ -132,11 +132,11 @@ public class ExpenseTracker extends JFrame implements ActionListener{
 				{
 					String first = dates.get(j-1).getText();
 					String second = dates.get(j).getText();
-					if(first.substring(first.length()-4).compareTo(second.substring(second.length()-4)) > 0)
+					if(first.substring(first.length()-4).compareTo(second.substring(second.length()-4)) >= 0)
 					{
 						Integer monthOne = new Integer(first.substring(0, first.indexOf('/')));
 						Integer monthTwo = new Integer(second.substring(0, second.indexOf('/')));
-						if(monthOne.compareTo(monthTwo) > 0)
+						if(monthOne.compareTo(monthTwo) >= 0)
 						{
 							int diff = monthTwo.intValue() - monthOne.intValue();
 							boolean doSwitch = false;
