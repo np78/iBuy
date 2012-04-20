@@ -1,13 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="Hello World, MainActivity"
-    />
-</LinearLayout>
+    android:orientation="vertical" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+ <SlidingDrawer
+     android:id="@+id/drawer"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
 
+     android:handle="@+id/handle"
+     android:content="@+id/content">
+
+     <Button
+         android:id="@+id/handle"
+         android:layout_width="match_parent"
+         android:layout_height="65dip" 
+         android:background="@drawable/drawer_handle_full"
+         android:textColor="#FFFFFF"
+		/>
+     
+
+     <LinearLayout
+         android:id="@+id/content"
+         android:layout_width="match_parent" 
+         android:layout_height="wrap_content">
+         <TextView
+             android:id="@+id/content_text"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="Sort items in list by:"
+             />
+         <RadioGroup	
+             	android:id="@+id/sortgroup"
+	    		android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/content_text"
+				android:orientation="horizontal"
+				android:gravity="center">
+			<RadioButton android:id="@+id/RB_bycategory"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Category"
+			/>
+			<RadioButton android:id="@+id/RB_bystore"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Store"
+			/>
+			<RadioButton android:id="@+id/RB_bypriority"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Priority"
+			/>
+			</RadioGroup>
+         </LinearLayout>
+
+ </SlidingDrawer>
+
+</LinearLayout>
