@@ -37,6 +37,7 @@ public class addItemFrame extends javax.swing.JFrame {
 		this.mDBApi = mDBApi;
     
         initComponents();
+        setVisible(true);
     }
 
     /** This method is called from within the constructor to
@@ -65,6 +66,7 @@ public class addItemFrame extends javax.swing.JFrame {
         importanceScaleLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
         setName("Form"); // NOI18N
 

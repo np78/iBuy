@@ -43,12 +43,22 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
         
     /** Creates new form itemListView */
     public itemListView(String user, String filename, DropboxAPI<WebAuthSession> mDBApi) {
-        super(filename);
+        
+                super(filename);
 		this.user = user;
 		this.filename = filename;
 		this.mDBApi = mDBApi;
                 
-                /**StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt"));
+                 initComponents();
+                 getItemList();
+                 setVisible(true);
+                 listIdentifierLabel.setText("List: " + filename);
+                
+    }
+    
+    public void getItemList(){
+        
+        StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt"));
 		items.clear();
 		settings.clear();
 		while(st.hasMoreTokens())
@@ -59,7 +69,7 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 			str[2] = Global.readFileName(st.nextToken());
 			str[3] = Global.readFileName(st.nextToken());
 			str[4] = Global.readFileName(st.nextToken());
-			int importance = str[3].charAt(0) - 48;
+			int importance = str[3].charAt(0) - 48;  
 			boolean isChecked = false;
 			if(str[4].equals("true"))
 				isChecked = true;
@@ -68,21 +78,38 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 			JButton set = new JButton("Settings");
 			set.addActionListener(this);
 			settings.add(set);
-                        
+                        itemListPanel.setLayout(new GridLayout(items.size(),8));
+                       
                         for(int i = 0; i < items.size(); i++)
                         {
                             items.get(i);
-                            itemScrollPane.add(item.checkbox);
-                            itemScrollPane.add(item.nameField);
-                            itemScrollPane.add(item.categoryField);
-                            itemScrollPane.add(item.storeField);
-                            itemScrollPane.add(item.importanceField);
-                            itemScrollPane.add(settings.get(i));
+                            itemListPanel.add(item.checkbox);
+                            itemListPanel.add(item.nameField);
+                            itemListPanel.add(item.categoryField);
+                            itemListPanel.add(item.storeField);
+                            itemListPanel.add(item.importanceField);
+                            itemListPanel.add(settings.get(i));
                         }
-		}**/
-        initComponents();
+		}
+                
+                itemScrollPane.doLayout();
+                setVisible(true);
     }
-
+    
+    
+    public void settingButtonActionPerformed(ActionEvent e) {
+        System.out.println("settings pressed");
+        for(int i = 0; i < settings.size(); i++)
+		{
+			if(e.getSource() == settings.get(i))
+			{
+                            System.out.println("this is right");
+				new editItemFrame(user, filename, items.get(i), mDBApi);
+				setVisible(false);
+				dispose();
+			}
+		}
+    }
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -92,14 +119,13 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        listViewPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        listViewPanel = new javax.swing.JPanel();
         refreshButton = new javax.swing.JButton();
         changeListNameButton = new javax.swing.JButton();
         searchByNameButton = new javax.swing.JButton();
-        addItemButton = new javax.swing.JButton();
         removeItemButton = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
-        itemScrollPane = new javax.swing.JScrollPane();
         searchTextField = new javax.swing.JTextField();
         crossOffSortButton = new javax.swing.JButton();
         nameSortButton = new javax.swing.JButton();
@@ -107,15 +133,37 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
         storeSortButton = new javax.swing.JButton();
         importanceSortButton = new javax.swing.JButton();
         logOutButton2 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        BackButton = new javax.swing.JButton();
+        listIdentifierLabel = new javax.swing.JLabel();
+        itemScrollPane = new javax.swing.JScrollPane();
+        itemListPanel = new javax.swing.JPanel();
+        addItemButton = new javax.swing.JButton();
+        sortByLabel = new javax.swing.JLabel();
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.setName("jTable1"); // NOI18N
+        jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        listViewPanel2.setBackground(new java.awt.Color(51, 51, 51));
-        listViewPanel2.setName("listViewPanel2"); // NOI18N
+        listViewPanel.setBackground(new java.awt.Color(51, 51, 51));
+        listViewPanel.setName("listViewPanel"); // NOI18N
 
         refreshButton.setBackground(new java.awt.Color(102, 102, 102));
         refreshButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        refreshButton.setForeground(new java.awt.Color(255, 255, 255));
         refreshButton.setText("Refresh");
         refreshButton.setName("refreshButton"); // NOI18N
         refreshButton.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +172,9 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
             }
         });
 
+        changeListNameButton.setBackground(new java.awt.Color(102, 102, 102));
+        changeListNameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        changeListNameButton.setForeground(new java.awt.Color(255, 255, 255));
         changeListNameButton.setText("change List name");
         changeListNameButton.setName("changeListNameButton"); // NOI18N
         changeListNameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -132,6 +183,9 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
             }
         });
 
+        searchByNameButton.setBackground(new java.awt.Color(102, 102, 102));
+        searchByNameButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        searchByNameButton.setForeground(new java.awt.Color(255, 255, 255));
         searchByNameButton.setText("search By name");
         searchByNameButton.setName("searchByNameButton"); // NOI18N
         searchByNameButton.addActionListener(new java.awt.event.ActionListener() {
@@ -140,14 +194,9 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        addItemButton.setText("Add Item");
-        addItemButton.setName("addItemButton"); // NOI18N
-        addItemButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addItemButtonActionPerformed(evt);
-            }
-        });
-
+        removeItemButton.setBackground(new java.awt.Color(102, 102, 102));
+        removeItemButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        removeItemButton.setForeground(new java.awt.Color(255, 255, 255));
         removeItemButton.setText("Remove Item");
         removeItemButton.setName("removeItemButton"); // NOI18N
         removeItemButton.addActionListener(new java.awt.event.ActionListener() {
@@ -155,20 +204,6 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
                 removeItemButtonActionPerformed(evt);
             }
         });
-
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance().getContext().getActionMap(itemListView.class, this);
-        backButton.setAction(actionMap.get("LoadMainMenuPanel")); // NOI18N
-        backButton.setBackground(new java.awt.Color(102, 102, 102));
-        backButton.setFont(new java.awt.Font("Tahoma", 1, 18));
-        backButton.setText("Back");
-        backButton.setName("backButton"); // NOI18N
-        backButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                backButtonActionPerformed(evt);
-            }
-        });
-
-        itemScrollPane.setName("itemScrollPane"); // NOI18N
 
         searchTextField.setName("searchTextField"); // NOI18N
 
@@ -214,6 +249,7 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 
         logOutButton2.setBackground(new java.awt.Color(102, 102, 102));
         logOutButton2.setFont(new java.awt.Font("Tahoma", 1, 18));
+        logOutButton2.setForeground(new java.awt.Color(255, 255, 255));
         logOutButton2.setText("log out");
         logOutButton2.setName("logOutButton2"); // NOI18N
         logOutButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -222,92 +258,130 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36));
-        jLabel1.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setName("jLabel1"); // NOI18N
+        BackButton.setBackground(new java.awt.Color(102, 102, 102));
+        BackButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        BackButton.setForeground(new java.awt.Color(255, 255, 255));
+        BackButton.setText("Back");
+        BackButton.setName("BackButton"); // NOI18N
+        BackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackButtonActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout listViewPanel2Layout = new javax.swing.GroupLayout(listViewPanel2);
-        listViewPanel2.setLayout(listViewPanel2Layout);
-        listViewPanel2Layout.setHorizontalGroup(
-            listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(listViewPanel2Layout.createSequentialGroup()
-                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(listViewPanel2Layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(searchByNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(listViewPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 528, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(listViewPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, listViewPanel2Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, listViewPanel2Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanel2Layout.createSequentialGroup()
-                                        .addComponent(removeItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(76, 76, 76)
-                                        .addComponent(addItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(itemScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanel2Layout.createSequentialGroup()
-                                        .addComponent(crossOffSortButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(nameSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(categorySortButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(storeSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(importanceSortButton)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanel2Layout.createSequentialGroup()
-                                        .addGap(197, 197, 197)
-                                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 94, Short.MAX_VALUE)
-                                        .addComponent(logOutButton2)))))
-                        .addGap(26, 26, 26)))
-                .addGap(14, 14, 14))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanel2Layout.createSequentialGroup()
-                .addGap(136, 136, 136)
-                .addComponent(changeListNameButton, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                .addGap(110, 110, 110))
+        listIdentifierLabel.setBackground(new java.awt.Color(51, 51, 51));
+        listIdentifierLabel.setFont(new java.awt.Font("Tahoma", 1, 36));
+        listIdentifierLabel.setForeground(new java.awt.Color(255, 153, 0));
+        listIdentifierLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        listIdentifierLabel.setName("listIdentifierLabel"); // NOI18N
+
+        itemScrollPane.setName("itemScrollPane"); // NOI18N
+
+        itemListPanel.setName("itemListPanel"); // NOI18N
+
+        javax.swing.GroupLayout itemListPanelLayout = new javax.swing.GroupLayout(itemListPanel);
+        itemListPanel.setLayout(itemListPanelLayout);
+        itemListPanelLayout.setHorizontalGroup(
+            itemListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 614, Short.MAX_VALUE)
         );
-        listViewPanel2Layout.setVerticalGroup(
-            listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanel2Layout.createSequentialGroup()
+        itemListPanelLayout.setVerticalGroup(
+            itemListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 141, Short.MAX_VALUE)
+        );
+
+        itemScrollPane.setViewportView(itemListPanel);
+
+        addItemButton.setBackground(new java.awt.Color(102, 102, 102));
+        addItemButton.setFont(new java.awt.Font("Tahoma", 1, 18));
+        addItemButton.setForeground(new java.awt.Color(255, 255, 255));
+        addItemButton.setText("Add Item");
+        addItemButton.setName("addItemButton"); // NOI18N
+        addItemButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItemButtonActionPerformed(evt);
+            }
+        });
+
+        sortByLabel.setBackground(new java.awt.Color(102, 102, 102));
+        sortByLabel.setFont(new java.awt.Font("Tahoma", 1, 12));
+        sortByLabel.setForeground(new java.awt.Color(255, 255, 255));
+        sortByLabel.setText("Sort By:");
+        sortByLabel.setName("sortByLabel"); // NOI18N
+
+        javax.swing.GroupLayout listViewPanelLayout = new javax.swing.GroupLayout(listViewPanel);
+        listViewPanel.setLayout(listViewPanelLayout);
+        listViewPanelLayout.setHorizontalGroup(
+            listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listViewPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logOutButton2)
-                    .addComponent(refreshButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(listIdentifierLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanelLayout.createSequentialGroup()
+                        .addComponent(BackButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
+                        .addComponent(refreshButton, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(145, 145, 145)
+                        .addComponent(logOutButton2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, listViewPanelLayout.createSequentialGroup()
+                        .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(listViewPanelLayout.createSequentialGroup()
+                                .addComponent(searchByNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(listViewPanelLayout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(changeListNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(128, 128, 128))
+                    .addComponent(itemScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
+                    .addComponent(sortByLabel)
+                    .addGroup(listViewPanelLayout.createSequentialGroup()
+                        .addComponent(removeItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 312, Short.MAX_VALUE)
+                        .addComponent(addItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(listViewPanelLayout.createSequentialGroup()
+                        .addComponent(crossOffSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(nameSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(categorySortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(storeSortButton, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(importanceSortButton)))
+                .addContainerGap())
+        );
+        listViewPanelLayout.setVerticalGroup(
+            listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(listViewPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(listIdentifierLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(sortByLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(crossOffSortButton)
                     .addComponent(importanceSortButton)
                     .addComponent(storeSortButton)
                     .addComponent(categorySortButton)
-                    .addComponent(nameSortButton)
-                    .addComponent(crossOffSortButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(addItemButton, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(removeItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(listViewPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nameSortButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(itemScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(removeItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(addItemButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(searchByNameButton)
                     .addComponent(searchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(changeListNameButton, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(listViewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(logOutButton2)
+                    .addComponent(BackButton)
+                    .addComponent(refreshButton))
                 .addContainerGap())
         );
 
@@ -315,18 +389,19 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
+            .addGap(0, 653, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(listViewPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(listViewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 429, Short.MAX_VALUE)
+            .addGap(0, 462, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(listViewPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(listViewPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-669)/2, (screenSize.height-500)/2, 669, 500);
     }// </editor-fold>//GEN-END:initComponents
 
     private void logOutButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButton2ActionPerformed
@@ -335,19 +410,10 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 
     private void changeListNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeListNameButtonActionPerformed
         if (evt.getSource() == changeListNameButton) {            
-            new ChangeMenu(user, filename, mDBApi);             
-            setVisible(false);             
-            dispose();         }    
+            new changeListName(user, filename, mDBApi);             
+            setVisible(true);             
+        }
     }//GEN-LAST:event_changeListNameButtonActionPerformed
-
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        if(evt.getSource() == backButton)
-  		{
-  			new mainMenuFrame(user, mDBApi);
-  			setVisible(false);
-  			dispose();
-  		}
-    }//GEN-LAST:event_backButtonActionPerformed
 
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         if(evt.getSource() == refreshButton)
@@ -480,21 +546,11 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
   		}
     }//GEN-LAST:event_categorySortButtonActionPerformed
 
-    private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
-        if(evt.getSource() == addItemButton)
-  		{
-  			new addListFrame(user, mDBApi);
-  			setVisible(false);
-  			dispose();
-  		}
-    }//GEN-LAST:event_addItemButtonActionPerformed
-
     private void removeItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemButtonActionPerformed
         if(evt.getSource() == removeItemButton)
   		{
-  			new RemoveItem(user, filename, mDBApi);
-  			setVisible(false);
-  			dispose();
+  			//new RemoveItem(user, filename, mDBApi);
+  			setVisible(true);
   		}
     }//GEN-LAST:event_removeItemButtonActionPerformed
 
@@ -526,13 +582,30 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 		{
 			if(evt.getSource() == settings.get(i))
 			{
-				new ChangeItem(user, filename, items.get(i), mDBApi);
+				new editItemFrame(user, filename, items.get(i), mDBApi);
 				setVisible(false);
 				dispose();
 			}
 		}
 	
     }//GEN-LAST:event_searchByNameButtonActionPerformed
+
+    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+        if(evt.getSource() == BackButton){
+            new mainMenuFrame(user, mDBApi);
+            setVisible(false);
+            dispose();
+            
+        }
+    }//GEN-LAST:event_BackButtonActionPerformed
+
+    private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
+        if(evt.getSource() == addItemButton)
+  		{
+  			new addItemFrame(user, filename, mDBApi);
+  			setVisible(true);
+  		}
+    }//GEN-LAST:event_addItemButtonActionPerformed
 
     public void nameSort()
 	{
@@ -569,26 +642,32 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 		Global.putFileOverwrite(mDBApi, "/" + user + "/" + Global.toFileName(filename) + ".txt", newList);
 	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BackButton;
     private javax.swing.JButton addItemButton;
-    private javax.swing.JButton backButton;
     private javax.swing.JButton categorySortButton;
     private javax.swing.JButton changeListNameButton;
     private javax.swing.JButton crossOffSortButton;
     private javax.swing.JButton importanceSortButton;
+    private javax.swing.JPanel itemListPanel;
     private javax.swing.JScrollPane itemScrollPane;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel listViewPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel listIdentifierLabel;
+    private javax.swing.JPanel listViewPanel;
     private javax.swing.JButton logOutButton2;
     private javax.swing.JButton nameSortButton;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton removeItemButton;
     private javax.swing.JButton searchByNameButton;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JLabel sortByLabel;
     private javax.swing.JButton storeSortButton;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    
 }

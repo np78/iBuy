@@ -29,7 +29,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="signInPanel" alignment="0" max="32767" attributes="0"/>
+          <Component id="signInPanel" alignment="0" pref="307" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -65,7 +65,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="passwordLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="PasswordField" min="-2" max="-2" attributes="0"/>
+                                  <Component id="PasswordField" min="-2" pref="100" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="1">
                                   <Component id="userNameLabel" min="-2" max="-2" attributes="0"/>
@@ -73,7 +73,7 @@
                                   <Component id="userNameField" max="32767" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>

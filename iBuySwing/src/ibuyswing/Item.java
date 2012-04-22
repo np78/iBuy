@@ -31,11 +31,19 @@ public class Item {
 		this.name = name;
 		nameField.setText(name);
 	}
+        public String getName()
+	{
+		return name;
+	}
 	
 	public void setCategory(String category)
 	{
 		this.category = category;
 		categoryField.setText(category);
+	}
+        public String getCategory()
+	{
+		return category;
 	}
 	
 	public void setStore(String store)
@@ -43,11 +51,19 @@ public class Item {
 		this.store = store;
 		storeField.setText(store);
 	}
+        public String getStore()
+	{
+		return store;
+	}
 	
 	public void setImportance(int importance)
 	{
 		this.importance = importance;
 		importanceField.setText("" + importance);
+	}
+        public int getImportance()
+	{
+		return importance;
 	}
 	
 	public void setIsChecked(boolean isChecked)

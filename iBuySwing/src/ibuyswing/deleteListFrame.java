@@ -43,32 +43,70 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
         this.user = user;
 	this.mDBApi = mDBApi;
         initComponents();
-        getList();
+        getButtonList();
+        setVisible(true);
     }
-        
-        public final void getList(){
-        list.clear();
+        private void getButtonList(){
+   		
+		//Reads users list of lists
+		list.clear();
 	    StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/"+user+"/lists.txt"));
 		while(st.hasMoreTokens())
 		{
-			JButton j = new JButton(Global.readFileName(st.nextToken()));
+			JButton jListsButtons = new JButton(Global.readFileName(st.nextToken()));
+                        jListsButtons.setBackground(new java.awt.Color(102, 102, 102));
+                        jListsButtons.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+                        jListsButtons.setForeground(new java.awt.Color(255, 255, 255));
+                        
 			st.nextToken();
-                        String nextToken = st.nextToken();
-			j.addActionListener(this);
-			list.add(j);
+			st.nextToken();
+			jListsButtons.addActionListener(this);
+			list.add(jListsButtons);
 		}
-		setLayout(new GridLayout(list.size()+1,1));
-                setSize(500, Math.min((200 + 100*list.size()), 1000));
+		listPanel.setLayout(new GridLayout(list.size()+1,1));
 		for(int i = 0; i < list.size(); i++)
 		{
-		    listScrollPane.add(list.get(i));
+		    listPanel.add(list.get(i));
 		}
-       	
-	    setContentPane(listScrollPane);
-        setVisible(true);
-	
+        
+        
+	    listScrollPane.doLayout();
+           setVisible(true);
+    
     }
-
+        
+    public void actionPerformedDeleteList(ActionEvent e) {
+		
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(e.getSource() == list.get(i))
+			{
+				//Delete file
+				Global.delete(mDBApi, "/" + user + "/" + Global.toFileName(list.get(i).getText()) + ".txt");
+				StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/lists.txt"));
+				String newList = "";
+				//Finds filename in list and removes it
+				while(st.hasMoreTokens())
+				{
+					String token = st.nextToken();
+					if(!token.equals(Global.toFileName(list.get(i).getText())))
+						newList += token + "\t" + st.nextToken() + "\t" + st.nextToken() + "\n";
+					else
+					{
+						st.nextToken();
+						st.nextToken();
+					}
+				}
+				Global.putFileOverwrite(mDBApi, "/" + user + "/lists.txt", newList);
+				
+				//"Refreshes" window
+				//new DeleteMenu(user, mDBApi);
+                                getButtonList();
+				setVisible(false);
+				dispose();
+			}
+		}
+	}
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -79,22 +117,24 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
     private void initComponents() {
 
         deleteListPanel = new javax.swing.JPanel();
-        newListLabel = new javax.swing.JLabel();
+        deleteListLabel = new javax.swing.JLabel();
         cancelListButton = new javax.swing.JButton();
         listScrollPane = new javax.swing.JScrollPane();
+        listPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setAlwaysOnTop(true);
         setName("Form"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(deleteListFrame.class);
         deleteListPanel.setBackground(resourceMap.getColor("deleteListPanel.background")); // NOI18N
         deleteListPanel.setName("deleteListPanel"); // NOI18N
 
-        newListLabel.setFont(resourceMap.getFont("newListLabel.font")); // NOI18N
-        newListLabel.setForeground(resourceMap.getColor("newListLabel.foreground")); // NOI18N
-        newListLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        newListLabel.setText(resourceMap.getString("newListLabel.text")); // NOI18N
-        newListLabel.setName("newListLabel"); // NOI18N
+        deleteListLabel.setFont(resourceMap.getFont("deleteListLabel.font")); // NOI18N
+        deleteListLabel.setForeground(resourceMap.getColor("deleteListLabel.foreground")); // NOI18N
+        deleteListLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        deleteListLabel.setText(resourceMap.getString("deleteListLabel.text")); // NOI18N
+        deleteListLabel.setName("deleteListLabel"); // NOI18N
 
         cancelListButton.setBackground(resourceMap.getColor("cancelListButton.background")); // NOI18N
         cancelListButton.setFont(resourceMap.getFont("cancelListButton.font")); // NOI18N
@@ -110,6 +150,25 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
 
         listScrollPane.setName("listScrollPane"); // NOI18N
 
+        listPanel.setBackground(resourceMap.getColor("listPanel.background")); // NOI18N
+        listPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, resourceMap.getColor("listPanel.border.highlightOuterColor"), resourceMap.getColor("listPanel.border.highlightInnerColor"), resourceMap.getColor("listPanel.border.shadowOuterColor"), resourceMap.getColor("listPanel.border.shadowInnerColor"))); // NOI18N
+        listPanel.setToolTipText(resourceMap.getString("listPanel.toolTipText")); // NOI18N
+        listPanel.setDoubleBuffered(true);
+        listPanel.setName("listPanel"); // NOI18N
+
+        javax.swing.GroupLayout listPanelLayout = new javax.swing.GroupLayout(listPanel);
+        listPanel.setLayout(listPanelLayout);
+        listPanelLayout.setHorizontalGroup(
+            listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 174, Short.MAX_VALUE)
+        );
+        listPanelLayout.setVerticalGroup(
+            listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        listScrollPane.setViewportView(listPanel);
+
         javax.swing.GroupLayout deleteListPanelLayout = new javax.swing.GroupLayout(deleteListPanel);
         deleteListPanel.setLayout(deleteListPanelLayout);
         deleteListPanelLayout.setHorizontalGroup(
@@ -117,7 +176,7 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
             .addGroup(deleteListPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(deleteListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(newListLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                    .addComponent(deleteListLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deleteListPanelLayout.createSequentialGroup()
                         .addGroup(deleteListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deleteListPanelLayout.createSequentialGroup()
@@ -133,7 +192,7 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
             deleteListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(deleteListPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(newListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(deleteListLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(listScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -149,7 +208,7 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(deleteListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(deleteListPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -166,9 +225,10 @@ public class deleteListFrame extends javax.swing.JFrame implements ActionListene
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelListButton;
+    private javax.swing.JLabel deleteListLabel;
     private javax.swing.JPanel deleteListPanel;
+    private javax.swing.JPanel listPanel;
     private javax.swing.JScrollPane listScrollPane;
-    private javax.swing.JLabel newListLabel;
     // End of variables declaration//GEN-END:variables
 
     public void actionPerformed(ActionEvent e) {

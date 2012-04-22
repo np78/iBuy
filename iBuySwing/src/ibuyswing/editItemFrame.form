@@ -1,0 +1,304 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="alwaysOnTop" type="boolean" value="true"/>
+    <Property name="bounds" type="java.awt.Rectangle" editor="org.netbeans.beaninfo.editors.RectangleEditor">
+      <Rectangle value="[0, 0, 0, 0]"/>
+    </Property>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-46,0,0,1,88"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="0"/>
+    <SyntheticProperty name="generateSize" type="boolean" value="true"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="editItemPanel" alignment="1" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="editItemPanel" alignment="1" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="editItemPanel">
+      <Properties>
+        <Property name="background" type="java.awt.Color" resourceKey="editItemPanel.background"/>
+        <Property name="name" type="java.lang.String" value="editItemPanel" noResource="true"/>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jLabel1" pref="332" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="newItemNameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="currentItemNameLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="currentCategoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="newCategoryLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="currentStoreLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="newStoreLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="currentImportanceLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="newImportanceLabel" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="newImportanceField" max="32767" attributes="1"/>
+                              <Component id="newStoreField" max="32767" attributes="1"/>
+                              <Component id="newCategoryField" max="32767" attributes="1"/>
+                              <Component id="currentImportanceLabelC" alignment="0" pref="112" max="32767" attributes="1"/>
+                              <Component id="currentStoreLabelC" alignment="0" pref="112" max="32767" attributes="1"/>
+                              <Component id="currentItemLabelC" alignment="0" pref="112" max="32767" attributes="1"/>
+                              <Component id="currentCategoryLabelC" alignment="0" pref="112" max="32767" attributes="1"/>
+                              <Component id="newItemNameField" alignment="0" max="32767" attributes="1"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="updateButton" min="-2" pref="141" max="-2" attributes="0"/>
+                          <EmptySpace pref="50" max="32767" attributes="0"/>
+                          <Component id="cancelButton" min="-2" pref="141" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jLabel1" min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="currentItemNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="currentItemLabelC" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newItemNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newItemNameField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="currentCategoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="currentCategoryLabelC" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newCategoryLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newCategoryField" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="currentStoreLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="currentStoreLabelC" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newStoreLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newStoreField" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="currentImportanceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="currentImportanceLabelC" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="newImportanceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="newImportanceField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="38" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="updateButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                      <Component id="cancelButton" alignment="3" min="-2" pref="50" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="jLabel1.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="jLabel1.foreground"/>
+            <Property name="horizontalAlignment" type="int" value="0"/>
+            <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
+            <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentItemNameLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentItemNameLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentItemNameLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentItemNameLabel.text"/>
+            <Property name="name" type="java.lang.String" value="currentItemNameLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="newCategoryLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="newCategoryLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="newCategoryLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="newCategoryLabel.text"/>
+            <Property name="name" type="java.lang.String" value="newCategoryLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentCategoryLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentCategoryLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentCategoryLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentCategoryLabel.text"/>
+            <Property name="name" type="java.lang.String" value="currentCategoryLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="newItemNameLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="newItemNameLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="newItemNameLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="newItemNameLabel.text"/>
+            <Property name="name" type="java.lang.String" value="newItemNameLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentStoreLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentStoreLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentStoreLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentStoreLabel.text"/>
+            <Property name="name" type="java.lang.String" value="currentStoreLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="newStoreLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="newStoreLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="newStoreLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="newStoreLabel.text"/>
+            <Property name="name" type="java.lang.String" value="newStoreLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentImportanceLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentImportanceLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentImportanceLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentImportanceLabel.text"/>
+            <Property name="name" type="java.lang.String" value="currentImportanceLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="newImportanceLabel">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="newImportanceLabel.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="newImportanceLabel.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="newImportanceLabel.text"/>
+            <Property name="name" type="java.lang.String" value="newImportanceLabel" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentItemLabelC">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentItemLabelC.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentItemLabelC.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentItemLabelC.text"/>
+            <Property name="name" type="java.lang.String" value="currentItemLabelC" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentCategoryLabelC">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentCategoryLabelC.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentCategoryLabelC.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentCategoryLabelC.text"/>
+            <Property name="name" type="java.lang.String" value="currentCategoryLabelC" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentStoreLabelC">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentStoreLabelC.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentStoreLabelC.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentStoreLabelC.text"/>
+            <Property name="name" type="java.lang.String" value="currentStoreLabelC" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="currentImportanceLabelC">
+          <Properties>
+            <Property name="font" type="java.awt.Font" resourceKey="currentImportanceLabelC.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="currentImportanceLabelC.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="currentImportanceLabelC.text"/>
+            <Property name="name" type="java.lang.String" value="currentImportanceLabelC" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="newItemNameField">
+          <Properties>
+            <Property name="text" type="java.lang.String" resourceKey="newItemNameField.text"/>
+            <Property name="name" type="java.lang.String" value="newItemNameField" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="newCategoryField">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="newCategoryField" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="newStoreField">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="newStoreField" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="newImportanceField">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="newImportanceField" noResource="true"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="updateButton">
+          <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="updateButton.background"/>
+            <Property name="font" type="java.awt.Font" resourceKey="updateButton.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="updateButton.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="updateButton.text"/>
+            <Property name="actionCommand" type="java.lang.String" resourceKey="updateButton.actionCommand"/>
+            <Property name="name" type="java.lang.String" value="updateButton" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="cancelButton">
+          <Properties>
+            <Property name="background" type="java.awt.Color" resourceKey="cancelButton.background"/>
+            <Property name="font" type="java.awt.Font" resourceKey="cancelButton.font"/>
+            <Property name="foreground" type="java.awt.Color" resourceKey="cancelButton.foreground"/>
+            <Property name="text" type="java.lang.String" resourceKey="cancelButton.text"/>
+            <Property name="actionCommand" type="java.lang.String" resourceKey="cancelButton.actionCommand"/>
+            <Property name="name" type="java.lang.String" value="cancelButton" noResource="true"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
+          </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

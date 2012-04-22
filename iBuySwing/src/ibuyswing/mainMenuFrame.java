@@ -33,11 +33,12 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import java.awt.CardLayout;
-import javax.swing.ScrollPaneLayout;
+import javax.swing.*;
+
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.session.WebAuthSession;
+import java.awt.Color;
 
 /**
  *
@@ -58,32 +59,51 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
 	this.mDBApi = mDBApi;
             
         initComponents();
+        getButtonList();
+  
+	    
+	setVisible(true);
+    }
+    private void getButtonList(){
+    
         StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/"+user+"/lists.txt"));
 	    list.clear();
 		while(st.hasMoreTokens())
 		{
-			JButton j = new JButton(Global.readFileName(st.nextToken()));
+			JButton jListsButtons = new JButton(Global.readFileName(st.nextToken()));
+                        jListsButtons.setBackground(new java.awt.Color(102, 102, 102));
+                        jListsButtons.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+                        jListsButtons.setForeground(new java.awt.Color(255, 255, 255));
+          
 			st.nextToken();
 			st.nextToken();
-			j.addActionListener(this);
-			list.add(j);
-		}
-		
+			jListsButtons.addActionListener(this);
+			list.add(jListsButtons);
+		}	
 		//Sets layout with list size in mind
-            
-		setLayout(new GridLayout(list.size()+5,1));
-		setSize(500, Math.min((200 + 100*list.size()), 1000));
-		
+		listPanel.setLayout(new GridLayout(list.size(),1));
+	
 		for(int i = 0; i < list.size(); i++)
 		{
-		    scrollPane1.add(list.get(i));
+		    listPanel.add(list.get(i));
+                }
+    
+    }
+    public void actionPerformedList(java.awt.event.ActionEvent evt){
+       //System.out.println("pressed");
+		//Checks which button is pressed and shifts to List passing the list's name
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(evt.getSource() == list.get(i))
+			{
+                            //System.out.println(list.get(i).getText());
+				new itemListView(user, list.get(i).getText(), mDBApi);
+				setVisible(false);
+				dispose();
+			}
 		}
         
-        
-            
-	    //setVisible(true);           
     }
-    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -93,22 +113,18 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new javax.swing.JPanel();
         mainMenuPanel = new javax.swing.JPanel();
         MainMenuLabel = new javax.swing.JLabel();
-        refreshButton1 = new javax.swing.JButton();
         addListButton = new javax.swing.JButton();
         deleteList1 = new javax.swing.JButton();
         optionsButton1 = new javax.swing.JButton();
         logOutButton1 = new javax.swing.JButton();
-        viewListButton = new javax.swing.JButton();
         listLabelMainMenu = new javax.swing.JLabel();
-        scrollPane1 = new java.awt.ScrollPane();
+        listScrollPane = new javax.swing.JScrollPane();
+        listPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        mainPanel.setBackground(new java.awt.Color(51, 51, 51));
-        mainPanel.setName("mainPanel"); // NOI18N
+        setBackground(new java.awt.Color(102, 102, 102));
 
         mainMenuPanel.setBackground(new java.awt.Color(51, 51, 51));
         mainMenuPanel.setName("mainMenuPanel"); // NOI18N
@@ -119,21 +135,11 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
         MainMenuLabel.setText("Main Menu");
         MainMenuLabel.setName("MainMenuLabel"); // NOI18N
 
-        refreshButton1.setBackground(new java.awt.Color(102, 102, 102));
-        refreshButton1.setFont(new java.awt.Font("Tahoma 18", 1, 18));
-        refreshButton1.setForeground(new java.awt.Color(255, 255, 255));
-        refreshButton1.setText("Refresh");
-        refreshButton1.setName("refreshButton1"); // NOI18N
-        refreshButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                refreshButton1ActionPerformed(evt);
-            }
-        });
-
         addListButton.setBackground(new java.awt.Color(102, 102, 102));
-        addListButton.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+        addListButton.setFont(new java.awt.Font("Tahoma 18", 1, 18)); // NOI18N
         addListButton.setForeground(new java.awt.Color(255, 255, 255));
         addListButton.setText("Add List");
+        addListButton.setToolTipText("Click to add a new list"); // NOI18N
         addListButton.setName("addListButton"); // NOI18N
         addListButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,9 +148,10 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
         });
 
         deleteList1.setBackground(new java.awt.Color(102, 102, 102));
-        deleteList1.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+        deleteList1.setFont(new java.awt.Font("Tahoma 18", 1, 18)); // NOI18N
         deleteList1.setForeground(new java.awt.Color(255, 255, 255));
         deleteList1.setText("Delete List");
+        deleteList1.setToolTipText("Click to delete a list"); // NOI18N
         deleteList1.setName("deleteList1"); // NOI18N
         deleteList1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -153,9 +160,10 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
         });
 
         optionsButton1.setBackground(new java.awt.Color(102, 102, 102));
-        optionsButton1.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+        optionsButton1.setFont(new java.awt.Font("Tahoma 18", 1, 18)); // NOI18N
         optionsButton1.setForeground(new java.awt.Color(255, 255, 255));
-        optionsButton1.setText("Options");
+        optionsButton1.setText("Report Options");
+        optionsButton1.setToolTipText("Click to change report options"); // NOI18N
         optionsButton1.setName("optionsButton1"); // NOI18N
         optionsButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,9 +172,10 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
         });
 
         logOutButton1.setBackground(new java.awt.Color(102, 102, 102));
-        logOutButton1.setFont(new java.awt.Font("Tahoma 18", 1, 18));
+        logOutButton1.setFont(new java.awt.Font("Tahoma 18", 1, 18)); // NOI18N
         logOutButton1.setForeground(new java.awt.Color(255, 255, 255));
         logOutButton1.setText("Log Out");
+        logOutButton1.setToolTipText("Click to log out of session"); // NOI18N
         logOutButton1.setName("logOutButton1"); // NOI18N
         logOutButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,24 +183,31 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
             }
         });
 
-        viewListButton.setBackground(new java.awt.Color(102, 102, 102));
-        viewListButton.setFont(new java.awt.Font("Tahoma 18 18", 1, 18));
-        viewListButton.setForeground(new java.awt.Color(255, 255, 255));
-        viewListButton.setText("View List");
-        viewListButton.setName("viewListButton"); // NOI18N
-        viewListButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewListButtonActionPerformed(evt);
-            }
-        });
-
-        listLabelMainMenu.setFont(new java.awt.Font("Tahoma", 1, 36));
+        listLabelMainMenu.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         listLabelMainMenu.setForeground(new java.awt.Color(255, 102, 0));
         listLabelMainMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         listLabelMainMenu.setText("Lists:");
         listLabelMainMenu.setName("listLabelMainMenu"); // NOI18N
 
-        scrollPane1.setName("scrollPane1"); // NOI18N
+        listScrollPane.setBackground(new java.awt.Color(51, 51, 51));
+        listScrollPane.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(102, 102, 102), new java.awt.Color(153, 153, 153), null, new java.awt.Color(0, 0, 0)));
+        listScrollPane.setName("listScrollPane"); // NOI18N
+
+        listPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(204, 204, 204), null));
+        listPanel.setName("listPanel"); // NOI18N
+
+        javax.swing.GroupLayout listPanelLayout = new javax.swing.GroupLayout(listPanel);
+        listPanel.setLayout(listPanelLayout);
+        listPanelLayout.setHorizontalGroup(
+            listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 219, Short.MAX_VALUE)
+        );
+        listPanelLayout.setVerticalGroup(
+            listPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 164, Short.MAX_VALUE)
+        );
+
+        listScrollPane.setViewportView(listPanel);
 
         javax.swing.GroupLayout mainMenuPanelLayout = new javax.swing.GroupLayout(mainMenuPanel);
         mainMenuPanel.setLayout(mainMenuPanelLayout);
@@ -200,148 +216,128 @@ public class mainMenuFrame extends javax.swing.JFrame implements ActionListener{
             .addGroup(mainMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(MainMenuLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
-                    .addComponent(logOutButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(mainMenuPanelLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
                         .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(listLabelMainMenu)
-                            .addComponent(scrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
-                        .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(optionsButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(deleteList1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(refreshButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(addListButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(viewListButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
+                            .addComponent(MainMenuLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainMenuPanelLayout.createSequentialGroup()
+                                .addComponent(listScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(deleteList1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                    .addComponent(optionsButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+                                    .addComponent(addListButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainMenuPanelLayout.createSequentialGroup()
+                        .addComponent(logOutButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(89, 89, 89))
+                    .addGroup(mainMenuPanelLayout.createSequentialGroup()
+                        .addComponent(listLabelMainMenu)
+                        .addContainerGap(339, Short.MAX_VALUE))))
         );
         mainMenuPanelLayout.setVerticalGroup(
             mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainMenuPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(MainMenuLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(mainMenuPanelLayout.createSequentialGroup()
-                        .addComponent(refreshButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(addListButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(listLabelMainMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
+                .addComponent(listLabelMainMenu)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(mainMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(mainMenuPanelLayout.createSequentialGroup()
+                        .addComponent(addListButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(deleteList1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(optionsButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(viewListButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(scrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(optionsButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(listScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addComponent(logOutButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(mainMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(mainMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 5, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 5, Short.MAX_VALUE)))
+            .addComponent(mainMenuPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 444, Short.MAX_VALUE)
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainMenuPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-768)/2, (screenSize.height-482)/2, 768, 482);
+        setBounds((screenSize.width-412)/2, (screenSize.height-383)/2, 412, 383);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addListButtonActionPerformed
-        if(evt.getSource() == addListButton){
-			new addListFrame(user, mDBApi);
+        if(evt.getSource() == addListButton)
+		{
+			new addNewListFrame(user, mDBApi);
 			setVisible(true);
 		}
     }//GEN-LAST:event_addListButtonActionPerformed
 
     private void deleteList1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteList1ActionPerformed
-            if(evt.getSource() == deleteList1){
+        if(evt.getSource() == deleteList1){
 			new deleteListFrame(user, mDBApi);
-			setVisible(false);
-		}
+			setVisible(true);
+	}
     }//GEN-LAST:event_deleteList1ActionPerformed
 
-        private void optionsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButton1ActionPerformed
-            if (evt.getSource() == optionsButton1) { 
-                new reportOptionsFrame(user, mDBApi).setVisible(true);
-            }           
+    private void optionsButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsButton1ActionPerformed
+        if (evt.getSource() == optionsButton1) { 
+                    new reportOptionsFrame(user, mDBApi).setVisible(true);
+        }  
     }//GEN-LAST:event_optionsButton1ActionPerformed
 
     private void logOutButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButton1ActionPerformed
-        if (evt.getSource() == logOutButton1) {   
+        if(evt.getSource() == logOutButton1){
             System.exit(0);
-        }          
+        }
     }//GEN-LAST:event_logOutButton1ActionPerformed
 
-    private void viewListButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewListButtonActionPerformed
-        if (evt.getSource() == viewListButton) {            
-                  new itemListView(user, filename, mDBApi);
-        }    
-    }//GEN-LAST:event_viewListButtonActionPerformed
-
-    private void refreshButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButton1ActionPerformed
-        if(evt.getSource() == refreshButton1)
+    public void actionPerformed(ActionEvent e) {
+		//Checks which button is pressed and shifts to List passing the list's name
+		for(int i = 0; i < list.size(); i++)
 		{
-			new mainMenuFrame(user, mDBApi);
-			setVisible(false);
-			dispose();
+			if(e.getSource() == list.get(i))
+			{
+                            System.out.println(list.get(i).getText());
+				new itemListView(user, list.get(i).getText(), mDBApi);
+				setVisible(true);
+				dispose();
+			}
 		}
-    }//GEN-LAST:event_refreshButton1ActionPerformed
-
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel MainMenuLabel;
     private javax.swing.JButton addListButton;
     private javax.swing.JButton deleteList1;
     private javax.swing.JLabel listLabelMainMenu;
+    private javax.swing.JPanel listPanel;
+    private javax.swing.JScrollPane listScrollPane;
     private javax.swing.JButton logOutButton1;
     private javax.swing.JPanel mainMenuPanel;
-    private javax.swing.JPanel mainPanel;
     private javax.swing.JButton optionsButton1;
-    private javax.swing.JButton refreshButton1;
-    private java.awt.ScrollPane scrollPane1;
-    private javax.swing.JButton viewListButton;
     // End of variables declaration//GEN-END:variables
 
-    private String filename;
-    @Override
+    /**@Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+        //throw new UnsupportedOperationException("Not supported yet.");
+        System.out.println("pressed");
+		//Checks which button is pressed and shifts to List passing the list's name
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(e.getSource() == list.get(i))
+			{
+                            System.out.println(list.get(i).getText());
+				new itemListView(user, list.get(i).getText(), mDBApi);
+				setVisible(true);
+				dispose();
+			}
+		}
+    }**/
 }

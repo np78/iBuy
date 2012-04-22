@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.session.WebAuthSession;
+import java.awt.event.KeyEvent;
 /**
  *
  * @author Luke
@@ -93,6 +94,7 @@ public class reportOptionsFrame extends javax.swing.JFrame {
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance().getContext().getResourceMap(reportOptionsFrame.class);
         reportOptionsPanel.setBackground(resourceMap.getColor("reportOptionsPanel.background")); // NOI18N
+        reportOptionsPanel.setAutoscrolls(true);
         reportOptionsPanel.setName("reportOptionsPanel"); // NOI18N
 
         reportOptionsLabel.setFont(resourceMap.getFont("reportOptionsLabel.font")); // NOI18N
@@ -112,6 +114,11 @@ public class reportOptionsFrame extends javax.swing.JFrame {
                 optionReturnButtonActionPerformed(evt);
             }
         });
+        optionReturnButton.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                optionReturnButtonKeyPressed(evt);
+            }
+        });
 
         optionsPanel.setName("optionsPanel"); // NOI18N
 
@@ -119,11 +126,11 @@ public class reportOptionsFrame extends javax.swing.JFrame {
         optionsPanel.setLayout(optionsPanelLayout);
         optionsPanelLayout.setHorizontalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addGap(0, 139, Short.MAX_VALUE)
         );
         optionsPanelLayout.setVerticalGroup(
             optionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 122, Short.MAX_VALUE)
+            .addGap(0, 136, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout reportOptionsPanelLayout = new javax.swing.GroupLayout(reportOptionsPanel);
@@ -134,21 +141,23 @@ public class reportOptionsFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(reportOptionsLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
                 .addContainerGap())
-            .addGroup(reportOptionsPanelLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, reportOptionsPanelLayout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addGroup(reportOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(optionsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(optionReturnButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
+                .addComponent(optionReturnButton, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addGap(59, 59, 59))
+            .addGroup(reportOptionsPanelLayout.createSequentialGroup()
+                .addGap(122, 122, 122)
+                .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         reportOptionsPanelLayout.setVerticalGroup(
             reportOptionsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(reportOptionsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(reportOptionsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(optionReturnButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -168,7 +177,8 @@ public class reportOptionsFrame extends javax.swing.JFrame {
                 .addComponent(reportOptionsPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pack();
+        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+        setBounds((screenSize.width-406)/2, (screenSize.height-338)/2, 406, 338);
     }// </editor-fold>//GEN-END:initComponents
 
     private void optionReturnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionReturnButtonActionPerformed
@@ -198,6 +208,12 @@ public class reportOptionsFrame extends javax.swing.JFrame {
 			dispose();
 		}
     }//GEN-LAST:event_optionReturnButtonActionPerformed
+
+    private void optionReturnButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_optionReturnButtonKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER);
+            new mainMenuFrame(user, mDBApi);
+            setVisible(false);
+    }//GEN-LAST:event_optionReturnButtonKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton optionReturnButton;

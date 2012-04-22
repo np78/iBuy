@@ -55,6 +55,7 @@ public class logInFrame extends javax.swing.JFrame {
         initComponents();
         mDBApi = Global.createSession();
         setVisible(true);
+        
     }
 
     public static void main(String[] args) {
@@ -182,12 +183,12 @@ public class logInFrame extends javax.swing.JFrame {
                             .addGroup(signInPanelLayout.createSequentialGroup()
                                 .addComponent(passwordLabel)
                                 .addGap(18, 18, 18)
-                                .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(signInPanelLayout.createSequentialGroup()
                                 .addComponent(userNameLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(userNameField)))
-                        .addGap(49, 49, 49))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, signInPanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(signInButton, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -228,7 +229,7 @@ public class logInFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(signInPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(signInPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -253,14 +254,13 @@ public class logInFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newAccountButtonActionPerformed
 
     private void signInButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_signInButtonKeyPressed
-        // TODO add your handling code here:
         if((PasswordField.isCursorSet() || userNameField.isCursorSet()) && evt.getKeyCode() == KeyEvent.VK_ENTER)
 			logIn();
     }//GEN-LAST:event_signInButtonKeyPressed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         if(evt.getSource() == cancelButton){
-            dispose();
+            logout();
         }
     }//GEN-LAST:event_cancelButtonActionPerformed
 
@@ -289,6 +289,10 @@ public class logInFrame extends javax.swing.JFrame {
   				}
   			}
 		}     
+    }
+    public void logout(){
+    
+        System.exit(0);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPasswordField PasswordField;
