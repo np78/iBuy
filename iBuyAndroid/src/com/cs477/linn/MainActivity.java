@@ -3,6 +3,7 @@ package com.cs477.linn;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -21,6 +22,9 @@ import com.dropbox.client2.session.Session.AccessType;
 
 import android.R.layout;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -57,10 +61,17 @@ public class MainActivity extends Activity
     public static String sessionSecret = "5elro586b19u7n2"; 
     private DropboxAPI<AndroidAuthSession> mDBApi;
     
+    static final int DIALOG_ITEM_SEARCH = 0;
+    
     private boolean isLoggedIn;
     private String currentUser;
     private String currentList;
     private String currentItem="";
+    
+    private int sortBy;
+    static final int SORT_BY_CATEGORY = 1;
+    static final int SORT_BY_STORE = 2;
+    static final int SORT_BY_PRIORITY = 3;
     
     
     
@@ -70,7 +81,8 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
-        isLoggedIn=false;
+        isLoggedIn=false; //DEFAULT VALUE
+        sortBy = SORT_BY_PRIORITY; //DEFAULT VALUE
         createDropboxSession();
     }
     
@@ -78,7 +90,6 @@ public class MainActivity extends Activity
      * createDropboxSession()
      * Creates a dropbox session with the APP_KEY and APP_SECRET for dropbox.
      */
-    
     private void createDropboxSession(){
     	try{
         // And later in some initialization function:
@@ -99,7 +110,6 @@ public class MainActivity extends Activity
      * 
      * Used for DropBox session.
      */
-    
     @Override
     protected void onResume() {
         super.onResume();
@@ -482,7 +492,7 @@ public class MainActivity extends Activity
     	//LIST NAME BUTTON
     	Button list_name = new Button(this);
     	RelativeLayout.LayoutParams p1 = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-    	p1.addRule(RelativeLayout.LEFT_OF, R.id.options);
+    	p1.addRule(RelativeLayout.LEFT_OF, R.id.search);
     	list_name.setLayoutParams(p1);
     	list_name.setPadding(0, 0, 0, 20);
     	list_name.setTextSize(15);
@@ -494,23 +504,23 @@ public class MainActivity extends Activity
     		}
     	});
     	rl.addView(list_name);
-    	//OPTIONS BUTTON
+    	//SEARCH BUTTON
     	Button options_but = new Button(this);
     	RelativeLayout.LayoutParams p2 = new RelativeLayout.LayoutParams(75, 75);
     	p2.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
     	options_but.setLayoutParams(p2);
-    	options_but.setBackgroundResource(R.drawable.options_icon);
-    	options_but.setId(R.id.options);
+    	options_but.setBackgroundResource(R.drawable.search);
+    	options_but.setId(R.id.search);
     	options_but.setOnClickListener(new OnClickListener(){
     		public void onClick(View v){
-    			goToOptions(v);
+    			goToSearch(v);
     		}
     	});
     	rl.addView(options_but);
     	//ADD ITEM BUTTON
     	Button create_but = new Button(this);
     	RelativeLayout.LayoutParams p3 = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-    	p3.addRule(RelativeLayout.BELOW, R.id.options);
+    	p3.addRule(RelativeLayout.BELOW, R.id.search);
     	create_but.setLayoutParams(p3);
     	create_but.setCompoundDrawablesWithIntrinsicBounds(R.drawable.add_button, 0, 0, 0);
     	create_but.setTextSize(20);
@@ -567,6 +577,7 @@ public class MainActivity extends Activity
             	}
             	cb.setLayoutParams(cb_param);
             	cb.setId(num_checkbox);
+            	cb.setChecked(i.isCheckedOff());
             	cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 					
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -654,7 +665,7 @@ public class MainActivity extends Activity
     }
     /*
      * view the information of a selected Item
-     * UNDER CONSTRUCTION
+     * 
      */
     public void viewItem(Item i){
     	currentItem = i.getName();
@@ -704,6 +715,20 @@ public class MainActivity extends Activity
      * home screen
      */
     public void saveOptions(View v){
+    	RadioButton RBcat = (RadioButton) findViewById(R.id.RB_bycategory);
+    	RadioButton RBstore = (RadioButton) findViewById(R.id.RB_bystore);
+    	RadioButton RBpriority = (RadioButton) findViewById(R.id.RB_bypriority);
+    	
+    	if(RBcat.isChecked()){
+    		sortBy = SORT_BY_CATEGORY;
+    	}
+    	else if(RBstore.isChecked()){
+    		sortBy = SORT_BY_STORE;
+    	}
+    	else{ //if RBpriority.isChecked()
+    		sortBy = SORT_BY_PRIORITY;
+    	}
+    	
     	Toast.makeText(this,"Save Successful.",Toast.LENGTH_LONG).show();
     	goHomeScreen(v);
     }
@@ -713,6 +738,7 @@ public class MainActivity extends Activity
      */
     public void goToList(String list_name){
     	currentList = list_name;
+    	//sortItemsByPriority();
     	createListViewLayout();
         //setContentView(R.layout.listview);
     }
@@ -862,6 +888,180 @@ public class MainActivity extends Activity
     	}
     	
     	currentItem = "";
+    	
+    }
+    
+    /*
+     * goToSearch
+     * 
+     * Gets user to search item dialog, where a user can 
+     * enter in text to search for an item that matches that
+     * text. Returns to current list of items when complete.
+     * 
+     * 
+     */
+    public void goToSearch(View v){
+    	//bring up dialog
+    	
+    	final Dialog dialog = new Dialog(this);
+    	dialog.setContentView(R.layout.dialog);
+    	dialog.setTitle("Item Search");
+    	
+    	Button dialogSave = (Button) dialog.findViewById(R.id.dialog_save);
+    	dialogSave.setOnClickListener(new OnClickListener(){
+    		public void onClick(View v){
+    			searchForItem(v); //do item search for list
+    			dialog.dismiss(); //exit dialog
+    		}
+    	});
+    	
+    	dialog.show(); //show dialog on screen
+    	
+    	
+    }
+    
+    /*
+     * searchForItem
+     * 
+     * Searches for an item in the current list and updates the list so that the searched item
+     * is at the top of the list (only if the item exists).
+     * 
+     * UNDER CONSTRUCTION
+     */
+    public void searchForItem(View v){
+    	EditText et = (EditText) v.findViewById(R.id.dialog_edit);
+    	String item = et.getText().toString();
+    	String listName = currentList;
+    	boolean itemFound = false;
+    	
+    	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try{
+            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+listName+".txt", null, outputStream, null);
+            
+            String content = new String(outputStream.toByteArray());
+            StringTokenizer st = new StringTokenizer(content);
+            
+            
+            String firstPart = ""; //for searched item
+            String secondPart = ""; //for other items
+            while(st.hasMoreTokens()){
+            	String token = st.nextToken(); //name
+            	if(token.equals(item)){ //if name matches
+            		firstPart = token +" "+ st.nextToken() +" "+ st.nextToken() +" "+ st.nextToken() +" "+ st.nextToken() + "\n";
+            		itemFound = true;
+            	}
+            	else{
+            		secondPart += token +" "+ st.nextToken() +" "+ st.nextToken() +" "+ st.nextToken() +" "+ st.nextToken() + "\n";
+            	}       	
+            }
+            //put together parts
+            String newContents = firstPart + secondPart;
+            
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(newContents.getBytes());
+            try {
+                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+listName+".txt", inputStream,
+                       newContents.length(), null);
+            } catch (DropboxUnlinkedException e) {
+               // User has unlinked, ask them to link again here.
+               Log.e("DbExampleLog", "User has unlinked.");
+            } catch (DropboxException e) {
+               Log.e("DbExampleLog", "Something went wrong while updating list contents for search.");
+            }
+        } catch (Exception e){
+        	Log.e("Log", "Something went wrong while looking at list contents for search.");
+        }
+        
+        //dialog.dismiss(); //exit dialog
+        //removeDialog(DIALOG_ITEM_SEARCH); //exit dialog
+        //goToList(listName); //go to list
+        if(!itemFound){ //if no item match
+        	Toast.makeText(this,"Item not found in list.",Toast.LENGTH_LONG).show(); //error message
+        }       
+    }
+    
+    /*
+     * sortItemsByCategory
+     * 
+     * Sorts the items in a list by category.
+     * UNDER CONSTRUCTION
+     */
+    public void sortItemsByPriority(){
+    	List l = new List(currentUser, currentList);
+    	//get contents of list
+    	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try{
+            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+l.getName().replaceAll(" ", "_")+".txt", null, outputStream, null);
+            
+            String content = new String(outputStream.toByteArray());
+            StringTokenizer tokenizer = new StringTokenizer(content);
+            //add item objects to list object
+            while(tokenizer.hasMoreTokens()){
+            	String name = tokenizer.nextToken();
+            	String cat = tokenizer.nextToken();
+            	String store = tokenizer.nextToken();
+            	String priority = tokenizer.nextToken();
+            	 int p;
+                 if(priority == "1"){ p = 1;}
+                 else if(priority == "2"){ p = 2;}
+                 else if(priority == "3"){ p = 3;}
+                 else if(priority == "4"){ p = 4;}
+                 else{ p = 5;}
+                 
+            	String checked = tokenizer.nextToken();
+            	
+            	Item i = new Item(name, cat, store, p);
+            	i.setCheckedOff(checked);
+            	
+            	l.addItem(i);
+            }
+            //sort items objects
+            l.sortItemsByPriority();
+            
+            //add newly ordered items to list file
+            String newContents = "";
+            LinkedList<Item> item_list = l.getItems();
+            for(int i=0; i<item_list.size();i++){
+            	Item curItem = item_list.get(i);
+            	newContents += curItem.getItemData() + "\n";
+            }
+            
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(newContents.getBytes());
+            try {
+                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+l.getName()+".txt", inputStream,
+                       newContents.length(), null);
+               //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+            } catch (DropboxUnlinkedException e) {
+               // User has unlinked, ask them to link again here.
+               Log.e("DbExampleLog", "User has unlinked.");
+            } catch (DropboxException e) {
+               Log.e("DbExampleLog", "Something went wrong while adding new item to list.");
+            }
+            
+        }catch(Exception e){
+            Log.e("downloadFile", e.getMessage());
+        }
+    	//goToList(currentList);
+    }
+    
+    /*
+     * sortItemByCategory
+     * 
+     * Sorts all the items in a list by the item category.
+     * 
+     * UNDER CONSTRUCTION
+     */
+    public void sortItemByCategory(){
+    	
+    }
+    
+    /*
+     * sortItemByStore
+     * 
+     * Sorts all the items in a list by the item store.
+     * 
+     * UNDER CONSTRUCTION
+     */
+    public void sortItemByStore(){
     	
     }
 

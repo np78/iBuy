@@ -2,7 +2,7 @@
 <resources>
 
     <string name="hello">Hello World, iBuy!</string>
-    <string name="app_name">iBuy</string>
+    <string name="app_name">AUI-LINN</string>
     <string name="itemprompt">Select an item</string>
     <string-array name="itemlist">
         <item>Milk (test)</item>

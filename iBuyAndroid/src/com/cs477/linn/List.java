@@ -53,7 +53,9 @@ public class List {
     public void removeItem(Item i){
         items.remove(i);
     }
-    
+    public LinkedList<Item> getItems(){
+    	return items;
+    }
     /*
      * newListData
      * 
@@ -76,6 +78,27 @@ public class List {
     }
     public void setDate(String date){
     	list_date = date;
+    }
+    /*
+     * sortItemsByPriority
+     * 
+     * Sorts the LinkedList of Items by the item's priority.
+     */
+    public void sortItemsByPriority(){
+    	for(int i= items.size(); --i>=0; ){
+    		boolean flipped=false;
+    		for(int j=0;j<1;j++){
+    			if(items.get(j).getPriority() > items.get(j+1).getPriority()){
+    				Item T = items.get(j);
+    				items.set(j, items.get(j+1));
+    				items.set(j+1, T);
+    				flipped = true;
+    			}
+    		}
+    		if(!flipped){
+    			return;
+    		}
+    	}
     }
     
 }

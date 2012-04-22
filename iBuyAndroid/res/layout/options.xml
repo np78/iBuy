@@ -119,37 +119,81 @@
 			android:textSize="22sp"
 			android:text="Expense reports:"
 		/>
-		<TextView android:id="@+id/lastTripText"
-			android:layout_height="wrap_content"
-			android:layout_width="fill_parent"
-			android:layout_below="@id/expensesText"
-			android:textSize="24sp"
-			android:text="By last shopping trip"
-		/>
-		<CheckBox android:id="@+id/lastTrip"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_below="@id/expensesText"
-			android:layout_alignParentRight="true"
-		/>
+		
 		<TextView android:id="@+id/lastWeekText"
 			android:layout_height="wrap_content"
 			android:layout_width="fill_parent"
-			android:layout_below="@id/lastTrip"
+			android:layout_below="@id/expensesText"
 			android:textSize="24sp"
 			android:text="By last week"
 		/>
 		<CheckBox android:id="@+id/lastWeek"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:layout_below="@id/lastTrip"
+			android:layout_below="@id/expensesText"
+			android:layout_alignParentRight="true"
+			
+		/>
+		<TextView android:id="@+id/lastTripText"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/lastWeek"
+			android:textSize="24sp"
+			android:text="All past expenses"
+		/>
+		<CheckBox android:id="@+id/lastTrip"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_below="@id/lastWeek"
 			android:layout_alignParentRight="true"
 		/>
+		
+		<TextView 
+		    android:id="@+id/sortingOptionsText"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/lastTrip"
+			android:textStyle="bold"
+			android:textSize="28sp"
+			android:text="List Sorting Options"
+		    />
+		<TextView
+		    android:id="@+id/othersortingtext"
+			android:layout_height="wrap_content"
+			android:layout_width="fill_parent"
+			android:layout_below="@id/sortingOptionsText"
+			android:textStyle="bold|italic"
+			android:textSize="22sp"
+			android:text="Sort list items by:"
+		    />
+		<RadioGroup	
+             	android:id="@+id/sortgroup"
+	    		android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/othersortingtext"
+				android:orientation="horizontal"
+				android:gravity="center">
+			<RadioButton android:id="@+id/RB_bycategory"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Category"
+			/>
+			<RadioButton android:id="@+id/RB_bystore"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Store"
+			/>
+			<RadioButton android:id="@+id/RB_bypriority"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Priority"
+			/>
+		</RadioGroup>
 		<Button android:id="@+id/save"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_alignParentRight="true"
-			android:layout_below="@id/lastWeek"
+			android:layout_below="@id/sortgroup"
 			android:layout_marginTop="30sp"
 			android:textSize="28sp"
 			android:text="Save Options"
