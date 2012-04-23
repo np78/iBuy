@@ -78,22 +78,22 @@ public class itemListView extends javax.swing.JFrame implements ActionListener{
 			JButton set = new JButton("Settings");
 			set.addActionListener(this);
 			settings.add(set);
-                        itemListPanel.setLayout(new GridLayout(items.size(),8));
-                       
-                        for(int i = 0; i < items.size(); i++)
-                        {
-                            items.get(i);
-                            itemListPanel.add(item.checkbox);
-                            itemListPanel.add(item.nameField);
-                            itemListPanel.add(item.categoryField);
-                            itemListPanel.add(item.storeField);
-                            itemListPanel.add(item.importanceField);
-                            itemListPanel.add(settings.get(i));
-                        }
 		}
-                
-                itemScrollPane.doLayout();
-                setVisible(true);
+		
+        itemListPanel.setLayout(new GridLayout(items.size()+1,6));
+        for(int i = 0; i < items.size(); i++)
+        {
+            items.get(i);
+            itemListPanel.add(item.checkbox);
+            itemListPanel.add(item.nameField);
+            itemListPanel.add(item.categoryField);
+            itemListPanel.add(item.storeField);
+            itemListPanel.add(item.importanceField);
+            itemListPanel.add(settings.get(i));
+        }
+            
+        itemScrollPane.doLayout();
+        setVisible(true);
     }
     
     
