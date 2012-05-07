@@ -17,7 +17,7 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/enter"
 		/>
-		<TextView android:id="@+id/OR"
+		<!--TextView android:id="@+id/OR"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/enterItem"
@@ -38,13 +38,13 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/select"
 			android:prompt="@string/itemprompt"
-		/>
+		/-->
 		<TextView android:id="@+id/enter_cat"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:textSize="18sp"
 			android:text="Enter item category:"
-			android:layout_below="@id/selectItem"
+			android:layout_below="@id/enterItem"
 		/>
 		<EditText android:id="@+id/enterCategory"
 			android:textSize="20sp"
@@ -52,11 +52,24 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/enter_cat"
 		/>
+		<TextView android:id="@+id/enter_store"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			android:layout_below="@id/enterCategory"
+			android:text="Enter an item store:"
+		/>
+		<EditText android:id="@+id/enterStore"
+			android:textSize="20sp"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/enter_store"
+		/>
 		<TextView
 			android:id="@+id/priorityText"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/enterCategory"
+			android:layout_below="@id/enterStore"
 			android:layout_alignParentLeft="true"
 			android:textSize="18sp"
 			android:text="Select item priority:"
@@ -85,7 +98,7 @@
 			android:layout_below="@id/lowPriority"
 			android:orientation="horizontal"
 			android:gravity="center"
-	    >
+	    	>
 			<RadioButton android:id="@+id/RBOne"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -117,12 +130,23 @@
 			android:id="@+id/save_item"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_alignParentLeft="true"
 			android:layout_alignParentBottom="true"
 			android:layout_below="@id/priority"
 			android:textSize="20sp"
 			android:text="Save Item"
 			android:onClick="addNewItem"
+		/>
+		<Button
+			android:id="@+id/cancel_item"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_alignParentBottom="true"
+			android:layout_below="@id/priority"
+			android:textSize="20sp"
+			android:text="  Cancel  "
+			android:onClick="goToCurrentList"
 		/>
 	</RelativeLayout>
 </ScrollView>

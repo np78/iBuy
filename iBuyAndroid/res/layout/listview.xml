@@ -13,15 +13,25 @@
 			android:background="@drawable/search"
 			android:onClick="goToSearch"
 		/>
+	    <Button android:id="@+id/home"
+		    android:layout_width="50sp" 
+		    android:layout_height="50sp"
+		    android:layout_alignParentLeft="true"
+		    android:background="@drawable/home_icon"
+		    android:onClick="goHomeScreen"
+		    
+		    />
 		<Button android:id="@+id/name"
 			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_height="50sp"
 			android:layout_toLeftOf="@id/search"
+			android:layout_toRightOf="@id/home"
 			android:layout_marginBottom="10sp"
+			android:drawableLeft="@drawable/modify_icon"
+			android:drawableRight="@drawable/delete_small"
 			android:textSize="15sp"
 			android:text="Untitled"
 		/>
-		
 	
 		<Button android:id="@+id/create"
 			android:layout_height="wrap_content"

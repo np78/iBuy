@@ -4,10 +4,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
+    <TextView
+        	android:id="@+id/listedit_title"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:textSize="30sp"
+        	android:text="Change Name/ Delete List"
+        	android:visibility="gone"
+      		/>
     <TextView 
         	android:id="@+id/listname_text"
         	android:layout_width="fill_parent"
     		android:layout_height="wrap_content"
+    		android:layout_below="@id/listedit_title"
     		android:textSize="20sp"
     		android:text="Enter a name for the list:"
         
@@ -26,24 +35,34 @@
     		android:layout_height="wrap_content"
     		android:layout_below="@id/listname_edit"
     		android:layout_alignParentLeft="true"
-    		android:background="#33CC00"
-    		android:textSize="20sp"
+    		android:textSize="30sp"
     		android:layout_marginLeft="10sp"
-    		android:text="Save List"
+    		android:text="  Save  "
     		android:onClick="saveListName"
         
         	/>
     <Button 
-       	 	android:id="@+id/delete_list"
+       	 	android:id="@+id/cancel"
         	android:layout_width="wrap_content"
     		android:layout_height="wrap_content"
     		android:layout_below="@id/listname_edit"
     		android:layout_alignParentRight="true"
-    		android:background="#CC0000"
     		android:layout_marginRight="10sp"
-    		android:textSize="20sp"
+    		android:textSize="30sp"
+    		android:text="Cancel"
+    		android:onClick="goHomeScreen"
+        />
+    <Button 
+       	 	android:id="@+id/delete_list"
+        	android:layout_width="fill_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_alignParentBottom="true"
+    		android:gravity="center"
+    		android:drawableLeft="@drawable/delete"
+    		android:textSize="30sp"
     		android:text="Delete List"
-    		android:onClick="deleteList"
+    		android:onClick="goToDeleteList"
+    		android:visibility="invisible"
         />
 
 </RelativeLayout>

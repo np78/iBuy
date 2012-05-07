@@ -102,7 +102,7 @@
 			android:layout_width="fill_parent"
 			android:layout_below="@id/reportsText"
 			android:textSize="24sp"
-			android:text="Commonly bought items"
+			android:text="Item Statistics"
 		/>
 		<CheckBox android:id="@+id/common"
 			android:layout_height="wrap_content"
@@ -176,17 +176,31 @@
 			<RadioButton android:id="@+id/RB_bycategory"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="12sp"
+				android:layout_gravity="center|left"
 				android:text="Category"
 			/>
 			<RadioButton android:id="@+id/RB_bystore"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="12sp"
 				android:text="Store"
 			/>
 			<RadioButton android:id="@+id/RB_bypriority"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="12sp"
 				android:text="Priority"
+			/>
+			<RadioButton android:id="@+id/RB_bynone"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="12sp"
+				android:layout_gravity="center|right"
+				android:text="None"
 			/>
 		</RadioGroup>
 		<Button android:id="@+id/save"
@@ -197,7 +211,7 @@
 			android:layout_marginTop="30sp"
 			android:textSize="28sp"
 			android:text="Save Options"
-			android:onClick="goHomeScreen"
+			android:onClick="saveOptions"
 		/>
 	</RelativeLayout>
 </ScrollView>

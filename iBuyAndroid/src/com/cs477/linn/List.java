@@ -4,15 +4,17 @@
  */
 package com.cs477.linn;
 
-
 import java.util.Date;
 import java.util.LinkedList;
+
+import android.widget.Toast;
+
 
 
 /**
  * List - acts as a list object that contains Item objects
  * @author N. Williams (Team LINN)
- * @version 4/11/12
+ * @version 4/28/12
  */
 public class List {
     private String user; //name of user that list belongs
@@ -85,20 +87,77 @@ public class List {
      * Sorts the LinkedList of Items by the item's priority.
      */
     public void sortItemsByPriority(){
-    	for(int i= items.size(); --i>=0; ){
-    		boolean flipped=false;
-    		for(int j=0;j<1;j++){
-    			if(items.get(j).getPriority() > items.get(j+1).getPriority()){
-    				Item T = items.get(j);
-    				items.set(j, items.get(j+1));
-    				items.set(j+1, T);
-    				flipped = true;
+    	LinkedList<Item> newList = items;
+    	Item temp;
+    	for(int i=0; i< newList.size(); i++){
+    		for(int j=1; j<newList.size(); j++){
+    			if(newList.get(j-1).getPriority() > newList.get(j).getPriority()){
+    				temp = newList.get(j-1);
+    				newList.set(j-1, newList.get(j));
+    				newList.set(j, temp);
     			}
     		}
-    		if(!flipped){
-    			return;
+    	}
+    	items = newList; //update items
+    }
+    /*
+     * sortItemsByCategory
+     * 
+     * Sorts the LinkedList of Items by the item's category.
+     */
+    public void sortItemsByCategory(){
+    	LinkedList<Item> newList = items; 
+    	Item temp;
+    	for(int i=0; i< newList.size(); i++){
+    		for(int j=1; j<newList.size(); j++){
+    			if(newList.get(j-1).getCategory().compareTo(newList.get(j).getCategory()) > 0){
+    				temp = newList.get(j-1);
+    				newList.set(j-1, newList.get(j));
+    				newList.set(j, temp);
+    			}
     		}
     	}
+    	items = newList; //update items;
+    	
+    }
+    /*
+     * sortItemsByStore
+     * 
+     * Sorts the LinkedList of Items by the item's store.
+     */
+    public void sortItemsByStore(){
+    	LinkedList<Item> newList = items; 
+    	Item temp;
+    	for(int i=0; i< newList.size(); i++){
+    		for(int j=1; j<newList.size(); j++){
+    			if(newList.get(j-1).getStore().compareTo(newList.get(j).getStore()) > 0){
+    				temp = newList.get(j-1);
+    				newList.set(j-1, newList.get(j));
+    				newList.set(j, temp);
+    			}
+    		}
+    	}
+    	items = newList; //update items;
+    }
+    
+    /*
+     * searchForItem
+     * 
+     * Searches for an specific item in the list and places
+     * it at the front of the list (if found).
+     */
+    public boolean searchForItem(String item){
+    	Item temp;
+    	for(int i=0; i< items.size(); i++){
+    		temp = items.get(i);
+    		if(temp.getName().equals(item)){
+    			Item swap = items.get(0); //first position
+    			items.set(i, swap); 
+    			items.set(0, temp); //put match in first position		
+    			return true; //item found
+    		}
+    	}
+    	return false; //item not found
     }
     
 }
