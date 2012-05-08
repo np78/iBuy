@@ -63,6 +63,17 @@
 			android:textSize="20sp"
 			android:text="Sample Item 1"
 		/>
+		<EditText 
+		    android:id="@+id/total"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentBottom="true"
+		    android:layout_alignParentRight="true" 
+		    android:layout_below="@id/item1"
+		    android:textSize="20sp"
+		    android:hint="$100.00"
+		    
+		    />
 		
 		<!--SlidingDrawer
      		android:id="@+id/drawer"

@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -48,7 +49,7 @@ import android.widget.Toast;
  * MainActivity
  * 
  * @author N. Williams
- * @version 05.01.2012
+ * @version 05.07.2012
  *
  */
 public class MainActivity extends Activity
@@ -623,11 +624,110 @@ public class MainActivity extends Activity
     		}
     	});
     	rl.addView(create_but);
+    	
+    	//add total view
+
+        Button totalSave = new Button(this);
+        totalSave.bringToFront();
+        totalSave.setId(5000);
+        //total.setId(R.id.totalSave);
+        RelativeLayout.LayoutParams totalSaveParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
+        //totalSaveParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        totalSaveParams.addRule(RelativeLayout.BELOW, R.id.create);
+        totalSaveParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        totalSave.setLayoutParams(totalSaveParams);
+        totalSave.setText("Save Total");
+        totalSave.setOnClickListener(new OnClickListener(){
+        	public void onClick(View v){
+        		EditText total = (EditText) findViewById(R.id.total);
+        		if(total.getText().toString().equals("")){
+        			Toast.makeText(v.getContext(),"List total saved.", Toast.LENGTH_LONG).show();
+        		}
+        		else{
+        			String totalText = total.getText().toString();
+            		
+            		
+            		ByteArrayOutputStream osTotal = new ByteArrayOutputStream();
+                    try{
+                        DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+"lists.txt", null, osTotal, null);
+
+                        String content = new String(osTotal.toByteArray());
+                        StringTokenizer tokenizer = new StringTokenizer(content);
+                        
+                        String newContents="";
+                        while(tokenizer.hasMoreTokens()){
+                        	String listName = tokenizer.nextToken();
+                        	String listTotal = tokenizer.nextToken();
+                        	String listDate = tokenizer.nextToken();
+                        	
+                        	if(listName.equals(currentList)){
+                        		newContents += listName + " " + totalText + " " + listDate + "\n";
+                        	}
+                        	else{
+                        		newContents += listName + " " + listTotal + " " + listDate + "\n";
+                        	}
+                        }
+                        
+                        ByteArrayInputStream is = new ByteArrayInputStream(newContents.getBytes());
+    		            try {
+    		                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/lists.txt", is,
+    		                       newContents.length(), null);
+    		               //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
+    		            } catch (DropboxUnlinkedException e) {
+    		               // User has unlinked, ask them to link again here.
+    		               Log.e("DbExampleLog", "User has unlinked.");
+    		            } catch (DropboxException e) {
+    		               Log.e("DbExampleLog", "Something went wrong while updating lists.txt");
+    		            }
+            		
+                    }catch(Exception e){
+                    	
+                    }
+                    Toast.makeText(v.getContext(), "List total saved.", Toast.LENGTH_LONG).show();
+            	}
+        		}
+        		
+        });
+        rl.addView(totalSave);
+        
+        EditText total = new EditText(this);
+    	total.bringToFront();
+    	RelativeLayout.LayoutParams totalParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    	//totalParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    	totalParams.addRule(RelativeLayout.LEFT_OF, 5000);
+    	totalParams.addRule(RelativeLayout.BELOW, R.id.create);
+    	total.setId(R.id.total);
+    	total.setLayoutParams(totalParams);
+    	
+    	ByteArrayOutputStream osTotal = new ByteArrayOutputStream();
+        try{
+            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+"lists.txt", null, osTotal, null);
+
+            String content = new String(osTotal.toByteArray());
+            StringTokenizer tokenizer = new StringTokenizer(content);
+           
+            while(tokenizer.hasMoreTokens()){
+            	String listName = tokenizer.nextToken();
+            	String listTotal = tokenizer.nextToken();
+            	String listDate = tokenizer.nextToken();
+            	if(listName.equals(currentList)){
+            		total.setHint(listTotal);
+            	}
+            }
+            
+        }catch(Exception e){
+        	
+        }
+        
+        rl.addView(total);
+        
+        
     	//ITEMS IN THE LIST
     	
     	List l = new List(currentUser, currentList);
     	
-    	
+    	int num_items=1;
+        int num_checkbox=101;
     	ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try{
             DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+currentList+".txt", null, outputStream, null);
@@ -635,8 +735,7 @@ public class MainActivity extends Activity
             String content = new String(outputStream.toByteArray());
             StringTokenizer tokenizer = new StringTokenizer(content);
             
-            int num_items=1;
-            int num_checkbox=101;
+            
             while(tokenizer.hasMoreTokens()){
             	//get item data and add to list l
             	String iname = tokenizer.nextToken();
@@ -690,7 +789,7 @@ public class MainActivity extends Activity
             	RelativeLayout.LayoutParams cb_param = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             	cb_param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             	if(num_checkbox == 101){
-            		cb_param.addRule(RelativeLayout.BELOW, R.id.create);
+            		cb_param.addRule(RelativeLayout.BELOW, 5000);
             	}
             	else{
             		cb_param.addRule(RelativeLayout.BELOW, num_checkbox-1);
@@ -755,7 +854,7 @@ public class MainActivity extends Activity
             	TextView item = new TextView(this);
             	RelativeLayout.LayoutParams i_param = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
             	if(num_items == 1){
-            		i_param.addRule(RelativeLayout.BELOW, R.id.create);
+            		i_param.addRule(RelativeLayout.BELOW, 5000);
             	}
             	else{
             		i_param.addRule(RelativeLayout.BELOW, num_items-1);
@@ -782,128 +881,19 @@ public class MainActivity extends Activity
             	num_checkbox++; 
             	
             }
-            /*
-            while(tokenizer.hasMoreTokens()){
-            	//get item data and add to list l
-            	String iname = tokenizer.nextToken();
-            	String icategory = tokenizer.nextToken();
-            	String istore = tokenizer.nextToken();
-            	String ipriority = tokenizer.nextToken();
-            	String isChecked = tokenizer.nextToken();
-            	int p;
-            	if(ipriority.equals("1")){p = 1;}
-            	else if(ipriority.equals("2")){p = 2;}
-            	else if(ipriority.equals("3")){p = 3;}
-            	else if(ipriority.equals("4")){p = 4;}
-            	else{p = 5;}
-            	
-            	final Item i = new Item(iname, icategory, istore, p);
-            	i.setCheckedOff(isChecked);
-            	
-            	l.addItem(i);
-            	
-            	//add items to layout
-            	//checkbox
-            	CheckBox cb = new CheckBox(this);
-            	RelativeLayout.LayoutParams cb_param = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            	cb_param.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            	if(num_checkbox == 101){
-            		cb_param.addRule(RelativeLayout.BELOW, R.id.create);
-            	}
-            	else{
-            		cb_param.addRule(RelativeLayout.BELOW, num_checkbox-1);
-            	}
-            	cb.setLayoutParams(cb_param);
-            	cb.setId(num_checkbox);
-            	cb.setChecked(i.isCheckedOff());
-            	cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-					
-					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-						// TODO Auto-generated method stub
-						String co = isChecked + "";
-						i.setCheckedOff(co); //change value in item
-						String newContents = "";
-						ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-				        try{
-				            DropboxFileInfo info = mDBApi.getFile("/"+currentUser+"/"+currentList+".txt", null, outputStream, null);
-
-				            String content = new String(outputStream.toByteArray());
-				            StringTokenizer tokenizer = new StringTokenizer(content);
-				            
-				            
-				            while(tokenizer.hasMoreTokens()){
-				            	String token = tokenizer.nextToken();//name
-				            	if(token.equals(i.getName().replaceAll(" ", "_"))){
-				            		//add name, category, store, priority, and checked-off to contents
-				            		String cat = tokenizer.nextToken();
-				            		String store = tokenizer.nextToken();
-				            		String priority = tokenizer.nextToken();
-				            		String old_check = tokenizer.nextToken();
-				            		newContents += token + " " +cat + " " + store + " " + priority + " " + i.isCheckedOff() + "\n";
-				            	}
-				            	else{
-				            		//add name, category, store, priority, and checked-off to contents
-				            		newContents += token + " " +tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + " " + tokenizer.nextToken() + "\n";
-				            	}
-				            }
-	 
-				        } catch(Exception e){
-				        	//catch exception
-				        }
-						
-						//Toast.makeText(buttonView.getContext(), newContents, Toast.LENGTH_LONG).show(); //test
-						ByteArrayInputStream is = new ByteArrayInputStream(newContents.getBytes());
-				            try {
-				                DropboxAPI.Entry newEntry = mDBApi.putFileOverwrite("/"+currentUser+"/"+currentList+".txt", is,
-				                       newContents.length(), null);
-				               //Log.i("DbExampleLog", "The uploaded file's rev is: " + newEntry.rev);
-				            } catch (DropboxUnlinkedException e) {
-				               // User has unlinked, ask them to link again here.
-				               Log.e("DbExampleLog", "User has unlinked.");
-				            } catch (DropboxException e) {
-				               Log.e("DbExampleLog", "Something went wrong while updating lists.txt");
-				            }
-						
-					}
-				});
-            	rl.addView(cb);
-            	//item text view
-            	TextView item = new TextView(this);
-            	RelativeLayout.LayoutParams i_param = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-            	if(num_items == 1){
-            		i_param.addRule(RelativeLayout.BELOW, R.id.create);
-            	}
-            	else{
-            		i_param.addRule(RelativeLayout.BELOW, num_items-1);
-            	}
-            	i_param.addRule(RelativeLayout.LEFT_OF, num_checkbox);
-            	item.setLayoutParams(i_param);
-            	item.setCompoundDrawablesWithIntrinsicBounds(R.drawable.red_line, 0, R.drawable.red_line, R.drawable.blue_line);
-            	item.setBackgroundColor(Color.WHITE);
-            	item.setTextColor(Color.BLACK);
-            	item.setTextSize(20);
-            	item.setText(iname);
-            	item.setId(num_items);
-            	item.setClickable(true);
-            	item.setOnClickListener(new OnClickListener(){
-            		Item iTemp = i;
-            		public void onClick(View v){
-            			//view selected item
-            			viewItem(iTemp);
-            		}
-            	});
-            	rl.addView(item);
-            	
-            	num_items++;
-            	num_checkbox++; 
-            	
-            }   */
+            //Toast.makeText(this, "id: "+num_checkbox, Toast.LENGTH_LONG).show(); //test
+            
         }catch(Exception e){
             Log.e("downloadFile", e.getMessage());
         }
         
     	
-    	sv.addView(rl);
+    	
+    	
+    	
+    	
+        
+        sv.addView(rl);
         setContentView(sv);
     	
     }
@@ -912,18 +902,16 @@ public class MainActivity extends Activity
      * 
      */
     public void viewItem(Item i){
+    	Toast.makeText(this, "Edit any item information by typing over the current item information.", Toast.LENGTH_LONG).show();
     	currentItem = i.getName();
     	setContentView(R.layout.additem);
-    	
     	EditText name = (EditText) findViewById(R.id.enterItem);
-    	
     	if(name.isSelected()){
     		name.setHint("");
     	}
     	else{
     		name.setHint(i.getName());
     	}
-    	
     	EditText category = (EditText) findViewById(R.id.enterCategory);
     	if(category.isSelected()){
     		category.setHint("");
@@ -968,10 +956,15 @@ public class MainActivity extends Activity
      * @see android.app.Activity#onBackPressed()
      * OVERRIDE
      */
-
-    public void onBackPressed(View v){
-    	super.onBackPressed();
-    	goHomeScreen(v);
+    @Override
+    public void onBackPressed(){
+    	if(isLoggedIn){
+    		goHomeScreen(new View(this));
+    	}
+    	else{
+    		super.onBackPressed();
+    	}
+    	
     }
     
     /*
@@ -1167,23 +1160,37 @@ public class MainActivity extends Activity
     		//get new item info
             EditText et_name = (EditText) findViewById(R.id.enterItem);
             String name;
-            //Toast.makeText(this,et_name.length()+"",Toast.LENGTH_LONG).show();
-            //if(et_name.length()==0){
-            	//name = null;
-            //}else{
+            if(et_name.getText().toString().equals("")){
+            	name = "";
+            	//Toast.makeText(this, "ERROR: All fields must be filled out.", Toast.LENGTH_LONG);
+            }
+            else{
             	name = et_name.getText().toString().replaceAll(" ", "_");
-            //}
+            }
+            
+            
             EditText et_cat = (EditText) findViewById(R.id.enterCategory);
             String cat;
-            //if(et_cat.length()==0){
-            	//cat = null;
-           // }
-            //else{
+            if(et_cat.getText().toString().equals("")){
+            	cat = "";
+            	//Toast.makeText(this, "ERROR: All fields must be filled out.", Toast.LENGTH_LONG);
+            }
+            else{
             	cat = et_cat.getText().toString().replaceAll(" ", "_");
-            //}
+            }
+            
+            
+            
             EditText et_store = (EditText) findViewById(R.id.enterStore);
             String store;
-            store = et_store.getText().toString().replaceAll(" ", "_");
+            if(et_store.getText().toString().equals("")){
+            	store = "";
+            	//Toast.makeText(this, "ERROR: All fields must be filled out.", Toast.LENGTH_LONG);
+            }
+            else{
+            	store = et_store.getText().toString().replaceAll(" ", "_");
+            }
+            
             RadioButton rb1 = (RadioButton) findViewById(R.id.RBOne);
             RadioButton rb2 = (RadioButton) findViewById(R.id.RBTwo);
             RadioButton rb3 = (RadioButton) findViewById(R.id.RBThree);
@@ -1198,10 +1205,10 @@ public class MainActivity extends Activity
             else{ priority = 1;} //default
   
             //if any fields are blank, then don't change file & put up an error
-        	//if(name.equals(null) | cat.equals(null) | store.equals(null)){
-        		//Toast.makeText(this, "ERROR: All fields must be filled out.", Toast.LENGTH_LONG);
-        	//}
-        	//else{//no fields are blank
+        	if(name.equals("") || cat.equals("") || store.equals("")){
+        		Toast.makeText(this, "ERROR: All fields must be filled out.", Toast.LENGTH_LONG).show();
+        	}
+        	else{//no fields are blank
         		
         		Item newItem = new Item(name, cat, store, priority);
         		//get list content and add item info to list content
@@ -1231,7 +1238,8 @@ public class MainActivity extends Activity
                 }
                 
                 goToList(listName); //go to view current list with added item
-        	//} 
+                Toast.makeText(this, "Item saved.", Toast.LENGTH_LONG).show();
+        	} 
     	}
     	else{
     		//get new item info
@@ -1350,13 +1358,10 @@ public class MainActivity extends Activity
      * Searches for an item in the current list and updates the list so that the searched item
      * is at the top of the list (only if the item exists).
      * 
-     * UNDER CONSTRUCTION
+     * 
      */
     public void searchForItem(String item){
     	//get information for item search from layout
-    	//EditText et = (EditText) findViewById(R.id.dialog_edit);
-    	//Editable et_edit = et.getText();
-    	//String item = et_edit.toString();
     	String listName = currentList;
     	boolean itemFound = false;
     	
