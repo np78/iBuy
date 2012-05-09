@@ -6,6 +6,14 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    
+	    <Button android:id="@+id/logout"
+			android:layout_width="50sp"
+			android:layout_height="50sp"
+			android:layout_alignParentLeft="true"
+			android:layout_marginRight="10sp"
+			android:background="@drawable/logout_icon"
+			android:onClick="logout"
+		/>
 		<Button android:id="@+id/options"
 			android:layout_width="50sp"
 			android:layout_height="50sp"
@@ -18,9 +26,10 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_toLeftOf="@id/options"
+			android:layout_toRightOf="@id/logout"
 			android:textSize="15sp"
 			android:layout_marginBottom="10sp"
-			android:text="Tap a list to modify it, or tap 'Create new list' to start a new list"
+			android:text="Tap a list to modify it, or tap 'Create new list' for new list"
 		/>
 		
 		<Button android:id="@+id/create"
@@ -34,18 +43,6 @@
 		/>
 		<!-- Lists are now clickable - Need to be assigned an onClick to direct to listview for the list they represent.
 				Sample list currently assigned to 'goToList' as a test, works fine. -->
-		<TextView
-			android:id="@+id/samplelist1"
-			android:layout_width="fill_parent"
-			android:layout_height="50sp"
-			android:layout_below="@id/create"
-			android:drawableBottom="@drawable/black_line"
-			android:clickable="true"
-			android:textSize="20sp"
-			android:background="#CCFFFF"
-			android:textColor="#000000"
-			android:text="Sample list 1"
-			android:onClick="goToList"
-		/>
+		
 	</RelativeLayout>
 </ScrollView>

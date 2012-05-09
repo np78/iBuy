@@ -9,6 +9,8 @@ C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity$5.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity$6.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity$7.class \
+C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity$8.class \
+C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity$9.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\MainActivity.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\R$array.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\R$attr.class \
@@ -17,4 +19,5 @@ C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\R$layout.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\R$string.class \
 C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\com\cs477\linn\R.class \
+C:\Users\Nicole\Desktop\np78-iBuy-69e7df7\iBuyAndroid\bin\classes\R.java.d \
 C:\Program Files\Android\android-sdk\tools\support\annotations.jar \
