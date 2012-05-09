@@ -1,0 +1,476 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * ItemStatistics.java
+ *
+ * Created on May 5, 2012, 2:49:21 PM
+ */
+package ibuyswing;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.StringTokenizer;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.session.WebAuthSession;
+import javax.swing.JLabel;
+/**
+ *
+ * @author Luke
+ */
+public class ItemStatistics extends javax.swing.JFrame implements ActionListener{
+
+    private LinkedList<Item> items = new LinkedList<Item>();
+    private LinkedList<JLabel> names = new LinkedList<JLabel>();
+
+    /** Creates new form ItemStatistics */
+    public ItemStatistics(String user, DropboxAPI<WebAuthSession> mDBApi) {
+        initComponents();
+
+        StringTokenizer st = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/lists.txt"));
+        items.clear();
+        names.clear();
+        while(st.hasMoreTokens())
+        {
+            String filename = st.nextToken();
+            st.nextToken();
+            st.nextToken();
+            StringTokenizer list = new StringTokenizer(Global.getFile(mDBApi, "/" + user + "/" + filename + ".txt"));
+            while(list.hasMoreTokens())
+            {
+                String str[] = new String[5];
+                str[0] = Global.readFileName(list.nextToken());
+                str[1] = Global.readFileName(list.nextToken());
+                str[2] = Global.readFileName(list.nextToken());
+                str[3] = Global.readFileName(list.nextToken());
+                str[4] = Global.readFileName(list.nextToken());
+                int importance = 0;
+                if(importance == 0)
+                    importance = str[3].charAt(0) - 48;
+                boolean isChecked = false;
+                if(str[4].equals("true"))
+                isChecked = true;
+                Item item = new Item(str[0], str[1], str[2], importance, isChecked);
+                item.checkbox.setEnabled(false);
+                items.add(item);
+                names.add(new JLabel(Global.readFileName(filename)));
+            }
+        }
+        /**mainPanel.setLayout(new GridLayout(items.size()+1, 1));
+               
+                    for(int i = 0; i < items.size(); i++)
+                    {
+                        Item item = items.get(i);
+                        JPanel j = new JPanel();
+                        j.setLayout(new GridLayout(1, 6));
+                        item.checkbox.addActionListener(this);
+            
+                        j.add(item.checkbox);
+                        j.add(item.nameLabel);
+                        j.add(item.categoryLabel);
+                        j.add(item.storeLabel);
+                        j.add(item.importanceLabel);
+                        j.add(names.get(i));
+                        //j.add(delete.get(i));
+                        mainPanel.add(j);
+                    }  
+                    
+                
+                mainPanel.doLayout();
+                mainPanel.setVisible(true);*/
+          
+
+        mainPanel.setLayout(new GridLayout(6, items.size()));
+        
+        for(int i = 0; i < items.size(); i++)
+        {
+            Item item = items.get(i);
+            JPanel jpanel = new JPanel();
+            jpanel.setLayout(new GridLayout(1, 6));
+            jpanel.add(item.checkbox);
+            jpanel.add(item.nameLabel);
+            jpanel.add(item.categoryLabel);
+            jpanel.add(item.storeLabel);
+            jpanel.add(item.importanceLabel);
+            jpanel.add(names.get(i));
+            mainPanel.add(jpanel);
+        }
+
+        //setContentPane(new JScrollPane(getContentPane()));
+        //setVisible(true);
+        mainPanel.doLayout();
+        setVisible(true);
+    }
+    
+    public void nameSort()
+    {
+        for(int i = 0; i < items.size(); i++)
+        {
+            for(int j = 1; j < items.size()-i; j++)
+            {
+                if(items.get(j-1).name.compareTo(items.get(j).name) > 0)
+                {
+                    Item temp = new Item(items.get(j-1).name, items.get(j-1).category, items.get(j-1).store, items.get(j-1).importance, items.get(j-1).isChecked);
+                    items.get(j-1).setItem(items.get(j));
+                    items.get(j).setItem(temp);
+
+                    String temp2 = names.get(j-1).getText();
+                    names.get(j-1).setText(names.get(j).getText());
+                    names.get(j).setText(temp2);
+                }
+            }
+        }
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        mainPanel = new javax.swing.JPanel();
+        crossOffSort = new javax.swing.JButton();
+        nameSort = new javax.swing.JButton();
+        categorySort = new javax.swing.JButton();
+        storeSort = new javax.swing.JButton();
+        importanceSort = new javax.swing.JButton();
+        listSort = new javax.swing.JButton();
+        searchStart = new javax.swing.JButton();
+        search = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        mainPanel.setName("mainPanel"); // NOI18N
+        mainPanel.setLayout(new java.awt.GridLayout());
+        jScrollPane1.setViewportView(mainPanel);
+
+        crossOffSort.setText("Cross Off");
+        crossOffSort.setName("crossOffSort"); // NOI18N
+
+        nameSort.setText("Name");
+        nameSort.setName("nameSort"); // NOI18N
+
+        categorySort.setText("Category");
+        categorySort.setName("categorySort"); // NOI18N
+
+        storeSort.setText("Store");
+        storeSort.setName("storeSort"); // NOI18N
+
+        importanceSort.setText("Importance");
+        importanceSort.setName("importanceSort"); // NOI18N
+
+        listSort.setText("List");
+        listSort.setName("listSort"); // NOI18N
+
+        searchStart.setBackground(new java.awt.Color(102, 102, 102));
+        searchStart.setFont(new java.awt.Font("Tahoma", 1, 18));
+        searchStart.setForeground(new java.awt.Color(255, 255, 255));
+        searchStart.setText("Go");
+        searchStart.setName("searchStart"); // NOI18N
+
+        search.setFont(new java.awt.Font("Tahoma", 0, 12));
+        search.setText("Item Search");
+        search.setName("search"); // NOI18N
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14));
+        jLabel1.setForeground(new java.awt.Color(255, 102, 0));
+        jLabel1.setText("Sort By: ");
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36));
+        jLabel2.setForeground(new java.awt.Color(255, 102, 0));
+        jLabel2.setText("Item Statistics");
+        jLabel2.setName("jLabel2"); // NOI18N
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(crossOffSort)
+                                .addGap(6, 6, 6)
+                                .addComponent(nameSort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(categorySort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(storeSort)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(importanceSort)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(listSort, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(searchStart)))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(searchStart)
+                            .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(crossOffSort)
+                    .addComponent(nameSort)
+                    .addComponent(categorySort)
+                    .addComponent(storeSort)
+                    .addComponent(importanceSort)
+                    .addComponent(listSort))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton categorySort;
+    private javax.swing.JButton crossOffSort;
+    private javax.swing.JButton importanceSort;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton listSort;
+    private javax.swing.JPanel mainPanel;
+    private javax.swing.JButton nameSort;
+    private javax.swing.JTextField search;
+    private javax.swing.JButton searchStart;
+    private javax.swing.JButton storeSort;
+    // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == listSort)
+        {
+        for(int i = 0; i < items.size(); i++)
+           {
+           for(int j = 1; j < items.size()-i; j++)
+           {
+           if(names.get(j-1).getText().compareTo(names.get(j).getText()) > 0)
+           {
+           Item temp = new Item(items.get(j-1).name, items.get(j-1).category, items.get(j-1).store, items.get(j-1).importance, items.get(j-1).isChecked);
+           items.get(j-1).setItem(items.get(j));
+           items.get(j).setItem(temp);
+
+           String temp2 = names.get(j-1).getText();
+           names.get(j-1).setText(names.get(j).getText());
+           names.get(j).setText(temp2);
+           }
+           }
+           }
+           repaint();
+        }
+        if(e.getSource() == crossOffSort)
+        {
+        nameSort();
+        LinkedList<Item> temp = new LinkedList<Item>();
+        LinkedList<JTextField> temp2 = new LinkedList<JTextField>();
+           for(int i = 0; i < items.size(); i++)
+           {
+           if(items.get(i).isChecked)
+        {
+           Item old = items.get(i);
+           Item tempItem = new Item(old.name, old.category, old.store, old.importance, old.isChecked);
+           temp.add(tempItem);
+           temp2.add(new JTextField(names.get(i).getText()));
+        }
+           }
+
+           for(int j = 0; j < items.size(); j++)
+           {
+           if(!items.get(j).isChecked)
+        {
+        Item old = items.get(j);
+        Item tempItem = new Item(old.name, old.category, old.store, old.importance, old.isChecked);
+        temp.add(tempItem);
+        temp2.add(new JTextField(names.get(j).getText()));
+        }
+           }
+
+           for(int k = 0; k < items.size(); k++)
+           {
+           items.get(k).setItem(temp.get(k));
+           names.get(k).setText(temp2.get(k).getText());
+           }
+           repaint();
+        }
+        if(e.getSource() == importanceSort)
+           {
+           for(int i = 0; i < items.size(); i++)
+           {
+           for(int j = 1; j < items.size()-i; j++)
+           {
+           if(items.get(j-1).importance > items.get(j).importance)
+           {
+           Item temp = new Item(items.get(j-1).name, items.get(j-1).category, items.get(j-1).store, items.get(j-1).importance, items.get(j-1).isChecked);
+           items.get(j-1).setItem(items.get(j));
+           items.get(j).setItem(temp);
+
+           String temp2 = names.get(j-1).getText();
+           names.get(j-1).setText(names.get(j).getText());
+           names.get(j).setText(temp2);
+           }
+           }
+           }
+           repaint();
+           }
+        if(e.getSource() == nameSort)
+           {
+        nameSort();
+           repaint();
+           }
+        if(e.getSource() == storeSort)
+           {
+           for(int i = 0; i < items.size(); i++)
+           {
+           for(int j = 1; j < items.size()-i; j++)
+           {
+           if(items.get(j-1).store.compareTo(items.get(j).store) > 0)
+           {
+           Item temp = new Item(items.get(j-1).name, items.get(j-1).category, items.get(j-1).store, items.get(j-1).importance, items.get(j-1).isChecked);
+           items.get(j-1).setItem(items.get(j));
+           items.get(j).setItem(temp);
+
+           String temp2 = names.get(j-1).getText();
+           names.get(j-1).setText(names.get(j).getText());
+           names.get(j).setText(temp2);
+           }
+           }
+           }
+           repaint();
+           }
+        if(e.getSource() == categorySort)
+           {
+           for(int i = 0; i < items.size(); i++)
+           {
+           for(int j = 1; j < items.size()-i; j++)
+           {
+           if(items.get(j-1).category.compareTo(items.get(j).category) > 0)
+           {
+           Item temp = new Item(items.get(j-1).name, items.get(j-1).category, items.get(j-1).store, items.get(j-1).importance, items.get(j-1).isChecked);
+           items.get(j-1).setItem(items.get(j));
+           items.get(j).setItem(temp);
+
+           String temp2 = names.get(j-1).getText();
+           names.get(j-1).setText(names.get(j).getText());
+           names.get(j).setText(temp2);
+           }
+           }
+           }
+           repaint();
+           }
+        if(e.getSource() == searchStart && (!search.getText().equals("")))
+           {
+        boolean isFound = false;
+        for(int i = 0; i < items.size(); i++)
+        {
+        if(items.get(i).name.compareTo(search.getText()) == 0)
+        {
+        LinkedList<Item> temp = new LinkedList<Item>();
+        LinkedList<JTextField> temp2 = new LinkedList<JTextField>();
+
+           Item old = items.get(i);
+           Item tempItem = new Item(old.name, old.category, old.store, old.importance, old.isChecked);
+           temp.add(tempItem);
+           temp2.add(new JTextField(names.get(i).getText()));
+
+
+        for(int j = 0; j < items.size(); j++)
+        {
+        if(j != i)
+        {
+        old = items.get(j);
+        tempItem = new Item(old.name, old.category, old.store, old.importance, old.isChecked);
+        temp.add(tempItem);
+        temp2.add(new JTextField(names.get(j).getText()));
+        }
+        }
+        for(int k = 0; k < items.size(); k++)
+        {
+        items.get(k).setItem(temp.get(k));
+        names.get(k).setText(temp2.get(k).getText());
+        }
+        isFound = true;
+        break;
+        }
+        }
+        if(isFound)
+        {
+        System.out.println("Item Found");
+        repaint();
+        }
+        else
+        System.out.println("Item NOT Found");
+           }
+    }
+}
